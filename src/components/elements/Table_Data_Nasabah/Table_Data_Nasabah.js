@@ -64,7 +64,7 @@ class Table_Data_Nasabah extends Component {
             buttons: [
               {
                 extend: "pageLength",
-                className: "btn btn-secondary bg-secondary",
+                className: "btn btn-dark bg-dark",
               },
               // {
               //   extend: "copy",
@@ -72,7 +72,7 @@ class Table_Data_Nasabah extends Component {
               // },
               {
                 extend: "csv",
-                className: "btn btn-secondary bg-secondary",
+                className: "btn btn-dark bg-dark",
               },
               // {
               //   extend: "print",

@@ -58,14 +58,7 @@ class Sidebar extends Component {
                     <p>Dashboard</p>
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a href="pages/widgets.html" className="nav-link">
-                    <i className="nav-icon mr-2">
-                      <RiHistoryFill />
-                    </i>
-                    <p>Riwayat Order</p>
-                  </a>
-                </li>
+
                 <li className="nav-header ">KELOLA DATABASE</li>
                 <li className="nav-item">
                   <a href="/danas" className="nav-link">
@@ -74,6 +67,32 @@ class Sidebar extends Component {
                     </i>
                     <p>Data Nasabah</p>
                   </a>
+                </li>
+                <li className="nav-item">
+                  <a href="#" className="nav-link">
+                    <i className="nav-icon mr-2">
+                      <BsDatabaseFill />
+                    </i>
+                    <p>
+                      Data Sembako
+                      <i className="fas fa-angle-left right" />
+                      {/* <span className="badge badge-info right">6</span> */}
+                    </p>
+                  </a>
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
+                      <a href="/kelsembako" className="nav-link">
+                        <i className="far fa-circle nav-icon" />
+                        <p>Kelola Sembako</p>
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/riwsembako" className="nav-link">
+                        <i className="far fa-circle nav-icon" />
+                        <p>Riwayat Sembako</p>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
                 <li className="nav-item">
                   <a href="#" className="nav-link">
@@ -89,75 +108,22 @@ class Sidebar extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="pages/layout/top-nav.html" className="nav-link">
+                      <a href="/kelsampah" className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Data Sampah 1</p>
+                        <p>Kelola Sampah</p>
                       </a>
                     </li>
                     <li className="nav-item">
-                      <a href="pages/layout/top-nav-sidebar.html" className="nav-link">
+                      <a href="/riwsampah" className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Data Sampah 2</p>
+                        <p>Riwayat Sampah</p>
                       </a>
                     </li>
                   </ul>
                 </li>
                 {/* END FOR EXAMPLE */}
-                <li className="nav-item">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon mr-2">
-                      <BsDatabaseFillGear />
-                    </i>
 
-                    <p>
-                      Kelola Sampah
-                      <i className="fas fa-angle-left right" />
-                      {/* <span className="badge badge-info right">6</span> */}
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Kelola Sampah 1</p>
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav-sidebar.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Kelola Sampah 2</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon mr-2">
-                      <BsDatabaseFillAdd />
-                    </i>
-
-                    <p>
-                      Daftar Sampah
-                      <i className="fas fa-angle-left right" />
-                      {/* <span className="badge badge-info right">6</span> */}
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Daftar Sampah 1</p>
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav-sidebar.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Daftar Sampah 2</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <a href="#" className="nav-link">
                     <i className="nav-icon mr-2">
                       <HiOutlineSwitchHorizontal />
@@ -166,7 +132,7 @@ class Sidebar extends Component {
                     <p>
                       Data Tukaran
                       <i className="fas fa-angle-left right" />
-                      {/* <span className="badge badge-info right">6</span> */}
+                 
                     </p>
                   </a>
                   <ul className="nav nav-treeview">
@@ -183,60 +149,26 @@ class Sidebar extends Component {
                       </a>
                     </li>
                   </ul>
+                </li> */}
+                <li className="nav-item">
+                  <a href="/datapenjualan" className="nav-link">
+                    <i className="nav-icon mr-2">
+                      <BsDatabaseFill />
+                    </i>
+                    <p>Data Penjualan Sampah</p>
+                  </a>
                 </li>
                 <li className="nav-header ">ARTIKEL & INFORMASI</li>
+
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon mr-2">
-                      <MdOutlineArticle />
-                    </i>
-                    <p>
-                      Artikel
-                      <i className="fas fa-angle-left right" />
-                      {/* <span className="badge badge-info right">6</span> */}
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Artikel1</p>
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav-sidebar.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Artikel 2</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item">
-                  <a href="#" className="nav-link">
+                  <a href="/danas" className="nav-link">
                     <i className="nav-icon mr-2">
                       <BsInfoSquare />
                     </i>
-                    <p>
-                      Banner Informasi
-                      <i className="fas fa-angle-left right" />
-                      {/* <span className="badge badge-info right">6</span> */}
-                    </p>
+                    <p>Artikel & Banner</p>
                   </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Banner Informasi 1</p>
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="pages/layout/top-nav-sidebar.html" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Banner Informasi 2</p>
-                      </a>
-                    </li>
-                  </ul>
                 </li>
+
                 <li className="nav-header ">LAINNYA</li>
                 <li className="nav-item">
                   <a href="/vernas" className="nav-link">
@@ -246,12 +178,7 @@ class Sidebar extends Component {
                     <p>Verifikasi Nasabah</p>
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a href="/backlist" className="nav-link">
-                    <i className="nav-icon mr-2">{/* <VscVerified /> */}</i>
-                    <p>Data Backlist Nasabah</p>
-                  </a>
-                </li>
+
                 <li className="nav-item">
                   <a href="#" className="nav-link">
                     <i className="nav-icon mr-2">

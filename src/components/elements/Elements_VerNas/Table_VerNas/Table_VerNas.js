@@ -64,7 +64,7 @@ class Table_VerNas extends Component {
             buttons: [
               {
                 extend: "pageLength",
-                className: "btn btn-secondary bg-secondary",
+                className: "btn btn-dark bg-dark",
               },
               // {
               //   extend: "copy",
@@ -72,7 +72,7 @@ class Table_VerNas extends Component {
               // },
               {
                 extend: "csv",
-                className: "btn btn-secondary bg-secondary",
+                className: "btn btn-dark bg-dark",
               },
               // {
               //   extend: "print",
@@ -124,10 +124,9 @@ class Table_VerNas extends Component {
               <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_liat_data_nasabah">
                 Proses
               </button>
-              <button className="btn btn-success btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_tiwayat_transaksi">
+              <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_tiwayat_transaksi">
                 Backlist
               </button>
-              <button className="btn btn-warning btn-sm mt-1 mx-2">Edit</button>
               {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
             </td>
           </tr>

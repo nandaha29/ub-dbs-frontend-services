@@ -18,11 +18,15 @@ export default function Data_Backlist(props) {
                 {/* /.col */}
                 <div className="col-sm-6">
                   <ol className="breadcrumb float-sm-right">
-                    <li className="breadcrumb-item">
-                      <a href="#">Home</a>
+                    <li className="breadcrumb-item ">
+                      <a href="/home">Home</a>
                     </li>
-                    <li className="breadcrumb-item ">Database Nasabah</li>
-                    <li className="breadcrumb-item active">Daftar Backlist</li>
+                    <li className="breadcrumb-item ">
+                      <a href="/vernas">Verifikasi Nasabah</a>
+                    </li>
+                    <li className="breadcrumb-item active">
+                      <a href="/backlist">Data Backlist</a>
+                    </li>
                   </ol>
                 </div>
                 {/* /.col */}

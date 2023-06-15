@@ -12,38 +12,37 @@ import $ from "jquery";
 
 const names = [
   {
-    id_nasabah: 10010,
-    waktu_daftar: "10-01-2023 13:14",
-    name_nasabah: "Harry hehe",
-    no_telp: "081234567893",
-    address_nasabah: "Jl. Veterean No. 8, Merjoasri, Kec. Klojen, Malang",
+    id_sembako: 10010,
+    name_sembako: "Beras lalapan",
+    berat_sembako: 230,
+    poin_sembako: 700,
+    waktu_transaksi: "10/02/2023  |  12.00 PM",
   },
   {
-    id_nasabah: 10010,
-    waktu_daftar: "10-01-2023 13:14",
-    name_nasabah: "Harry tyt",
-    no_telp: "081234567893",
-    address_nasabah: "Jl. Veterean No. 8, Merjoasri, Kec. Klojen, Malang",
+    id_sembako: 10010,
+    name_sembako: "Beras Indoneasi",
+    berat_sembako: 230,
+    poin_sembako: 700,
+    waktu_transaksi: "10/02/2023  |  12.00 PM",
   },
   {
-    id_nasabah: 10010,
-    waktu_daftar: "10-01-2023 13:14",
-    name_nasabah: "Harry gaga",
-    no_telp: "081234567893",
-    address_nasabah: "Jl. Veterean No. 8, Merjoasri, Kec. Klojen, Malang",
+    id_sembako: 10010,
+    name_sembako: "Beras Padang",
+    berat_sembako: 230,
+    poin_sembako: 700,
+    waktu_transaksi: "10/02/2023  |  12.00 PM",
   },
 ];
 
-class Table_Backlist extends Component {
+class Table_Riwayat_Sampah extends Component {
   constructor() {
     super();
     this.state = {
       data_nasabah: [],
-      id_nasabah: "",
-      waktu_daftar: "",
-      name_nasabah: "",
-      no_telp: 0,
-      address_nasabah: "",
+      id_sembako: "",
+      name_sembako: "",
+      poin_sembako: 0,
+      waktu_transaksi: "",
       action: "",
     };
   }
@@ -74,6 +73,7 @@ class Table_Backlist extends Component {
                 extend: "csv",
                 className: "btn btn-dark bg-dark",
               },
+
               // {
               //   extend: "print",
               //   customize: function (win) {
@@ -114,21 +114,12 @@ class Table_Backlist extends Component {
         return (
           <tr>
             <td className="mt-1 mx-2">{index + 1}</td>
-            <td className="mt-1 mx-2">{item.waktu_daftar}</td>
+            <td className="mt-1 mx-2">{item.id_sembako}</td>
             {/* <td className="text-xs font-weight-bold">{item.firstname + " " + item.lastname}</td> */}
-            <td className="mt-1 mx-2">{item.name_nasabah}</td>
-            <td className="mt-1 mx-2">{item.no_telp}</td>
-            <td className="mt-1 mx-2">{item.address_nasabah}</td>
-            <td className="d-flex justify-content-center">
-              {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button className="btn btn-success btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_return_whitelist">
-                Kembalikan Ke Whitelist
-              </button>
-              <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun">
-                Hapus akun
-              </button>
-              {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
-            </td>
+            <td className="mt-1 mx-2">{item.name_sembako}</td>
+            <td className="mt-1 mx-2">{item.berat_sembako}</td>
+            <td className="mt-1 mx-2">{item.poin_sembako}</td>
+            <td className="mt-1 mx-2">{item.waktu_transaksi}</td>
           </tr>
         );
       });
@@ -146,11 +137,11 @@ class Table_Backlist extends Component {
               <thead>
                 <tr>
                   <th className="text-uppercase  text-sm ">#</th>
-                  <th className="text-uppercase  text-sm ">Waktu Mendaftar</th>
-                  <th className="text-uppercase  text-sm ">Nama Nasabah</th>
-                  <th className="text-uppercase  text-sm ">No. Telepon</th>
-                  <th className="text-uppercase  text-sm ">Alamat</th>
-                  <th className="text-uppercase  text-sm ">Action</th>
+                  <th className="text-uppercase  text-sm ">ID Transaksi</th>
+                  <th className="text-uppercase  text-sm ">Nama Sembako</th>
+                  <th className="text-uppercase  text-sm ">Berat Sembako</th>
+                  <th className="text-uppercase  text-sm ">Poin</th>
+                  <th className="text-uppercase  text-sm ">Waktu Transaksi</th>
                 </tr>
               </thead>
 
@@ -165,4 +156,4 @@ class Table_Backlist extends Component {
   }
 }
 
-export default Table_Backlist;
+export default Table_Riwayat_Sampah;
