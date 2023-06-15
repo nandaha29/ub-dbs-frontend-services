@@ -1,15 +1,13 @@
 import React from "react";
 // inisiasi component
 import Layout from "../../components/Layout";
-import Table_Permintaan_Penukaran from "../../components/elements/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
-import Table_Riwayat_Penukaran from "../../components/elements/Table_Riwayat_Penukaran";
-import Table_Permintaan_Verifikasi from "../../components/elements/Table_Permintaan_Verifikasi";
-import Grafik_Area from "../../components/elements/Grafik_Area/Grafik_Area";
-import Product from "../../components/elements/Prod/Product";
-import Modal_Proses from "../../components/fragments/Modal_Proses";
+import Table_Permintaan_Penukaran from "../../components/elements/Elements_Home/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
+import Table_Riwayat_Penukaran from "../../components/elements/Elements_Home/Table_Riwayat_Penukaran";
+import Table_Permintaan_Verifikasi from "../../components/elements/Elements_Home/Table_Permintaan_Verifikasi";
+import Table_Stok_Sembako from "../../components/elements/Elements_Home/Table_Stok_Sembako/Table_Stok_Sembako";
 
 import Box from "../../components/elements/Box/Box";
-import Table_Stok_Sembako from "../../components/elements/Table_Stok_Sembako/Table_Stok_Sembako";
+import Grafik_Area from "../../components/elements/Grafik_Area/Grafik_Area";
 
 export default function Home() {
   return (

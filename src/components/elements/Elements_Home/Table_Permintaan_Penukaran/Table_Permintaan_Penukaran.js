@@ -4,7 +4,7 @@ export default class Table_Permintaan_Penukaran extends Component {
   constructor() {
     super();
     this.state = {
-      products: [],
+      datapermintaantukar: [],
       action: "",
     };
   }

@@ -247,6 +247,12 @@ class Sidebar extends Component {
                   </a>
                 </li>
                 <li className="nav-item">
+                  <a href="/backlist" className="nav-link">
+                    <i className="nav-icon mr-2">{/* <VscVerified /> */}</i>
+                    <p>Data Backlist Nasabah</p>
+                  </a>
+                </li>
+                <li className="nav-item">
                   <a href="#" className="nav-link">
                     <i className="nav-icon mr-2">
                       <AiOutlineSetting />

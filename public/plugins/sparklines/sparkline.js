@@ -1,8 +1,8 @@
 (function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
+  if (typeof define === "function" && define.amd) {
     // AMD. Register as an anonymous module.
     define(factory);
-  } else if (typeof exports === 'object') {
+  } else if (typeof exports === "object") {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like enviroments that support module.exports,
     // like Node.
@@ -11,7 +11,7 @@
     // Browser globals (root is window)
     root.Sparkline = factory();
   }
-}(window, function () {
+})(window, function () {
   function extend(specific, general) {
     var obj = {};
     for (var key in general) {
@@ -60,7 +60,7 @@
     maxLine: false,
     bottomLine: false,
     topLine: false,
-    averageLine: false
+    averageLine: false,
   };
 
   Sparkline.init = function (element, options) {
@@ -71,14 +71,14 @@
     var sparkline = new Sparkline(element, options);
     sparkline.draw(points);
     return sparkline;
-  }
+  };
 
   function getY(minValue, maxValue, offsetY, height, index) {
     var range = maxValue - minValue;
     if (range == 0) {
       return offsetY + height / 2;
     } else {
-      return (offsetY + height) - ((this[index] - minValue) / range) * height;
+      return offsetY + height - ((this[index] - minValue) / range) * height;
     }
   }
 
@@ -90,43 +90,42 @@
     drawLine.call(this, x1, x2, line, x, y);
   }
 
-  function drawLine(x1, x2, style, x, y){
-    if(!style) return;
+  function drawLine(x1, x2, style, x, y) {
+    if (!style) return;
 
     this.context.save();
-    this.context.strokeStyle = style.color || 'black';
+    this.context.strokeStyle = style.color || "black";
     this.context.lineWidth = (style.width || 1) * this.ratio;
     this.context.globalAlpha = style.alpha || 1;
     this.context.beginPath();
-    this.context.moveTo(style.direction != 'right' ? x1 : x, y);
-    this.context.lineTo(style.direction != 'left' ? x2 : x, y);
+    this.context.moveTo(style.direction != "right" ? x1 : x, y);
+    this.context.lineTo(style.direction != "left" ? x2 : x, y);
     this.context.stroke();
     this.context.restore();
   }
 
   function showTooltip(e) {
     var x = e.offsetX || e.layerX || 0;
-    var delta = ((this.options.width - this.options.dotRadius * 2) / (this.points.length - 1));
+    var delta = (this.options.width - this.options.dotRadius * 2) / (this.points.length - 1);
     var index = minmax(0, Math.round((x - this.options.dotRadius) / delta), this.points.length - 1);
 
     this.canvas.title = this.options.tooltip(this.points[index], index, this.points);
   }
 
   Sparkline.prototype.draw = function (points) {
-
     points = points || [];
     this.points = points;
 
     this.canvas.width = this.options.width * this.ratio;
-    this.canvas.style.width = this.options.width + 'px';
+    this.canvas.style.width = this.options.width + "px";
 
     var pxHeight = this.options.height || this.element.offsetHeight;
     this.canvas.height = pxHeight * this.ratio;
-    this.canvas.style.height = pxHeight + 'px';
+    this.canvas.style.height = pxHeight + "px";
 
     var lineWidth = this.options.lineWidth * this.ratio;
-    var offsetX = Math.max(this.options.dotRadius * this.ratio, lineWidth/2);
-    var offsetY = Math.max(this.options.dotRadius * this.ratio, lineWidth/2);
+    var offsetX = Math.max(this.options.dotRadius * this.ratio, lineWidth / 2);
+    var offsetY = Math.max(this.options.dotRadius * this.ratio, lineWidth / 2);
     var width = this.canvas.width - offsetX * 2;
     var height = this.canvas.height - offsetY * 2;
 
@@ -149,10 +148,10 @@
     this.context.strokeStyle = this.options.lineColor;
     this.context.fillStyle = this.options.lineColor;
     this.context.lineWidth = lineWidth;
-    this.context.lineCap = 'round';
-    this.context.lineJoin = 'round';
+    this.context.lineCap = "round";
+    this.context.lineJoin = "round";
 
-    if(this.options.fillBelow && points.length > 1){
+    if (this.options.fillBelow && points.length > 1) {
       this.context.save();
       this.context.beginPath();
       this.context.moveTo(x, y(0));
@@ -164,16 +163,16 @@
 
         this.context.lineTo(x, y(i));
       }
-      this.context.lineTo(width+offsetX, height + offsetY + lineWidth/2);
-      this.context.lineTo(offsetX, height + offsetY + lineWidth/2);
+      this.context.lineTo(width + offsetX, height + offsetY + lineWidth / 2);
+      this.context.lineTo(offsetX, height + offsetY + lineWidth / 2);
       this.context.fill();
-      if(this.options.fillLighten > 0){
-        this.context.fillStyle = 'white';
+      if (this.options.fillLighten > 0) {
+        this.context.fillStyle = "white";
         this.context.globalAlpha = this.options.fillLighten;
         this.context.fill();
         this.context.globalAlpha = 1;
-      }else if(this.options.fillLighten < 0){
-        this.context.fillStyle = 'black';
+      } else if (this.options.fillLighten < 0) {
+        this.context.fillStyle = "black";
         this.context.globalAlpha = -this.options.fillLighten;
         this.context.fill();
       }
@@ -192,19 +191,19 @@
     this.context.restore();
 
     line(this.options.bottomLine, 0, offsetY);
-    line(this.options.topLine, 0, height + offsetY+lineWidth/2);
+    line(this.options.topLine, 0, height + offsetY + lineWidth / 2);
 
     dot(this.options.startColor, this.options.startLine, offsetX + (points.length == 1 ? width / 2 : 0), y(0));
-    dot(this.options.endColor, this.options.endLine, offsetX + (points.length == 1 ? width / 2 : width), y(points.length-1));
+    dot(this.options.endColor, this.options.endLine, offsetX + (points.length == 1 ? width / 2 : width), y(points.length - 1));
     dot(this.options.minColor, this.options.minLine, minX + (points.length == 1 ? width / 2 : 0), y(points.indexOf(minValue)));
     dot(this.options.maxColor, this.options.maxLine, maxX + (points.length == 1 ? width / 2 : 0), y(points.indexOf(maxValue)));
 
     //line(this.options.averageLine, )
-  }
+  };
 
   function minmax(a, b, c) {
     return Math.max(a, Math.min(b, c));
   }
 
   return Sparkline;
-}));
+});

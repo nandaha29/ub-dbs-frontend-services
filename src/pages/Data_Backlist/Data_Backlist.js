@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../../components/Layout";
-import Table_VerNas from "../../components/elements/Elements_VerNas/Table_VerNas";
+import Table_Backlist from "../../components/elements/Elements_VerNas/Table_Backlist";
 
-export default function Verifikasi_Nasabah(props) {
+export default function Data_Backlist(props) {
   // function Verifikasi_Nasabah(props) {
   return (
     <div>
@@ -13,22 +13,16 @@ export default function Verifikasi_Nasabah(props) {
             <div className="container-fluid">
               <div className="row mb-2">
                 <div className="col-sm-6">
-                  <h1 className="m-0">Verifikasi_Nasabah</h1>
+                  <h1 className="m-0">Daftar_BackList</h1>
                 </div>
                 {/* /.col */}
                 <div className="col-sm-6">
                   <ol className="breadcrumb float-sm-right">
-                    <li>
-                      {" "}
-                      <button className="btn btn-primary btn-sm mt-1 mx-2" data-target="#modal_tiwayat_transaksi">
-                        Backlist
-                      </button>
-                    </li>
-
                     <li className="breadcrumb-item">
                       <a href="#">Home</a>
                     </li>
-                    <li className="breadcrumb-item active">Database Nasabah</li>
+                    <li className="breadcrumb-item ">Database Nasabah</li>
+                    <li className="breadcrumb-item active">Daftar Backlist</li>
                   </ol>
                 </div>
                 {/* /.col */}
@@ -39,7 +33,7 @@ export default function Verifikasi_Nasabah(props) {
           </div>
           {/* /.content-header */}
           <section className="content">
-            <Table_VerNas />
+            <Table_Backlist />
             {/* <Table_Try /> */}
           </section>
         </div>

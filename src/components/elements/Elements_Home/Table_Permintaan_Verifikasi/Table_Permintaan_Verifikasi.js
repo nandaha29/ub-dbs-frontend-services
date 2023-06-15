@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "../../assets/logo/logo_bsd.png";
+import logo from "../../../assets/logo/logo_bsd.png";
 
 export default class Table_Permintaan_Verifikasi extends Component {
   render() {
@@ -116,7 +116,7 @@ export default class Table_Permintaan_Verifikasi extends Component {
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger">
+                <button type="button" class="btn btn-danger ">
                   Tolak
                 </button>
 
