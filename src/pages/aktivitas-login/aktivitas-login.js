@@ -15,7 +15,7 @@ export default class AktivitasLoginPage extends Component {
       nasabahCount: 852,
       totalSampahCount: 852,
       nasabahPerluVerifikasiCount: 852,
-      transaksiSembakoCount: 29,
+      transaksiSembakoCount: 29, 
     };
   }
 
