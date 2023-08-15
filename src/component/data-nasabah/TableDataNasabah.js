@@ -39,11 +39,12 @@ class TableDataNasabah extends Component {
     super();
     this.state = {
       data_nasabah: [],
-      id_nasabah: "",
-      name_nasabah: "",
-      no_telp: 0,
-      age: 0,
-      address_nasabah: "",
+      id_nasabah: "100104",
+      name_nasabah: "Harry Styles",
+      no_telp: "089765724537",
+      verifikator: "Mimi Capaldi" ,
+      tanggal_verifikasi: "20/05/2021",
+      alamat: "Jl, Raya Bukan Gg. 12C, Jatimulyo, Blimbing, Malang ",
       action: "",
     };
   }
@@ -177,20 +178,19 @@ class TableDataNasabah extends Component {
                 <div className="modal-image d-flex justify-content-center">
                   {/* <img src={logo} alt="Logo" className="brand-image " /> */}
                   {/* MAKE A LINGKARAN FOR IMAGE */}
-                  <h1>INI GAMBAR</h1>
+                  <img src="dist/img/avatar5.png" className="img-circle elevation-2" alt="User Image" />
                 </div>
-
                 <form className="m-5">
                   <div class="form-group row ">
                     <label class="col-sm-5 col-form-label">ID Nasabah</label>
                     <div class="col-sm-7 ">
-                      <input type="text" className="form-control mb-2" value={this.state.id_nasabah}></input>
+                      <input type="text" readonly class="form-control-plaintext" className="form-control mb-2" value={this.state.id_nasabah}></input>
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-sm-5 col-form-label">Nama</label>
                     <div class="col-sm-7">
-                      <input type="number" className="form-control mb-2" value={this.state.name_nasabah} />
+                      <input type="text" className="form-control mb-2" value={this.state.name_nasabah} />
                       {/* <p>10-01-2023 13:14</p> */}
                     </div>
                   </div>
@@ -205,19 +205,28 @@ class TableDataNasabah extends Component {
                   </div>
                   <div class="form-group row">
                     <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Age
+                      Verifikator
                     </label>
                     <div class="col-sm-7">
-                      <input type="number" class="form-control" className="form-control mb-2" value={this.state.age} />
+                      <input type="text" class="form-control" className="form-control mb-2" value={this.state.verifikator} />
                       {/* <p>0847-242-983-191</p> */}
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Alamat Nasabah
+                      Tanggal Verifikasi
                     </label>
                     <div class="col-sm-7">
-                      <input type="text" className="form-control mb-2" value={this.state.address_nasabah} />
+                      <input type="text" className="form-control mb-2" value={this.state.tanggal_verifikasi} />
+                      {/* <p>Jl. Raya Bukan Gg. III No. 17a. Dinoyo, Malang</p> */}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-5 col-form-label">
+                      Alamat
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" className="form-control mb-2" value={this.state.alamat} />
                       {/* <p>Jl. Raya Bukan Gg. III No. 17a. Dinoyo, Malang</p> */}
                     </div>
                   </div>
