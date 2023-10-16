@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
 // import Table_Permintaan_Penukaran from "../../components/elements/Elements_Home/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
@@ -24,16 +25,100 @@ export default class DashboardPage extends Component {
     };
   }
 
-  // dummyData = [
-  //   {
-  //     adminName: "Pak Ferdi",
-  //     nasabahCount: "18 Feb 2023",
-  //     totalSampahCount: "Diagnosis and Procedure Coded",
-  //     nasabahPerluVerifikasiCount: "OPA2121200001",
-  //     transaksiSembakoCount: "18 Feb 2023",
-  //   },
-  // ];
-
+  getVerifUser = () => {
+    const url = "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1"
+    const headers = {
+      accept: 'application/json',
+      Authorization: 'Bearer AOkPPWQoceQ4kbUwpekWnaQnmeh5cdSB5uX1QV1OFTBA9jAXr2ckpenFySVMDyOPSRfMCIJw4UQUvvNyA89gt0cpvjqTsqRPWE9Z8E4fOFgRWUTxmAZ6XjriyMPoIapmiTN6Eq_WNm9auGrDk0qOfb6v6Px5FmCInLrXQN3Yi4WbIOxmxCmK7_H5GZpBRmiQzKZgg3VERhUTOkbiA2gdJ1U0tcfY1_9Xh1RsdkSLvbj5cyrGaEEK6-eiJLJAwqL6ifJIKtITow8nmYJ75wh06DFhYElwlealrA'
+    }
+    axios.get(url, { headers })
+      .then(response => {
+        this.setState({ nasabahCount: response.data.data.length })
+        console.log(response.data.data.length)
+      })
+      .catch(error => {
+        if (error.response) {
+          if (error.response.status) {
+            window.alert(error.response.data.message)
+            // this.props.history.push("/dashboard")
+          }
+        } else {
+          console.log(error);
+        }
+      })
+  }
+  getUnverifUser = () => {
+    const url = "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0"
+    const headers = {
+      accept: 'application/json',
+      Authorization: 'Bearer AOkPPWQoceQ4kbUwpekWnaQnmeh5cdSB5uX1QV1OFTBA9jAXr2ckpenFySVMDyOPSRfMCIJw4UQUvvNyA89gt0cpvjqTsqRPWE9Z8E4fOFgRWUTxmAZ6XjriyMPoIapmiTN6Eq_WNm9auGrDk0qOfb6v6Px5FmCInLrXQN3Yi4WbIOxmxCmK7_H5GZpBRmiQzKZgg3VERhUTOkbiA2gdJ1U0tcfY1_9Xh1RsdkSLvbj5cyrGaEEK6-eiJLJAwqL6ifJIKtITow8nmYJ75wh06DFhYElwlealrA'
+    }
+    axios.get(url, { headers })
+      .then(response => {
+        this.setState({ nasabahPerluVerifikasiCount: response.data.data.length })
+        console.log(response.data.data.length)
+      })
+      .catch(error => {
+        if (error.response) {
+          if (error.response.status) {
+            window.alert(error.response.data.message)
+            // this.props.history.push("/dashboard")
+          }
+        } else {
+          console.log(error);
+        }
+      })
+  }
+  getTotSam = () => {
+    const url = "https://devel4-filkom.ub.ac.id/slip/menabung?status=berhasil&filterMonth=6"
+    const headers = {
+      accept: 'application/json',
+      Authorization: 'Bearer AOkPPWQoceQ4kbUwpekWnaQnmeh5cdSB5uX1QV1OFTBA9jAXr2ckpenFySVMDyOPSRfMCIJw4UQUvvNyA89gt0cpvjqTsqRPWE9Z8E4fOFgRWUTxmAZ6XjriyMPoIapmiTN6Eq_WNm9auGrDk0qOfb6v6Px5FmCInLrXQN3Yi4WbIOxmxCmK7_H5GZpBRmiQzKZgg3VERhUTOkbiA2gdJ1U0tcfY1_9Xh1RsdkSLvbj5cyrGaEEK6-eiJLJAwqL6ifJIKtITow8nmYJ75wh06DFhYElwlealrA'
+    }
+    axios.get(url, { headers })
+      .then(response => {
+        this.setState({ totalSampahCount: response.data.data.length })
+        console.log(response.data.data.length)
+      })
+      .catch(error => {
+        if (error.response) {
+          if (error.response.status) {
+            window.alert(error.response.data.message)
+            // this.props.history.push("/dashboard")
+          }
+        } else {
+          console.log(error);
+        }
+      })
+  }
+  getTrans = () => {
+    const url = "https://devel4-filkom.ub.ac.id/slip/penukaran?filterMonth=6&status=berhasil&page=1"
+    const headers = {
+      accept: 'application/json',
+      Authorization: 'Bearer AOkPPWQoceQ4kbUwpekWnaQnmeh5cdSB5uX1QV1OFTBA9jAXr2ckpenFySVMDyOPSRfMCIJw4UQUvvNyA89gt0cpvjqTsqRPWE9Z8E4fOFgRWUTxmAZ6XjriyMPoIapmiTN6Eq_WNm9auGrDk0qOfb6v6Px5FmCInLrXQN3Yi4WbIOxmxCmK7_H5GZpBRmiQzKZgg3VERhUTOkbiA2gdJ1U0tcfY1_9Xh1RsdkSLvbj5cyrGaEEK6-eiJLJAwqL6ifJIKtITow8nmYJ75wh06DFhYElwlealrA'
+    }
+    axios.get(url, {headers})
+      .then(response => {
+        this.setState({ transaksiSembakoCount: response.data.data.length })
+        console.log(response.data.data.length)
+      })
+      .catch(error => {
+        if (error.response) {
+          if (error.response.status) {
+            window.alert(error.response.data.message)
+            // this.props.history.push("/dashboard")
+          }
+        } else {
+          console.log(error);
+        }
+      })
+  }
+  componentDidMount() {
+    this.getVerifUser()
+    this.getUnverifUser()
+    this.getTotSam()
+    this.getTrans()
+  }
   render() {
     return (
       <div>
