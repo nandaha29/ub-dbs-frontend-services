@@ -9,12 +9,18 @@ import DataPenjualanSampahPage from "./pages/data-penjualan-sampah/data-penjuala
 import AktivitasLogin from "./pages/aktivitas-login";
 import ArtikelBannerPage from "./pages/artikel-banner/artikel-banner";
 import DataBacklist from "./pages/data-backlist";
+import LoginPage from "./pages/login";
+import LupaPasswordPage from "./pages/lupa-password";
+import RegisterPage from "./pages/register/register";
 
 function App() {
   return (
     <div className="wrapper">
       <Routes>
         <Route path="/" element={<DashboardPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/lupa-password" element={<LupaPasswordPage />} />
         <Route path="/home" element={<DashboardPage />} />
         <Route path="/data-nasabah" element={<DataNasabahPage />} />
         <Route path="/riwayat-sampah" element={<RiwayatSampahPage />} />
@@ -24,6 +30,7 @@ function App() {
         <Route path="/aktifitas-login" element={<AktivitasLogin />} />
         <Route path="/artikel-banner" element={<ArtikelBannerPage />} />
         <Route path="/data-backlist" element={<DataBacklist />} />
+        {/* <Redirect from="/" to="/home" /> */}
       </Routes>
     </div>
   );
