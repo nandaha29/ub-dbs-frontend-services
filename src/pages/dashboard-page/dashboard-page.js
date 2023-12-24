@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect,Component } from "react";
+import axios from "axios";
+
 import Layout from "../../component/Layout/Layout";
 import { HiUsers } from "react-icons/hi";
 
@@ -76,6 +79,7 @@ const DashboardPage = () => {
                   <div className="float-sm-right d-flex justify-content-center">
                     <span className="align-middle">Buka • Akan tutup pada 16.00</span>
                     <button className="btn-secondary border-0 ml-2">edit</button>
+
                   </div>
                 </div>
               </div>
