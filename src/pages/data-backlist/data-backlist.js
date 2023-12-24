@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
-import TableDataNasabah from "../../component/data-nasabah/TableDataNasabah";
+import TableBacklist from "../../component/data-backlist/TableBacklist";
 
 import { HiUsers } from "react-icons/hi";
 
@@ -61,7 +61,7 @@ export default class DataBacklistPage extends Component {
             </div>
             {/* /.content-header */}
             <section className="content">
-              <TableDataNasabah />
+              <TableBacklist />
             </section>
           </div>
         </Layout>

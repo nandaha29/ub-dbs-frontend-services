@@ -9,28 +9,27 @@ import "datatables.net-buttons/js/buttons.flash.js";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
 
 const names = [
   {
-    id_nasabah: 10010,
-    name_nasabah: "Harry hehe",
-    no_telp: "081234567893",
-    age: 28,
-    address_nasabah: "Software Developer",
+    waktu_mendaftar: "10/11/2004",
+    name_nasabah: "Harry Bobo",
+    no_telp: "08123334902",
+    address_nasabah: "Perumahan A",
   },
   {
-    id_nasabah: 10010,
+    waktu_mendaftar: "07/10/2007",
     name_nasabah: "Harry Styles",
-    no_telp: "081234567893",
-    age: 28,
-    address_nasabah: "Software Developer",
+    no_telp: "082133442920",
+    address_nasabah: "Perumahan B",
   },
   {
-    id_nasabah: 10010,
-    name_nasabah: "Harry haha",
-    no_telp: "081234567893",
-    age: 28,
-    address_nasabah: "Software Developer",
+    waktu_mendaftar: "05/07/2009",
+    name_nasabah: "Harry Harra",
+    no_telp: "085155280972",
+    address_nasabah: "Perumahan C",
   },
 ];
 
@@ -39,16 +38,31 @@ class TableVerifikasiNasabah extends Component {
     super();
     this.state = {
       data_nasabah: [],
-      id_nasabah: "",
+      waktu_mendaftar: "",
       name_nasabah: "",
       no_telp: 0,
-      age: 0,
       address_nasabah: "",
       action: "",
     };
   }
+
+  handleDelete = (index) => {
+    // Show confirmation dialog
+    const isConfirmed = window.confirm(
+      "Apakah kamu yakin ingin mengubah status akun ini menjadi blacklist?"
+    );
+
+    if (isConfirmed) {
+      const updatedDataNasabah = [...this.state.data_nasabah];
+      updatedDataNasabah.splice(index, 1);
+      this.setState({ data_nasabah: updatedDataNasabah });
+      toastr.success("Data berhasil di blacklist!", "");
+    }
+  };
+
   // component didmount
   componentDidMount() {
+    this.setState({ data_nasabah: names });
     if (!$.fn.DataTable.isDataTable("#myTable")) {
       $(document).ready(function () {
         setTimeout(function () {
@@ -84,7 +98,12 @@ class TableVerifikasiNasabah extends Component {
               // },
             ],
 
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (
+              nRow,
+              aData,
+              iDisplayIndex,
+              iDisplayIndexFull
+            ) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -110,24 +129,25 @@ class TableVerifikasiNasabah extends Component {
 
   showTable = () => {
     try {
-      return names.map((item, index) => {
+      return this.state.data_nasabah.map((item, index) => {
         return (
-          <tr>
-            <td className="mt-1 mx-2">{index + 1}</td>
-            <td className="mt-1 mx-2">{item.id_nasabah}</td>
-            {/* <td className="text-xs font-weight-bold">{item.firstname + " " + item.lastname}</td> */}
-            <td className="mt-1 mx-2">{item.name_nasabah}</td>
-            <td className="mt-1 mx-2">{item.no_telp}</td>
-            <td className="mt-1 mx-2">{item.address_nasabah}</td>
+          <tr key={index}>
+            <td className="mt-1 text-center">{index + 1}</td>
+            <td className="mt-1 text-center">{item.waktu_mendaftar}</td>
+            <td className="mt-1 text-center">{item.name_nasabah}</td>
+            <td className="mt-1 text-center">{item.no_telp}</td>
+            <td className="mt-1 text-center">{item.address_nasabah}</td>
             <td className="d-flex justify-content-center">
               {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_liat_data_nasabah">
-                Lihat
+              <button className="btn btn-primary btn-sm mt-1 mx-2">
+                Proses
               </button>
-              <button className="btn btn-success btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_tiwayat_transaksi">
-                Riwayat
+              <button
+                className="btn btn-dark btn-sm mt-1 mx-2"
+                onClick={() => this.handleDelete(index)}
+              >
+                Blacklist
               </button>
-              <button className="btn btn-warning btn-sm mt-1 mx-2">Edit</button>
               {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
             </td>
           </tr>
@@ -143,15 +163,28 @@ class TableVerifikasiNasabah extends Component {
       <>
         <div class="container-fluid">
           <div class="table-responsive p-0 pb-2">
-            <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
+            <table
+              id="table"
+              className="table align-items-center justify-content-center mb-0 table-striped"
+            >
               <thead>
                 <tr>
-                  <th className="text-uppercase  text-sm ">#</th>
-                  <th className="text-uppercase  text-sm ">ID Nasabah</th>
-                  <th className="text-uppercase  text-sm ">Nama Nasabah</th>
-                  <th className="text-uppercase  text-sm ">No. Telepon</th>
-                  <th className="text-uppercase  text-sm ">Alamat</th>
-                  <th className="text-uppercase  text-sm ">Action</th>
+                  <th className="text-uppercase  text-sm text-center">#</th>
+                  <th className="text-uppercase  text-sm text-center">
+                    Waktu Mendaftar
+                  </th>
+                  <th className="text-uppercase  text-sm text-center">
+                    Nama Nasabah
+                  </th>
+                  <th className="text-uppercase  text-sm text-center">
+                    No. Telepon
+                  </th>
+                  <th className="text-uppercase  text-sm text-center">
+                    Alamat
+                  </th>
+                  <th className="text-uppercase  text-sm text-center">
+                    Action
+                  </th>
                 </tr>
               </thead>
 
@@ -160,7 +193,15 @@ class TableVerifikasiNasabah extends Component {
           </div>
         </div>
         {/* MODAL LIHAT DATA NASABAH SECTION */}
-        <div class="modal fade" id="modal_liat_data_nasabah" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="modal_liat_data_nasabah"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header ">
@@ -168,7 +209,12 @@ class TableVerifikasiNasabah extends Component {
                   <i className="fas fa-chart-pie mr-1" />
                   Detail Nasabah
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -184,13 +230,21 @@ class TableVerifikasiNasabah extends Component {
                   <div class="form-group row ">
                     <label class="col-sm-5 col-form-label">ID Nasabah</label>
                     <div class="col-sm-7 ">
-                      <input type="text" className="form-control mb-2" value={this.state.id_nasabah}></input>
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        value={this.state.id_nasabah}
+                      ></input>
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-sm-5 col-form-label">Nama</label>
                     <div class="col-sm-7">
-                      <input type="number" className="form-control mb-2" value={this.state.name_nasabah} />
+                      <input
+                        type="number"
+                        className="form-control mb-2"
+                        value={this.state.name_nasabah}
+                      />
                       {/* <p>10-01-2023 13:14</p> */}
                     </div>
                   </div>
@@ -199,7 +253,11 @@ class TableVerifikasiNasabah extends Component {
                       No Telepon
                     </label>
                     <div class="col-sm-7">
-                      <input type="number" className="form-control mb-2" value={this.state.no_telp} />
+                      <input
+                        type="number"
+                        className="form-control mb-2"
+                        value={this.state.no_telp}
+                      />
                       {/* <p>0847-242-983-191</p> */}
                     </div>
                   </div>
@@ -208,7 +266,12 @@ class TableVerifikasiNasabah extends Component {
                       Age
                     </label>
                     <div class="col-sm-7">
-                      <input type="number" class="form-control" className="form-control mb-2" value={this.state.age} />
+                      <input
+                        type="number"
+                        class="form-control"
+                        className="form-control mb-2"
+                        value={this.state.age}
+                      />
                       {/* <p>0847-242-983-191</p> */}
                     </div>
                   </div>
@@ -217,7 +280,11 @@ class TableVerifikasiNasabah extends Component {
                       Alamat Nasabah
                     </label>
                     <div class="col-sm-7">
-                      <input type="text" className="form-control mb-2" value={this.state.address_nasabah} />
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        value={this.state.address_nasabah}
+                      />
                       {/* <p>Jl. Raya Bukan Gg. III No. 17a. Dinoyo, Malang</p> */}
                     </div>
                   </div>
@@ -234,14 +301,27 @@ class TableVerifikasiNasabah extends Component {
           </div>
         </div>
         {/* MODAL rIWAYAT NASABAH SECTION */}
-        <div class="modal fade" id="modal_tiwayat_transaksi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="modal_tiwayat_transaksi"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header ">
                 <h5 class="modal-title" id="staticBackdropLabel">
                   Riwayat Transaksi Nasabah
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>

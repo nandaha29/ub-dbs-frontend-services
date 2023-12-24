@@ -9,6 +9,8 @@ import "datatables.net-buttons/js/buttons.flash.js";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
 
 const names = [
   {
@@ -126,16 +128,16 @@ class TableDataNasabah extends Component {
 
         // Close the modal after 500 milliseconds (adjust the time as needed)
         await new Promise((resolve) => setTimeout(resolve, 500));
-
+        toastr.success("Data berhasil dihapus!", "");
         this.setState({
           data_nasabah: newData,
           isModalOpen: false,
           showAlert: true,
           alertType: "success",
-          alertMessage: "Data nasabah berhasil dihapus.",
         });
       } catch (error) {
         console.error("Error deleting nasabah:", error);
+        toastr.error("Data Gagal Dihapus!", "Silahkan Coba lagi ");
         this.setState({
           showAlert: true,
           alertType: "danger",
