@@ -81,7 +81,7 @@ class Sidebar extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="/kelsembako" className="nav-link">
+                      <a href="/kelola-sembako" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Kelola Sembako</p>
                       </a>

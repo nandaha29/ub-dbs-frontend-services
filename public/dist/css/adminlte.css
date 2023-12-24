@@ -47015,6 +47015,11 @@ blockquote.quote-gray-dark h6 {
   color: #fff !important;
 }
 
+.bg-grey {
+  background-color: #f1f1;
+  color: #1f2d3d !important;
+}
+
 .bg-white {
   background-color: #fff;
   color: #1f2d3d !important;
@@ -53009,4 +53014,12 @@ a.text-muted:hover {
 .dark-mode .border-dark {
   border-color: #4b545c !important;
 }
+
+.btn-group .btn.active {
+  background-color: blue;
+  color: white;
+}
+
+
+
 /*# sourceMappingURL=adminlte.css.map */
