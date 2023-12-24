@@ -192,7 +192,20 @@ class TableKelolaSampah extends Component {
             <td className="mt-1 mx-2">{item.name_sembako}</td>
             <td className="mt-1 mx-2">{item.poin_sembako}</td>
             <td className="mt-1 mx-2">{item.stok_sembako}</td>
-            <td className="mt-1 mx-2 text-center-algin">{item.status}</td>
+            <td>
+              <button
+                className={`mt-1 mx-2 text-center ${
+                  item.status === "Aktif"
+                    ? "btn btn-success btn-sm pl-5 pr-5 text-center"
+                    : item.status === "Diarsipkan"
+                    ? "btn btn-secondary btn-sm pl-4 pr-4 text-center"
+                    : ""
+                }`}
+                style={{ pointerEvents: "none" }}
+              >
+                {item.status}
+              </button>
+            </td>
             <td className="d-flex justify-content-center">
               {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
               <button
@@ -403,18 +416,34 @@ class TableKelolaSampah extends Component {
             >
               <thead>
                 <tr>
-                  <th className="text-uppercase  text-sm ">#</th>
-                  <th className="text-uppercase  text-sm ">ID Sembako</th>
-                  <th className="text-uppercase  text-sm ">Foto</th>
-                  <th className="text-uppercase  text-sm ">Nama Sembako</th>
-                  <th className="text-uppercase  text-sm ">Poin per 0,5 kg</th>
-                  <th className="text-uppercase  text-sm ">Stok</th>
-                  <th className="text-uppercase  text-sm ">Status</th>
-                  <th className="text-uppercase  text-sm ">Action</th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    #
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    ID Sampah
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Foto
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Nama Sampah
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Poin per 0,5 kg
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Stok
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Status
+                  </th>
+                  <th className="text-uppercase  text-sm text-center">
+                    Action
+                  </th>
                 </tr>
               </thead>
 
-              <tbody>{this.showTable()}</tbody>
+              <tbody className="text-center">{this.showTable()}</tbody>
             </table>
           </div>
         </div>

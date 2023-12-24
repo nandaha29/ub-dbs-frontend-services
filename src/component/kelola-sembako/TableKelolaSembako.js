@@ -416,12 +416,24 @@ class TableKelolaSampah extends Component {
             >
               <thead>
                 <tr>
-                  <th className="text-uppercase  text-sm ">#</th>
-                  <th className="text-uppercase  text-sm ">ID Sembako</th>
-                  <th className="text-uppercase  text-sm ">Foto</th>
-                  <th className="text-uppercase  text-sm ">Nama Sembako</th>
-                  <th className="text-uppercase  text-sm ">Poin per 0,5 kg</th>
-                  <th className="text-uppercase  text-sm ">Stok</th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    #
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    ID Sembako
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Foto
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Nama Sembako
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Poin per 0,5 kg
+                  </th>
+                  <th className="text-uppercase  text-sm text-center pl-4">
+                    Stok
+                  </th>
                   <th className="text-uppercase  text-sm text-center pl-4">
                     Status
                   </th>
