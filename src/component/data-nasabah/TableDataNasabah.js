@@ -12,21 +12,21 @@ import $ from "jquery";
 
 const names = [
   {
-    id_nasabah: 10010,
+    id_nasabah: 1001011,
     name_nasabah: "Harry hehe",
     no_telp: "081234567893",
     age: 28,
     address_nasabah: "Software Developer",
   },
   {
-    id_nasabah: 10010,
+    id_nasabah: 1001022,
     name_nasabah: "Harry Styles",
     no_telp: "081234567893",
     age: 28,
     address_nasabah: "Software Developer",
   },
   {
-    id_nasabah: 10010,
+    id_nasabah: 1001033,
     name_nasabah: "Harry haha",
     no_telp: "081234567893",
     age: 28,
@@ -58,7 +58,6 @@ const sampah = [
     poin: "- 100 Poin",
   },
 ];
-
 class TableDataNasabah extends Component {
   constructor() {
     super();
@@ -74,6 +73,7 @@ class TableDataNasabah extends Component {
       Petugas: "",
       transaksi: "",
       poin: "",
+      selectedNasabah: null,
       action: "",
       activeButton: "Semua",
       showSemuaTable: true,
@@ -83,8 +83,115 @@ class TableDataNasabah extends Component {
       showInfoTable: true,
       showUbahTable: false,
       showHapusTable: false,
+      editingItemIndex: -1,
+      editingItem: {},
+      isModalOpen: false,
+      newNasabah: {
+        name_nasabah: "",
+        no_telp: "",
+        address_nasabah: "",
+      },
     };
   }
+
+  editItem = (index) => {
+    const editingItem = { ...this.state.data_nasabah[index] };
+    this.setState({
+      editingItemIndex: index,
+      editingItem, // Use the correct editingItem
+      isModalOpen: true,
+    });
+  };
+
+  handleEditInputChange = (field, value) => {
+    this.setState((prevState) => ({
+      editingItem: {
+        ...prevState.editingItem,
+        [field]: value,
+      },
+    }));
+  };
+
+  handleDeleteNasabah = async () => {
+    const { editingItem } = this.state;
+    const confirmDelete = window.confirm(
+      "Apakah Anda yakin ingin menghapus nasabah ini?"
+    );
+
+    if (confirmDelete) {
+      try {
+        const newData = this.state.data_nasabah.filter(
+          (nasabah) => nasabah.id_nasabah !== editingItem.id_nasabah
+        );
+
+        // Close the modal after 500 milliseconds (adjust the time as needed)
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        this.setState({
+          data_nasabah: newData,
+          isModalOpen: false,
+          showAlert: true,
+          alertType: "success",
+          alertMessage: "Data nasabah berhasil dihapus.",
+        });
+      } catch (error) {
+        console.error("Error deleting nasabah:", error);
+        this.setState({
+          showAlert: true,
+          alertType: "danger",
+          alertMessage: "Gagal menghapus data nasabah. Coba lagi nanti.",
+        });
+      }
+    }
+  };
+
+  handleEditNasabah = () => {
+    console.log("Editing Nasabah...");
+
+    const { editingItemIndex, editingItem, data_nasabah } = this.state;
+
+    // Validasi input (tambahkan validasi sesuai kebutuhan)
+    if (
+      !editingItem.name_nasabah ||
+      !editingItem.no_telp ||
+      !editingItem.address_nasabah
+    ) {
+      alert("Semua field harus diisi");
+      return;
+    }
+
+    console.log("Editing Nasabah Index:", editingItemIndex);
+    console.log("Editing Nasabah Data:", editingItem);
+
+    // Buat salinan array data_nasabah
+    const newData = [...data_nasabah];
+
+    // Perbarui item yang diedit dengan data yang baru
+    newData[editingItemIndex] = {
+      ...newData[editingItemIndex],
+      ...editingItem,
+    };
+
+    // Perbarui state dengan data yang baru, reset form, dan tutup modal
+    this.setState(
+      {
+        data_nasabah: newData,
+        editingItemIndex: -1,
+        editingItem: {},
+        isModalOpen: false,
+      },
+      () => {
+        console.log("Data setelah disimpan:", this.state.data_nasabah);
+      }
+    );
+  };
+
+  handleLihatNasabah = (selectedId) => {
+    const selectedNasabah = names.find(
+      (nasabah) => nasabah.id_nasabah === selectedId
+    );
+    this.setState({ selectedNasabah });
+  };
 
   lihatItem = (index) => {
     const editingItem = names[index];
@@ -95,6 +202,7 @@ class TableDataNasabah extends Component {
   };
   // component didmount
   componentDidMount() {
+    this.setState({ data_nasabah: names });
     if (!$.fn.DataTable.isDataTable("#myTable")) {
       $(document).ready(function () {
         setTimeout(function () {
@@ -209,9 +317,9 @@ class TableDataNasabah extends Component {
 
   showTable = () => {
     try {
-      return names.map((item, index) => {
+      return this.state.data_nasabah.map((item, index) => {
         return (
-          <tr>
+          <tr key={item.id_nasabah}>
             <td className="mt-1 mx-2">{index + 1}</td>
             <td className="mt-1 mx-2">{item.id_nasabah}</td>
             {/* <td className="text-xs font-weight-bold">{item.firstname + " " + item.lastname}</td> */}
@@ -224,7 +332,7 @@ class TableDataNasabah extends Component {
                 className="btn btn-primary btn-sm mt-1 mx-2"
                 data-toggle="modal"
                 data-target="#modal_liat_data_nasabah"
-                onClick={() => this.lihatItem(index)}
+                onClick={() => this.handleLihatNasabah(item.id_nasabah)}
               >
                 Lihat
               </button>
@@ -239,6 +347,7 @@ class TableDataNasabah extends Component {
                 className="btn btn-warning btn-sm mt-1 mx-2"
                 data-toggle="modal"
                 data-target="#modal_edit_nasabah"
+                onClick={() => this.editItem(index)}
               >
                 Edit
               </button>
@@ -255,8 +364,13 @@ class TableDataNasabah extends Component {
   render() {
     const { activeButton, showSemuaTable, showSampahTable, showSembakoTable } =
       this.state;
-    const { activeButtonEdit, showInfoTable, showUbahTable, showHapusTable } =
-      this.state;
+    const {
+      activeButtonEdit,
+      showInfoTable,
+      newNasabah,
+      showUbahTable,
+      showHapusTable,
+    } = this.state;
 
     return (
       <>
@@ -326,7 +440,7 @@ class TableDataNasabah extends Component {
                           </label>
                           <div class="col-sm-7 ">
                             <div type="text" className="mt-2  font-weight-bold">
-                              : 100104
+                              : {this.state.editingItem.id_nasabah}
                             </div>
                           </div>
                         </div>
@@ -334,7 +448,7 @@ class TableDataNasabah extends Component {
                           <label class="col-sm-5">Nama</label>
                           <div class="col-sm-7">
                             <div className=" font-weight-bold">
-                              : Harry Styles
+                              : {this.state.editingItem.name_nasabah}
                             </div>
                           </div>
                         </div>
@@ -347,7 +461,7 @@ class TableDataNasabah extends Component {
                           </label>
                           <div class="col-sm-7">
                             <div className="mt-2 font-weight-bold">
-                              : 085155280972
+                              : {this.state.editingItem.no_telp}
                             </div>
                           </div>
                         </div>
@@ -360,7 +474,7 @@ class TableDataNasabah extends Component {
                           </label>
                           <div class="col-sm-7">
                             <div className=" font-weight-bold mt-2">
-                              : Di kota Malang deket UB
+                              : {this.state.editingItem.address_nasabah}
                             </div>
                           </div>
                         </div>
@@ -418,6 +532,13 @@ class TableDataNasabah extends Component {
                                   className="form-control"
                                   id="namaNasabah"
                                   placeholder="Nama"
+                                  value={this.state.editingItem.name_nasabah}
+                                  onChange={(e) =>
+                                    this.handleEditInputChange(
+                                      "name_nasabah",
+                                      e.target.value
+                                    )
+                                  }
                                 />
                               </div>
                             </div>
@@ -429,6 +550,13 @@ class TableDataNasabah extends Component {
                                   className="form-control"
                                   id="noHpWa"
                                   placeholder="Nomor HP"
+                                  value={this.state.editingItem.no_telp}
+                                  onChange={(e) =>
+                                    this.handleEditInputChange(
+                                      "no_telp",
+                                      e.target.value
+                                    )
+                                  }
                                 />
                               </div>
                             </div>
@@ -440,8 +568,25 @@ class TableDataNasabah extends Component {
                                   className="form-control"
                                   id="alamat"
                                   placeholder="Alamat"
+                                  value={this.state.editingItem.address_nasabah}
+                                  onChange={(e) =>
+                                    this.handleEditInputChange(
+                                      "address_nasabah",
+                                      e.target.value
+                                    )
+                                  }
                                 />
                               </div>
+                            </div>
+                            <div className="modal-footer float-sm-right">
+                              <button
+                                type="button"
+                                className="btn btn-primary "
+                                data-dismiss="modal"
+                                onClick={this.handleEditNasabah}
+                              >
+                                Simpan
+                              </button>
                             </div>
                           </div>
                         )}
@@ -490,6 +635,7 @@ class TableDataNasabah extends Component {
                                     className="text-left btn bg-red text-white text-md my-3"
                                     data-dismiss="modal"
                                     aria-label="Close"
+                                    onClick={this.handleDeleteNasabah}
                                   >
                                     <span
                                       className=" px-2 py-2 font-weight-semibold"
@@ -528,75 +674,76 @@ class TableDataNasabah extends Component {
                   <i className="fas fa-chart-pie mr-1" />
                   Detail Nasabah
                 </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
               <div class="modal-body justify-content-center">
                 {/* <h5 className="m-3">Profil Nasabah</h5> */}
-                <div className="text-center">
+                <div className="modal-image d-flex justify-content-center">
+                  {/* <img src={logo} alt="Logo" className="brand-image " /> */}
+                  {/* MAKE A LINGKARAN FOR IMAGE */}
                   <img
-                    src="dist/img/user2-160x160.jpg"
+                    src="dist/img/avatar5.png"
                     className="img-circle elevation-2"
                     alt="User Image"
                   />
                 </div>
                 <form className="m-5">
-                  <div class="form-group row ">
-                    <label class="col-sm-5 col-form-label">ID Nasabah</label>
-                    <div class="col-sm-7 ">
-                      <div type="text" className="mt-2  font-weight-bold">
-                        : 100104
+                  {this.state.selectedNasabah && (
+                    <>
+                      <div class="form-group row ">
+                        <label class="col-sm-5 col-form-label">
+                          ID Nasabah
+                        </label>
+                        <div class="col-sm-7 ">
+                          <div type="text" className="mt-2  font-weight-bold">
+                            : {this.state.selectedNasabah.id_nasabah}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-5">Nama</label>
-                    <div class="col-sm-7">
-                      <div className=" font-weight-bold">: Harry Styles</div>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
-                      No HP / WA
-                    </label>
-                    <div class="col-sm-7">
-                      <div className="mt-2 font-weight-bold">
-                        : 085155280972
+                      <div class="form-group row">
+                        <label class="col-sm-5">Nama</label>
+                        <div class="col-sm-7">
+                          <div className=" font-weight-bold">
+                            : {this.state.selectedNasabah.name_nasabah}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Verifikator
-                    </label>
-                    <div class="col-sm-7">
-                      <div className="mt-2 font-weight-bold">
-                        : Mimi Kapaldi
+                      <div class="form-group row">
+                        <label
+                          for="inputPassword"
+                          class="col-sm-5 col-form-label"
+                        >
+                          No HP / WA
+                        </label>
+                        <div class="col-sm-7">
+                          <div className="mt-2 font-weight-bold">
+                            : {this.state.selectedNasabah.no_telp}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Tanggal Verifikasi
-                    </label>
-                    <div class="col-sm-7">
-                      <div className=" font-weight-bold mt-2">
-                        : Di kota Malang deket UB
+                      <div class="form-group row">
+                        <label
+                          for="inputPassword"
+                          class="col-sm-5 col-form-label"
+                        >
+                          Alamat Nasabah
+                        </label>
+                        <div class="col-sm-7">
+                          <div className=" font-weight-bold mt-2">
+                            : {this.state.selectedNasabah.address_nasabah}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </form>
-                <div className="text-left]">
-                  <button
-                    type="button"
-                    className="text-left btn"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span className="text-gray px-2 py-2" aria-hidden="true">
-                      Tutup
-                    </span>
-                  </button>
-                </div>
-
                 {/* </div> */}
               </div>
 
