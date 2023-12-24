@@ -55,10 +55,13 @@ export default class KelolaSembakoPage extends Component {
                       </li>
                     </ol>
                   </div>
+
                   {/* /.col */}
                 </div>
+
                 {/* /.row */}
               </div>
+
               {/* /.container-fluid */}
             </div>
             {/* /.content-header */}

@@ -12,24 +12,24 @@ import $, { noConflict } from "jquery";
 
 const names = [
   {
-    id_sembako: 10010,
-    foto_sembako: "foto_saya.jpg",
+    id_sembako: 100102,
+    foto_sembako: "Beras ABC.jpg",
     name_sembako: "Beras lalapan",
     poin_sembako: 230,
     stok_sembako: 5,
     status: "Aktif",
   },
   {
-    id_sembako: 10010,
-    foto_sembako: "foto_saya.jpg",
+    id_sembako: 100103,
+    foto_sembako: "Kangkung Jokowi.jpg",
     name_sembako: "Beras Sidoarjo",
     poin_sembako: 230,
     stok_sembako: 5,
     status: "Diarsipkan",
   },
   {
-    id_sembako: 10010,
-    foto_sembako: "foto_saya.jpg",
+    id_sembako: 100101,
+    foto_sembako: "Sepatu Prabowo.jpg",
     name_sembako: "Beras Padang",
     poin_sembako: 230,
     stok_sembako: 5,
@@ -47,38 +47,127 @@ class TableKelolaSampah extends Component {
       name_sembako: "",
       poin_sembako: 0,
       stok_sembako: 0,
-      status: 0,
+      status: "",
       action: "",
       editingItemIndex: -1,
       editingItem: {},
       isModalOpen: false,
+      dataAdded: false,
+      statusOptions: ["Aktif", "Diarsipkan"],
     };
   }
+
+  //TAMBAH SEMBAKO
+  handleTambahSembako = () => {
+    const {
+      data_nasabah,
+      id_sembako,
+      foto_sembako,
+      name_sembako,
+      poin_sembako,
+      stok_sembako,
+      status,
+    } = this.state;
+
+    // Validasi input
+    if (
+      !id_sembako ||
+      !name_sembako ||
+      !poin_sembako ||
+      !stok_sembako ||
+      !status
+    ) {
+      alert("Semua field harus diisi");
+      return;
+    }
+
+    // Buat objek sembako baru
+    const newSembako = {
+      id_sembako,
+      name_sembako,
+      poin_sembako,
+      stok_sembako,
+      status,
+      foto_sembako: this.state.editingItem.foto_sembako,
+    };
+
+    // Tambahkan sembako baru ke array data_nasabah
+    const newData = [...data_nasabah, newSembako];
+
+    // Perbarui state dengan data yang baru dan cetak hasil
+    this.setState(
+      {
+        data_nasabah: newData,
+        id_sembako: "",
+        name_sembako: "",
+        poin_sembako: 0,
+        stok_sembako: 0,
+        status: "",
+        dataAdded: true,
+        editingItem: {},
+        selectedImage: null,
+      },
+      () => {
+        console.log("Data setelah disimpan:", this.state.data_nasabah);
+      }
+    );
+    this.clearFields();
+    this.closeModal();
+  };
+
+  clearFields = () => {
+    this.setState({
+      id_sembako: "",
+      foto_sembako: "",
+      name_sembako: "",
+      poin_sembako: 0,
+      stok_sembako: 0,
+      status: "",
+      editingItem: {},
+      selectedImage: null,
+    });
+  };
+
   //edit
   editItem = (index) => {
-    const editingItem = names[index];
+    const editingItem = { ...this.state.data_nasabah[index] };
     this.setState({
       editingItemIndex: index,
-      editingItem: { ...editingItem },
+      editingItem,
       isModalOpen: true,
+    });
+  };
+
+  // Hapus
+  handleDelete = (index) => {
+    const { data_nasabah } = this.state;
+    // Buat salinan array data_nasabah
+    const newData = [...data_nasabah];
+    // Hapus baris dengan index tertentu
+    newData.splice(index, 1);
+    // Renew state dengan data yang baru
+    this.setState({
+      data_nasabah: newData,
     });
   };
 
   //Status
   toggleStatus = (index) => {
-    const newData = [...this.state.data_nasabah];
-    const newStatus =
-      newData[index].status === "Aktif" ? "Diarsipkan" : "Aktif";
-    newData[index].status = newStatus;
-    this.setState({ data_nasabah: newData });
+    const newData = [...this.state.data_nasabah]; // membuat salinan array data
+    const currentItem = newData[index]; // mengambil item dengan indeks tertentu
+
+    // Mengubah nilai status berdasarkan kondisi
+    currentItem.status =
+      currentItem.status === "Aktif" ? "Diarsipkan" : "Aktif";
+
+    // Memperbarui state dengan data yang telah diubah
+    this.setState({ data: newData });
   };
 
   //close modal
   closeModal = () => {
     this.setState({
-      editingItemIndex: -1,
-      editingItem: {},
-      isModalOpen: false, // Set modal visibility to false
+      isModalOpen: false,
     });
   };
 
@@ -88,32 +177,69 @@ class TableKelolaSampah extends Component {
     if (file && file.type === "image/png") {
       const reader = new FileReader();
       reader.onloadend = () => {
-        this.setState({
+        this.setState((prevState) => ({
+          editingItem: {
+            ...prevState.editingItem,
+            foto_sembako: reader.result.split(",")[1], // Mengambil bagian setelah koma
+          },
           selectedImage: reader.result,
-        });
+        }));
+      };
+      reader.readAsDataURL(file);
+      this.setState((prevState) => ({
+        editingItem: {
+          ...prevState.editingItem,
+          foto_sembako: reader.result,
+        },
+      }));
+    }
+  };
+
+  handleImageUploadADD = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "image/png") {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        this.setState((prevState) => ({
+          selectedImage: reader.result,
+          editingItem: {
+            ...prevState.editingItem,
+            foto_sembako: reader.result,
+          },
+        }));
       };
       reader.readAsDataURL(file);
     }
   };
+
   //save
   saveChanges = () => {
     const { editingItemIndex, editingItem, data_nasabah } = this.state;
-    const newData = data_nasabah.slice(); // Membuat salinan array data_nasabah
-    newData[editingItemIndex] = { ...editingItem }; // Mengganti data item yang diedit dengan data yang baru
 
-    this.setState({
-      data_nasabah: newData,
-      editingItemIndex: -1,
-      editingItem: {},
-    });
+    // Buat salinan array data_nasabah
+    const newData = [...data_nasabah];
 
-    // Menutup modal secara manual
-    $("#modal_return_whitelist").modal("hide");
-    this.closeModal();
+    // Perbarui item yang diedit dengan data yang baru
+    newData[editingItemIndex] = { ...editingItem };
+
+    // Perbarui state dengan data yang baru dan tutup modal
+    this.setState(
+      {
+        data_nasabah: newData,
+        editingItemIndex: -1,
+        editingItem: {},
+        isModalOpen: false,
+        selectedImage: null,
+      },
+      () => {
+        console.log("Data setelah disimpan:", this.state.data_nasabah);
+      }
+    );
   };
 
   // component didmount
   componentDidMount() {
+    this.setState({ data_nasabah: names });
     if (!$.fn.DataTable.isDataTable("#myTable")) {
       $(document).ready(function () {
         setTimeout(function () {
@@ -181,14 +307,19 @@ class TableKelolaSampah extends Component {
 
   showTable = () => {
     try {
-      return names.map((item, index) => {
-        const { selectedImage } = this.state;
+      return this.state.data_nasabah.map((item, index) => {
         return (
           <tr key={index}>
             <td className="mt-1 mx-2">{index + 1}</td>
             <td className="mt-1 mx-2">{item.id_sembako}</td>
             {/* <td className="text-xs font-weight-bold">{item.firstname + " " + item.lastname}</td> */}
-            <td className="mt-1 mx-2">{item.foto_sembako}</td>
+            <td className="mt-1 mx-2">
+              <img
+                src={`data:image/png;base64, ${item.foto_sembako}`}
+                alt={`Foto ${item.foto_sembako}`}
+                style={{ width: "50px" }}
+              />
+            </td>
             <td className="mt-1 mx-2">{item.name_sembako}</td>
             <td className="mt-1 mx-2">{item.poin_sembako}</td>
             <td className="mt-1 mx-2">{item.stok_sembako}</td>
@@ -228,174 +359,10 @@ class TableKelolaSampah extends Component {
                 className="btn btn-danger btn-sm mt-1 mx-2"
                 data-toggle="modal"
                 data-target="#modal_hapus_akun"
+                onClick={() => this.handleDelete(index)}
               >
                 Hapus
               </button>
-              {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
-
-              <div
-                className={`modal fade ${this.state.isModalOpen ? "show" : ""}`}
-                id="modal_return_whitelist"
-                data-backdrop="static"
-                data-keyboard="false"
-                tabIndex="-1"
-                aria-labelledby="staticBackdropLabel"
-                aria-hidden="true"
-                onShow={this.openTambahItemModal}
-              >
-                <div className="modal-dialog modal-lg">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="staticBackdropLabel">
-                        Tambah Sembako
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <form>
-                        <div className="row px-5 text-md">
-                          <div className="col-md-4">
-                            <div className="form-group"></div>
-                          </div>
-                          <div className="col-md-8 pb-4">
-                            <div className="">
-                              <div className="">
-                                {selectedImage && (
-                                  <img
-                                    src={selectedImage}
-                                    alt="Preview"
-                                    style={{ width: "50%" }}
-                                  />
-                                )}
-                              </div>
-                              <input
-                                type="file"
-                                accept=".png"
-                                onChange={this.handleImageUpload}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row px-5 text-md">
-                          <div className="col-md-4">
-                            <div className="form-group">
-                              <label className="text-sm">ID Sembako:</label>
-                            </div>
-                          </div>
-                          <div className="col-md-8">
-                            <div className="form-group">
-                              <div
-                                type="text"
-                                className="form-control text-sm font-weight-bold"
-                              >
-                                {this.state.editingItem.id_sembako}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row px-5 text-md">
-                          <div className="col-md-4">
-                            <div className="form-group">
-                              <label className="text-sm">Nama Sembako:</label>
-                            </div>
-                          </div>
-                          <div className="col-md-8">
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                className="form-control text-sm font-weight-bold"
-                                value={this.state.editingItem.name_sembako}
-                                onChange={(e) =>
-                                  this.setState({
-                                    editingItem: {
-                                      ...this.state.editingItem,
-                                      name_sembako: e.target.value,
-                                    },
-                                  })
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row px-5 text-md">
-                          <div className="col-md-4">
-                            <div className="form-group ">
-                              <label className="text-sm">
-                                Harga per poin 0.5 kg (poin):
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-md-8">
-                            <div className="form-group">
-                              <input
-                                type="number"
-                                className="form-control text-sm font-weight-bold "
-                                value={this.state.editingItem.poin_sembako}
-                                onChange={(e) =>
-                                  this.setState({
-                                    editingItem: {
-                                      ...this.state.editingItem,
-                                      poin_sembako: parseInt(e.target.value),
-                                    },
-                                  })
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row px-5 text-md">
-                          <div className="col-md-4">
-                            <div className="form-group">
-                              <label className="text-sm">Stok (kg):</label>
-                            </div>
-                          </div>
-                          <div className="col-md-8">
-                            <div className="form-group">
-                              <input
-                                type="number"
-                                className="form-control text-sm font-weight-bold"
-                                value={this.state.editingItem.stok_sembako}
-                                onChange={(e) =>
-                                  this.setState({
-                                    editingItem: {
-                                      ...this.state.editingItem,
-                                      stok_sembako: parseInt(e.target.value),
-                                    },
-                                  })
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                        onClick={this.closeModal}
-                      >
-                        Batal
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={this.saveChanges}
-                      >
-                        Simpan
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </td>
           </tr>
         );
@@ -406,8 +373,18 @@ class TableKelolaSampah extends Component {
   };
 
   render() {
+    const { selectedImage } = this.state;
     return (
       <>
+        <div className="mr-4 float-sm-right">
+          <button
+            className="btn-primary btn"
+            data-toggle="modal"
+            data-target="#modal_tambah_sembako"
+          >
+            + Tambah Sembako
+          </button>
+        </div>
         <div class="container-fluid">
           <div class="table-responsive p-0 pb-2">
             <table
@@ -445,6 +422,351 @@ class TableKelolaSampah extends Component {
 
               <tbody className="text-center">{this.showTable()}</tbody>
             </table>
+            {/* MODALS EDIT */}
+            <div
+              className={`modal fade ${this.state.isModalOpen ? "show" : ""}`}
+              id="modal_return_whitelist"
+              data-backdrop="static"
+              data-keyboard="false"
+              tabIndex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+              onShow={this.openTambahItemModal}
+            >
+              <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="staticBackdropLabel">
+                      Tambah Sembako
+                    </h5>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <form>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group"></div>
+                        </div>
+                        <div className="col-md-8 pb-4">
+                          <div className="">
+                            <div className="">
+                              {selectedImage && (
+                                <img
+                                  src={selectedImage}
+                                  alt="Preview"
+                                  style={{ width: "50%" }}
+                                />
+                              )}
+                            </div>
+                            <input
+                              type="file"
+                              accept=".png"
+                              onChange={this.handleImageUpload}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">ID Sembako:</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <div
+                              type="text"
+                              className="form-control text-left text-sm font-weight-bold"
+                            >
+                              {this.state.editingItem.id_sembako}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">Nama Sembako:</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              className="form-control text-sm font-weight-bold"
+                              value={this.state.editingItem.name_sembako}
+                              onChange={(e) =>
+                                this.setState({
+                                  editingItem: {
+                                    ...this.state.editingItem,
+                                    name_sembako: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group ">
+                            <label className="text-sm">
+                              Harga per poin 0.5 kg (poin):
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="number"
+                              className="form-control text-sm font-weight-bold "
+                              value={this.state.editingItem.poin_sembako}
+                              onChange={(e) =>
+                                this.setState({
+                                  editingItem: {
+                                    ...this.state.editingItem,
+                                    poin_sembako: parseInt(e.target.value),
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">Stok (kg):</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="number"
+                              className="form-control text-sm font-weight-bold"
+                              value={this.state.editingItem.stok_sembako}
+                              onChange={(e) =>
+                                this.setState({
+                                  editingItem: {
+                                    ...this.state.editingItem,
+                                    stok_sembako: parseInt(e.target.value),
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                      onClick={this.closeModal}
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-dismiss="modal"
+                      onClick={this.saveChanges}
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* END OF MODALSEDIT */}
+            {/* MODALS TAMBAH*/}
+            <div
+              className={`modal fade ${this.state.isModalOpen ? "show" : ""}`}
+              id="modal_tambah_sembako"
+              data-backdrop="static"
+              data-keyboard="false"
+              tabIndex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+              onShow={this.openTambahItemModal}
+            >
+              <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="staticBackdropLabel">
+                      Tambah Sembako
+                    </h5>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <form>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group"></div>
+                        </div>
+                        <div className="col-md-8 pb-4">
+                          <div className="">
+                            <div className="">
+                              {selectedImage && (
+                                <img
+                                  src={selectedImage}
+                                  alt="Preview"
+                                  style={{ width: "50%" }}
+                                />
+                              )}
+                            </div>
+                            <input
+                              type="file"
+                              accept=".png"
+                              onChange={this.handleImageUpload}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">ID Sembako:</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              className="form-control text-sm font-weight-bold"
+                              value={this.state.id_sembako}
+                              onChange={(e) =>
+                                this.setState({ id_sembako: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">Nama Sembako:</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              className="form-control text-sm font-weight-bold"
+                              value={this.state.name_sembako}
+                              onChange={(e) =>
+                                this.setState({ name_sembako: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">Status:</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="text"
+                              className="form-control text-sm font-weight-bold"
+                              value={this.state.status}
+                              onChange={(e) =>
+                                this.setState({ status: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group ">
+                            <label className="text-sm">
+                              Harga per poin 0.5 kg (poin):
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="number"
+                              className="form-control text-sm font-weight-bold "
+                              value={this.state.poin_sembako}
+                              onChange={(e) =>
+                                this.setState({ poin_sembako: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row px-5 text-md">
+                        <div className="col-md-4">
+                          <div className="form-group">
+                            <label className="text-sm">Stok (kg):</label>
+                          </div>
+                        </div>
+                        <div className="col-md-8">
+                          <div className="form-group">
+                            <input
+                              type="number"
+                              className="form-control text-sm font-weight-bold"
+                              value={this.state.stok_sembako}
+                              onChange={(e) =>
+                                this.setState({ stok_sembako: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                      onClick={this.closeModal}
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={this.clearFields}
+                    >
+                      Refresh
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-dismiss="modal"
+                      onClick={this.handleTambahSembako}
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* END OF MODALS TAMBAH*/}
           </div>
         </div>
 

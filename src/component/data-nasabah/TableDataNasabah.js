@@ -64,6 +64,7 @@ class TableDataNasabah extends Component {
     super();
     this.state = {
       data_nasabah: [],
+<<<<<<< HEAD
       id_nasabah: "",
       name_nasabah: "",
       no_telp: 0,
@@ -74,6 +75,14 @@ class TableDataNasabah extends Component {
       Petugas: "",
       transaksi: "",
       poin: "",
+=======
+      id_nasabah: "100104",
+      name_nasabah: "Harry Styles",
+      no_telp: "089765724537",
+      verifikator: "Mimi Capaldi" ,
+      tanggal_verifikasi: "20/05/2021",
+      alamat: "Jl, Raya Bukan Gg. 12C, Jatimulyo, Blimbing, Malang ",
+>>>>>>> 2088c8b50e57e127740dd470309d41325177072c
       action: "",
       activeButton: "Semua",
       showSemuaTable: true,
@@ -531,27 +540,42 @@ class TableDataNasabah extends Component {
               </div>
               <div class="modal-body justify-content-center">
                 {/* <h5 className="m-3">Profil Nasabah</h5> */}
+<<<<<<< HEAD
                 <div className="text-center">
                   <img
                     src="dist/img/user2-160x160.jpg"
                     className="img-circle elevation-2"
                     alt="User Image"
                   />
+=======
+                <div className="modal-image d-flex justify-content-center">
+                  {/* <img src={logo} alt="Logo" className="brand-image " /> */}
+                  {/* MAKE A LINGKARAN FOR IMAGE */}
+                  <img src="dist/img/avatar5.png" className="img-circle elevation-2" alt="User Image" />
+>>>>>>> 2088c8b50e57e127740dd470309d41325177072c
                 </div>
-
                 <form className="m-5">
                   <div class="form-group row ">
                     <label class="col-sm-5 col-form-label">ID Nasabah</label>
                     <div class="col-sm-7 ">
+<<<<<<< HEAD
                       <div type="text" className="mt-2  font-weight-bold">
                         : 100104
                       </div>
+=======
+                      <input type="text" readonly class="form-control-plaintext" className="form-control mb-2" value={this.state.id_nasabah}></input>
+>>>>>>> 2088c8b50e57e127740dd470309d41325177072c
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-sm-5">Nama</label>
                     <div class="col-sm-7">
+<<<<<<< HEAD
                       <div className=" font-weight-bold">: Harry Styles</div>
+=======
+                      <input type="text" className="form-control mb-2" value={this.state.name_nasabah} />
+                      {/* <p>10-01-2023 13:14</p> */}
+>>>>>>> 2088c8b50e57e127740dd470309d41325177072c
                     </div>
                   </div>
                   <div class="form-group row">
@@ -569,19 +593,38 @@ class TableDataNasabah extends Component {
                       Verifikator
                     </label>
                     <div class="col-sm-7">
+<<<<<<< HEAD
                       <div className="mt-2 font-weight-bold">
                         : Mimi Kapaldi
                       </div>
+=======
+                      <input type="text" class="form-control" className="form-control mb-2" value={this.state.verifikator} />
+                      {/* <p>0847-242-983-191</p> */}
+>>>>>>> 2088c8b50e57e127740dd470309d41325177072c
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Alamat Nasabah
+                      Tanggal Verifikasi
                     </label>
                     <div class="col-sm-7">
+<<<<<<< HEAD
                       <div className=" font-weight-bold mt-2">
                         : Di kota Malang deket UB
                       </div>
+=======
+                      <input type="text" className="form-control mb-2" value={this.state.tanggal_verifikasi} />
+                      {/* <p>Jl. Raya Bukan Gg. III No. 17a. Dinoyo, Malang</p> */}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-5 col-form-label">
+                      Alamat
+                    </label>
+                    <div class="col-sm-7">
+                      <input type="text" className="form-control mb-2" value={this.state.alamat} />
+                      {/* <p>Jl. Raya Bukan Gg. III No. 17a. Dinoyo, Malang</p> */}
+>>>>>>> 2088c8b50e57e127740dd470309d41325177072c
                     </div>
                   </div>
                 </form>
