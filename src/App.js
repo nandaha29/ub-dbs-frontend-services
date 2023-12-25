@@ -10,6 +10,7 @@ import VerifikasiNasabahPage from "./pages/verifikasi-nasabah/verifikasi-nasabah
 import DataPenjualanSampahPage from "./pages/data-penjualan-sampah/data-penjualan-sampah";
 import AktivitasLogin from "./pages/aktivitas-login";
 import ArtikelBannerPage from "./pages/artikel-banner/artikel-banner";
+import PengaturanLokasi from "./pages/pengaturan-lokasi/pengaturan-lokasi";
 import DataBacklist from "./pages/data-backlist";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/riwsembako" element={<RiwayatSembakoPage />} />
         <Route path="/kelola-sampah" element={<KelolaSampahPage />} />
         <Route path="/kelola-sembako" element={<KelolaSembakoPage />} />
+        <Route path="/aturlokasi" element={<PengaturanLokasi />} />
         <Route path="/verifikasi-nasabah" element={<VerifikasiNasabahPage />} />
         <Route
           path="/data-penjualan-sampah"
