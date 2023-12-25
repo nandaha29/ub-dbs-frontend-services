@@ -8,26 +8,53 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
 const DashboardPage = () => {
-  // const [adminName, setAdminName] = useState("Agung");
-  const [nasabahCount, setNasabahCount] = useState(852);
-  const [totalSampahCount, setTotalSampahCount] = useState(852);
-  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(852);
-  const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(29);
+  const [nasabahCount, setNasabahCount] = useState(0);
+  const [totalSampahCount, setTotalSampahCount] = useState(0);
+  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(0);
+  const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(0);
   const [authUser, setAuthUser] = useState(null);
 
-  const [tes, setTes] = useState("");
+  const [tes, setTes] = useState([]);
 
-  const getNasabahAktif = async (e) => {
-    // const headers = {
-    //   accept: "application/json",
-    //   Authorization: tes,
-    // };
+  const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${tes}` };
-    // e.preventDefault();
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
-      setNasabahCount(response.data);
-      console.log(nasabahCount);
+      setNasabahCount(response.data.data.length);
+      console.log(response.data.data.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getTotalSampahBulanIni = async () => {
+    const headers = { Authorization: `Bearer ${tes}` };
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
+      setTotalSampahCount(response.data.length);
+      console.log(response.data.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getNasabahPerluVerifikasi = async () => {
+    const headers = { Authorization: `Bearer ${tes}` };
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0", { headers });
+      setNasabahPerluVerifikasiCount(response.data.data.length);
+      console.log(response.data.data.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getTransaksiSembako = async () => {
+    const headers = { Authorization: `Bearer ${tes}` };
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
+      setTransaksiSembakoCount(response.data.data.length);
+      console.log(response.data.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -38,10 +65,13 @@ const DashboardPage = () => {
       if (user) {
         setAuthUser(user);
         setTes(user.accessToken);
-        console.log(tes);
-        console.log("login berhasil");
-        console.log(user);
+        // console.log(tes);
+        // console.log("login berhasil");
+        // console.log(user);
         getNasabahAktif();
+        getTotalSampahBulanIni();
+        getNasabahPerluVerifikasi();
+        getTransaksiSembako();
       } else {
         setAuthUser(null);
       }
