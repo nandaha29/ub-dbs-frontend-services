@@ -12,27 +12,27 @@ import { auth } from "../../../config/firebase";
 import { error } from "jquery";
 
 const Sidebar = () => {
-  const [authUser, setAuthUser] = useState(null);
-  useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthUser(user);
-      } else {
-        setAuthUser(null);
-      }
-    });
-    return () => {
-      listen();
-    };
-  }, []);
+  // const [authUser, setAuthUser] = useState(null);
+  // useEffect(() => {
+  //   const listen = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setAuthUser(user);
+  //     } else {
+  //       setAuthUser(null);
+  //     }
+  //   });
+  //   return () => {
+  //     listen();
+  //   };
+  // }, []);
 
-  const userKeluarAkun = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("udah keluar akun berhasil");
-      })
-      .catch((error) => console.log(error));
-  };
+  // const userKeluarAkun = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       console.log("udah keluar akun berhasil");
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
   return (
     <div>
@@ -50,10 +50,8 @@ const Sidebar = () => {
               <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
             </div>
             <div className="info">
-              {/* <a href="#" className="d-block">
-                Agung
-              </a> */}
-              <p>
+              <p className="text-white">Agung</p>
+              {/* <p>
                 {authUser ? (
                   <>
                     <p className="text-white"> {authUser.email}</p>
@@ -61,7 +59,7 @@ const Sidebar = () => {
                 ) : (
                   <p>Keluar Akun</p>
                 )}
-              </p>
+              </p> */}
             </div>
           </div>
           {/* SidebarSearch Form */}
