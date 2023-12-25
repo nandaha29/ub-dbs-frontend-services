@@ -6,6 +6,9 @@ import { HiUsers } from "react-icons/hi";
 import { BsDatabaseFill } from "react-icons/bs";
 import { VscVerified } from "react-icons/vsc";
 import { AiOutlineSetting, AiOutlineFieldTime } from "react-icons/ai";
+import { FaBox } from "react-icons/fa";
+import { MdDeleteSweep } from "react-icons/md";
+import { IoMdSettings, IoIosInformationCircle } from "react-icons/io";
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../config/firebase";
@@ -77,15 +80,10 @@ const Sidebar = () => {
                 </a>
               </li>
 
+              <div class="dropdown-divider"></div>
+
               <li className="nav-header ">KELOLA DATABASE</li>
-              <li className="nav-item">
-                <a href="/data-nasabah" className="nav-link">
-                  <i className="nav-icon mr-2">
-                    <HiUsers />
-                  </i>
-                  <p>Data Nasabah</p>
-                </a>
-              </li>
+
               {/* <li className="nav-item">
                 <a href="#" className="nav-link">
                   <i className="nav-icon mr-2">
@@ -143,13 +141,17 @@ const Sidebar = () => {
               <li className="nav-header ">DATA SEMBAKO</li>
               <li className="nav-item">
                 <a href="/kelola-sembako" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
+                  <i className="nav-icon mr-2">
+                    <FaBox />
+                  </i>
                   <p>Kelola Sembako</p>
                 </a>
               </li>
               <li className="nav-item">
                 <a href="/riwsembako" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
+                  <i className="nav-icon mr-2">
+                    <FaBox />
+                  </i>
                   <p>Riwayat Sembako</p>
                 </a>
               </li>
@@ -159,13 +161,18 @@ const Sidebar = () => {
               <li className="nav-header ">DATA SAMPAH</li>
               <li className="nav-item">
                 <a href="/kelola-sampah" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
+                  {/* <i className="far fa-circle nav-icon" /> */}
+                  <i className="nav-icon mr-2">
+                    <MdDeleteSweep />
+                  </i>
                   <p>Kelola Sampah</p>
                 </a>
               </li>
               <li className="nav-item">
                 <a href="/riwayat-sampah" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
+                  <i className="nav-icon mr-2">
+                    <MdDeleteSweep />
+                  </i>
                   <p>Riwayat Sampah</p>
                 </a>
               </li>
@@ -187,7 +194,7 @@ const Sidebar = () => {
               <li className="nav-item">
                 <a href="/artikel-banner" className="nav-link">
                   <i className="nav-icon mr-2">
-                    <BsInfoSquare />
+                    <IoIosInformationCircle />
                   </i>
                   <p>Artikel & Banner</p>
                 </a>
@@ -195,13 +202,38 @@ const Sidebar = () => {
 
               <div class="dropdown-divider"></div>
 
-              <li className="nav-header ">LAINNYA</li>
+              {/* <li className="nav-header ">LAINNYA</li>
               <li className="nav-item">
                 <a href="/verifikasi-nasabah" className="nav-link">
                   <i className="nav-icon mr-2">
                     <VscVerified />
                   </i>
                   <p>Verifikasi Nasabah</p>
+                </a>
+              </li> */}
+              <li className="nav-header ">KELOLA NASABAH</li>
+              <li className="nav-item">
+                <a href="/data-nasabah" className="nav-link">
+                  <i className="nav-icon mr-2">
+                    <HiUsers />
+                  </i>
+                  <p>Data Nasabah</p>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="/data-nasabah" className="nav-link">
+                  <i className="nav-icon mr-2">
+                    <HiUsers />
+                  </i>
+                  <p>Verifikasi Nasabah</p>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="/data-nasabah" className="nav-link">
+                  <i className="nav-icon mr-2">
+                    <HiUsers />
+                  </i>
+                  <p>Daftar Backlist</p>
                 </a>
               </li>
 
@@ -245,13 +277,17 @@ const Sidebar = () => {
 
               <li className="nav-item">
                 <a href="/aturlokasi" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
+                  <i className="nav-icon mr-2">
+                    <IoMdSettings />
+                  </i>
                   <p>Pengaturan Lokasi</p>
                 </a>
               </li>
               <li className="nav-item">
                 <a href="/aturakun" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
+                  <i className="nav-icon mr-2">
+                    <IoMdSettings />
+                  </i>
                   <p>Pengaturan Akun</p>
                 </a>
               </li>
