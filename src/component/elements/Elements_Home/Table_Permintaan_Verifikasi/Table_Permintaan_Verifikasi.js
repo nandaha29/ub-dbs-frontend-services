@@ -140,54 +140,70 @@ export default class Table_Permintaan_Verifikasi extends Component {
                 </div>
 
                 <form className="m-5">
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
+                  <div className="form-group row">
+                    <label
+                      htmlFor="inputNama"
+                      className="col-sm-5 col-form-label"
+                    >
                       Nama Pengguna
                     </label>
-                    <div class="col-sm-7">
+                    <div className="col-sm-7">
                       <input
                         type="text"
-                        class="form-control"
-                        value={selectedData.nama}
+                        className="form-control"
+                        id="inputNama"
+                        value={selectedData?.nama || ""}
                         readOnly
                       />
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
+                  <div className="form-group row">
+                    <label
+                      htmlFor="inputWaktu"
+                      className="col-sm-5 col-form-label"
+                    >
                       Waktu Request
                     </label>
-                    <div class="col-sm-7">
+                    <div className="col-sm-7">
                       <input
                         type="text"
-                        class="form-control"
-                        value={selectedData.waktu}
+                        className="form-control"
+                        id="inputWaktu"
+                        value={selectedData?.waktu || ""}
                         readOnly
                       />
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
+                  <div className="form-group row">
+                    <label
+                      htmlFor="inputNomorHP"
+                      className="col-sm-5 col-form-label"
+                    >
                       No Telepon
                     </label>
-                    <div class="col-sm-7">
+                    <div className="col-sm-7">
                       <input
                         type="text"
-                        class="form-control"
-                        value={selectedData.nomorHP}
+                        className="form-control"
+                        id="inputNomorHP"
+                        value={selectedData?.nomorHP || ""}
                         readOnly
                       />
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
+                  <div className="form-group row">
+                    <label
+                      htmlFor="inputAlamat"
+                      className="col-sm-5 col-form-label"
+                    >
                       Alamat Nasabah
                     </label>
-                    <div class="col-sm-7">
+                    <div className="col-sm-7">
                       <input
                         type="text"
-                        class="form-control"
-                        value={selectedData.alamat}
+                        className="form-control"
+                        id="inputAlamat"
+                        value={selectedData?.alamat || ""}
                         readOnly
                       />
                     </div>
@@ -208,6 +224,7 @@ export default class Table_Permintaan_Verifikasi extends Component {
                 <button
                   type="button"
                   class="btn btn-success"
+                  data-dimiss="modal"
                   onClick={this.handleSetujuiClick}
                 >
                   Setujui
