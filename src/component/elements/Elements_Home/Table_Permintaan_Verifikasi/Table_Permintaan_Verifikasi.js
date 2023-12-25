@@ -7,6 +7,7 @@ const dummyData = [
     nama: "Andi Budiono",
     status: "Pending",
     waktu: "10-01-2023 13:14",
+    alamat: "Cikarang jangan nanti",
   },
   // ...tambahkan data dummy lain jika diperlukan
 ];
@@ -19,22 +20,21 @@ export default class Table_Permintaan_Verifikasi extends Component {
       nama: "",
       status: "",
       waktu: "",
+      alamat: "",
       selectedData: null,
     };
   }
 
   handleProsesClick = (data) => {
-    // Memperbarui state selectedData saat tombol "Proses" diklik
     this.setState({ selectedData: data });
   };
 
   handleSetujuiClick = () => {
-    // Memperbarui status menjadi "Done" pada data yang diproses
     const { selectedData } = this.state;
     if (selectedData) {
       selectedData.status = "Done";
       console.log("Data setelah disetujui:", selectedData);
-      // Lakukan tindakan lain sesuai kebutuhan
+      // Perform other actions as needed
     }
   };
 
@@ -84,7 +84,11 @@ export default class Table_Permintaan_Verifikasi extends Component {
                     <td>{data.nomorHP}</td>
                     <td>{data.nama}</td>
                     <td>
-                      <button className="btn-warning border-0 disabled">
+                      <button
+                        className={`btn-warning border-0 ${
+                          data.status === "Done" ? "btn-success" : ""
+                        }`}
+                      >
                         {data.status}
                       </button>
                     </td>
@@ -216,7 +220,7 @@ export default class Table_Permintaan_Verifikasi extends Component {
                 <button
                   type="button"
                   class="btn btn-danger"
-                  data-dimiss="modal"
+                  data-dismiss="modal"
                 >
                   Tolak
                 </button>
@@ -224,7 +228,7 @@ export default class Table_Permintaan_Verifikasi extends Component {
                 <button
                   type="button"
                   class="btn btn-success"
-                  data-dimiss="modal"
+                  data-dismiss="modal"
                   onClick={this.handleSetujuiClick}
                 >
                   Setujui
