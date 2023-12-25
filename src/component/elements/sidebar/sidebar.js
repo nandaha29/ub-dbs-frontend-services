@@ -40,23 +40,17 @@ const Sidebar = () => {
         {/* Brand Logo  */}
         <a href="index3.html" className="brand-link">
           <img src={logo} alt="Logo" className="brand-image " />
-          <span className="brand-text font-weight-light">
-            Bank Sampah Delima
-          </span>
+          <span className="brand-text font-weight-light">Bank Sampah Delima</span>
         </a>
         {/* {/* Sidebar */}
         <div className="sidebar">
           {/* Sidebar user panel (optional) */}
           <div className="user-panel mt-3 mb-3 d-flex">
             <div className="image">
-              <img
-                src="dist/img/user2-160x160.jpg"
-                className="img-circle elevation-2"
-                alt="User Image"
-              />
+              <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
             </div>
             <div className="info">
-              <p className="text-white">Agung</p>
+              <p className="text-white">Admin</p>
               {/* <p>
                 {authUser ? (
                   <>
@@ -68,25 +62,9 @@ const Sidebar = () => {
               </p> */}
             </div>
           </div>
-          {/* SidebarSearch Form */}
-          {/* <div className="form-inline">
-            <div className="input-group" data-widget="sidebar-search">
-              <input className="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" />
-              <div className="input-group-append">
-                <button className="btn btn-sidebar">
-                  <i className="fas fa-search fa-fw" />
-                </button>
-              </div>
-            </div>
-          </div> */}
           {/* Sidebar Menu */}
           <nav className="mt-2">
-            <ul
-              className="nav nav-pills nav-sidebar flex-column"
-              data-widget="treeview"
-              role="menu"
-              data-accordion="false"
-            >
+            <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               {/* Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library */}
 
@@ -108,7 +86,7 @@ const Sidebar = () => {
                   <p>Data Nasabah</p>
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a href="#" className="nav-link">
                   <i className="nav-icon mr-2">
                     <BsDatabaseFill />
@@ -116,7 +94,6 @@ const Sidebar = () => {
                   <p>
                     Data Sembako
                     <i className="fas fa-angle-left right" />
-                    {/* <span className="badge badge-info right">6</span> */}
                   </p>
                 </a>
                 <ul className="nav nav-treeview">
@@ -133,8 +110,8 @@ const Sidebar = () => {
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li className="nav-item">
+              </li> */}
+              {/* <li className="nav-item">
                 <a href="#" className="nav-link">
                   <i className="nav-icon mr-2">
                     <BsDatabaseFill />
@@ -143,7 +120,6 @@ const Sidebar = () => {
                   <p>
                     Data Sampah
                     <i className="fas fa-angle-left right" />
-                    {/* <span className="badge badge-info right">6</span> */}
                   </p>
                 </a>
                 <ul className="nav nav-treeview">
@@ -160,7 +136,40 @@ const Sidebar = () => {
                     </a>
                   </li>
                 </ul>
+              </li> */}
+              {/* SEMENTARA DIKELUARIN BIAR BISA DIAKSES MA CHROME ---------------------------------------- */}
+              <div class="dropdown-divider"></div>
+
+              <li className="nav-header ">DATA SEMBAKO</li>
+              <li className="nav-item">
+                <a href="/kelola-sembako" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Kelola Sembako</p>
+                </a>
               </li>
+              <li className="nav-item">
+                <a href="/riwsembako" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Riwayat Sembako</p>
+                </a>
+              </li>
+
+              <div class="dropdown-divider"></div>
+
+              <li className="nav-header ">DATA SAMPAH</li>
+              <li className="nav-item">
+                <a href="/kelola-sampah" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Kelola Sampah</p>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="/riwayat-sampah" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Riwayat Sampah</p>
+                </a>
+              </li>
+              <div class="dropdown-divider"></div>
 
               <li className="nav-item">
                 <a href="/data-penjualan-sampah" className="nav-link">
@@ -170,6 +179,9 @@ const Sidebar = () => {
                   <p>Data Penjualan Sampah</p>
                 </a>
               </li>
+
+              <div class="dropdown-divider"></div>
+
               <li className="nav-header ">ARTIKEL & INFORMASI</li>
 
               <li className="nav-item">
@@ -181,6 +193,8 @@ const Sidebar = () => {
                 </a>
               </li>
 
+              <div class="dropdown-divider"></div>
+
               <li className="nav-header ">LAINNYA</li>
               <li className="nav-item">
                 <a href="/verifikasi-nasabah" className="nav-link">
@@ -191,7 +205,9 @@ const Sidebar = () => {
                 </a>
               </li>
 
-              <li className="nav-item">
+              <div class="dropdown-divider"></div>
+
+              {/* <li className="nav-item">
                 <a href="#" className="nav-link">
                   <i className="nav-icon mr-2">
                     <AiOutlineSetting />
@@ -199,7 +215,6 @@ const Sidebar = () => {
                   <p>
                     Pengaturan
                     <i className="fas fa-angle-left right" />
-                    {/* <span className="badge badge-info right">6</span> */}
                   </p>
                 </a>
                 <ul className="nav nav-treeview">
@@ -224,6 +239,29 @@ const Sidebar = () => {
                     </a>
                   </li>
                 </ul>
+              </li> */}
+              {/* SEMENTARA DIKELUARIN BIAR BISA DIAKSES MA CHROME ---------------------------------------- */}
+              <li className="nav-header ">PENGATURAN</li>
+
+              <li className="nav-item">
+                <a href="/aturlokasi" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Pengaturan Lokasi</p>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="/aturakun" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                  <p>Pengaturan Akun</p>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a href="/aktifitas-login" className="nav-link">
+                  <i className="nav-icon mr-2">
+                    <AiOutlineFieldTime />
+                  </i>
+                  <p>Aktivitas Login</p>
+                </a>
               </li>
             </ul>
           </nav>

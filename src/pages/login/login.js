@@ -21,6 +21,7 @@ const LoginPage = () => {
       .catch((error) => {
         console.log(error);
         toastr.error("Login gagal. Periksa kembali email dan password Anda.", "Gagal");
+        window.location = "/login";
       });
   };
   return (
@@ -57,11 +58,11 @@ const LoginPage = () => {
                         <input type="checkbox" checked="checked" />
                         <div className="control__indicator"></div>
                       </label> */}
-                      <span>
+                      {/* <span>
                         <a href="/register" className="register">
                           Register
                         </a>
-                      </span>
+                      </span> */}
                       <span className="ml-auto">
                         <a href="/lupa-password" className="forgot-pass">
                           Lupa Password
