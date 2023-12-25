@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
-import TableBacklist from "../../component/data-backlist/TableBacklist";
+import FormPengaturan from "../../component/form-penglokasi/FormPengaturan";
+import JadwalBukaTutup from "../../component/form-penglokasi/JadwalBukaTutup";
 
-import { HiUsers } from "react-icons/hi";
-
-export default class DataBacklistPage extends Component {
+export default class aturlokasi extends Component {
   constructor() {
     super();
     this.state = {
@@ -37,19 +36,16 @@ export default class DataBacklistPage extends Component {
               <div className="container-fluid">
                 <div className="row mb-2">
                   <div className="col-sm-6">
-                    <h1 className="m-0">Data Backlist Nasabah</h1>
+                    <h1 className="m-0">Pengaturan Lokasi</h1>
                   </div>
                   {/* /.col */}
                   <div className="col-sm-6">
                     <ol className="breadcrumb float-sm-right">
-                      <li className="breadcrumb-item ">
+                      <li className="breadcrumb-item">
                         <a href="/home">Home</a>
                       </li>
-                      <li className="breadcrumb-item ">
-                        <a href="/vernas">Verifikasi Nasabah</a>
-                      </li>
                       <li className="breadcrumb-item active">
-                        <a href="/data-backlist">Data Backlist</a>
+                        Artikel & Banner
                       </li>
                     </ol>
                   </div>
@@ -60,8 +56,21 @@ export default class DataBacklistPage extends Component {
               {/* /.container-fluid */}
             </div>
             {/* /.content-header */}
-            <section className="content">
-              <TableBacklist />
+            <section className="content d-flex justify-content-center gap-4 col-11 ml-4">
+              <div class="card col-5 ">
+                <h2 class="p-3 pl-5 modal-header font-weight-bold">Lokasi</h2>
+                <div class="card-body">
+                  <FormPengaturan />
+                </div>
+              </div>
+              <div class="card ml-5">
+                <h2 class="p-3 pl-5 modal-header font-weight-bold">
+                  Jadwal Buka-Tutup
+                </h2>
+                <div class="card-body">
+                  <JadwalBukaTutup />
+                </div>
+              </div>
             </section>
           </div>
         </Layout>

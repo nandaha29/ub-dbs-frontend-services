@@ -12,27 +12,27 @@ import $, { noConflict } from "jquery";
 
 const names = [
   {
-    id_Sampah: 100102,
-    foto_Sampah: "Beras ABC.jpg",
-    name_Sampah: "Sepeda Motor",
-    poin_Sampah: 999999,
-    stok_Sampah: 12,
+    id_sembako: 100102,
+    foto_sembako: "Beras ABC.jpg",
+    name_sembako: "Beras lalapan",
+    poin_sembako: 230,
+    stok_sembako: 5,
     status: "Aktif",
   },
   {
-    id_Sampah: 100103,
-    foto_Sampah: "Kangkung Jokowi.jpg",
-    name_Sampah: "Mobil",
-    poin_Sampah: 9999999,
-    stok_Sampah: 3,
+    id_sembako: 100103,
+    foto_sembako: "Kangkung Jokowi.jpg",
+    name_sembako: "Beras Sidoarjo",
+    poin_sembako: 230,
+    stok_sembako: 5,
     status: "Diarsipkan",
   },
   {
-    id_Sampah: 100101,
-    foto_Sampah: "Sepatu Prabowo.jpg",
-    name_Sampah: "Botol",
-    poin_Sampah: 230,
-    stok_Sampah: 200,
+    id_sembako: 100101,
+    foto_sembako: "Sepatu Prabowo.jpg",
+    name_sembako: "Beras Padang",
+    poin_sembako: 230,
+    stok_sembako: 5,
     status: "Aktif",
   },
 ];
@@ -42,11 +42,11 @@ class TableKelolaSampah extends Component {
     super();
     this.state = {
       data_nasabah: [],
-      id_Sampah: "",
-      foto_Sampah: "",
-      name_Sampah: "",
-      poin_Sampah: 0,
-      stok_Sampah: 0,
+      id_sembako: "",
+      foto_sembako: "",
+      name_sembako: "",
+      poin_sembako: 0,
+      stok_sembako: 0,
       status: "",
       action: "",
       editingItemIndex: -1,
@@ -57,45 +57,51 @@ class TableKelolaSampah extends Component {
     };
   }
 
-  //TAMBAH Sampah
-  handleTambahSampah = () => {
+  //TAMBAH SEMBAKO
+  handleTambahSembako = () => {
     const {
       data_nasabah,
-      id_Sampah,
-      foto_Sampah,
-      name_Sampah,
-      poin_Sampah,
-      stok_Sampah,
+      id_sembako,
+      foto_sembako,
+      name_sembako,
+      poin_sembako,
+      stok_sembako,
       status,
     } = this.state;
 
     // Validasi input
-    if (!id_Sampah || !name_Sampah || !poin_Sampah || !stok_Sampah || !status) {
+    if (
+      !id_sembako ||
+      !name_sembako ||
+      !poin_sembako ||
+      !stok_sembako ||
+      !status
+    ) {
       alert("Semua field harus diisi");
       return;
     }
 
-    // Buat objek Sampah baru
-    const newSampah = {
-      id_Sampah,
-      name_Sampah,
-      poin_Sampah,
-      stok_Sampah,
+    // Buat objek sembako baru
+    const newSembako = {
+      id_sembako,
+      name_sembako,
+      poin_sembako,
+      stok_sembako,
       status,
-      foto_Sampah: this.state.editingItem.foto_Sampah,
+      foto_sembako: this.state.editingItem.foto_sembako,
     };
 
-    // Tambahkan Sampah baru ke array data_nasabah
-    const newData = [...data_nasabah, newSampah];
+    // Tambahkan sembako baru ke array data_nasabah
+    const newData = [...data_nasabah, newSembako];
 
     // Perbarui state dengan data yang baru dan cetak hasil
     this.setState(
       {
         data_nasabah: newData,
-        id_Sampah: "",
-        name_Sampah: "",
-        poin_Sampah: 0,
-        stok_Sampah: 0,
+        id_sembako: "",
+        name_sembako: "",
+        poin_sembako: 0,
+        stok_sembako: 0,
         status: "",
         dataAdded: true,
         editingItem: {},
@@ -111,11 +117,11 @@ class TableKelolaSampah extends Component {
 
   clearFields = () => {
     this.setState({
-      id_Sampah: "",
-      foto_Sampah: "",
-      name_Sampah: "",
-      poin_Sampah: 0,
-      stok_Sampah: 0,
+      id_sembako: "",
+      foto_sembako: "",
+      name_sembako: "",
+      poin_sembako: 0,
+      stok_sembako: 0,
       status: "",
       editingItem: {},
       selectedImage: null,
@@ -174,7 +180,7 @@ class TableKelolaSampah extends Component {
         this.setState((prevState) => ({
           editingItem: {
             ...prevState.editingItem,
-            foto_Sampah: reader.result.split(",")[1], // Mengambil bagian setelah koma
+            foto_sembako: reader.result.split(",")[1], // Mengambil bagian setelah koma
           },
           selectedImage: reader.result,
         }));
@@ -183,7 +189,7 @@ class TableKelolaSampah extends Component {
       this.setState((prevState) => ({
         editingItem: {
           ...prevState.editingItem,
-          foto_Sampah: reader.result,
+          foto_sembako: reader.result,
         },
       }));
     }
@@ -198,7 +204,7 @@ class TableKelolaSampah extends Component {
           selectedImage: reader.result,
           editingItem: {
             ...prevState.editingItem,
-            foto_Sampah: reader.result,
+            foto_sembako: reader.result,
           },
         }));
       };
@@ -305,18 +311,18 @@ class TableKelolaSampah extends Component {
         return (
           <tr key={index}>
             <td className="mt-1 mx-2">{index + 1}</td>
-            <td className="mt-1 mx-2">{item.id_Sampah}</td>
+            <td className="mt-1 mx-2">{item.id_sembako}</td>
             {/* <td className="text-xs font-weight-bold">{item.firstname + " " + item.lastname}</td> */}
             <td className="mt-1 mx-2">
               <img
-                src={`data:image/png;base64, ${item.foto_Sampah}`}
-                alt={`Foto ${item.foto_Sampah}`}
+                src={`data:image/png;base64, ${item.foto_sembako}`}
+                alt={`Foto ${item.foto_sembako}`}
                 style={{ width: "50px" }}
               />
             </td>
-            <td className="mt-1 mx-2">{item.name_Sampah}</td>
-            <td className="mt-1 mx-2">{item.poin_Sampah}</td>
-            <td className="mt-1 mx-2">{item.stok_Sampah}</td>
+            <td className="mt-1 mx-2">{item.name_sembako}</td>
+            <td className="mt-1 mx-2">{item.poin_sembako}</td>
+            <td className="mt-1 mx-2">{item.stok_sembako}</td>
             <td>
               <button
                 className={`mt-1 mx-2 text-center ${
@@ -374,9 +380,9 @@ class TableKelolaSampah extends Component {
           <button
             className="btn-primary btn"
             data-toggle="modal"
-            data-target="#modal_tambah_Sampah"
+            data-target="#modal_tambah_sembako"
           >
-            + Tambah Sampah
+            + Tambah Sembako
           </button>
         </div>
         <div class="container-fluid">
@@ -391,13 +397,13 @@ class TableKelolaSampah extends Component {
                     #
                   </th>
                   <th className="text-uppercase  text-sm text-center pl-4">
-                    ID Sampah
+                    ID Sembako
                   </th>
                   <th className="text-uppercase  text-sm text-center pl-4">
                     Foto
                   </th>
                   <th className="text-uppercase  text-sm text-center pl-4">
-                    Nama Sampah
+                    Nama Sembako
                   </th>
                   <th className="text-uppercase  text-sm text-center pl-4">
                     Poin per 0,5 kg
@@ -431,7 +437,7 @@ class TableKelolaSampah extends Component {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="staticBackdropLabel">
-                      Tambah Sampah
+                      Tambah Sembako
                     </h5>
                     <button
                       type="button"
@@ -470,7 +476,7 @@ class TableKelolaSampah extends Component {
                       <div className="row px-5 text-md">
                         <div className="col-md-4">
                           <div className="form-group">
-                            <label className="text-sm">ID Sampah:</label>
+                            <label className="text-sm">ID Sembako:</label>
                           </div>
                         </div>
                         <div className="col-md-8">
@@ -479,7 +485,7 @@ class TableKelolaSampah extends Component {
                               type="text"
                               className="form-control text-left text-sm font-weight-bold"
                             >
-                              {this.state.editingItem.id_Sampah}
+                              {this.state.editingItem.id_sembako}
                             </div>
                           </div>
                         </div>
@@ -487,7 +493,7 @@ class TableKelolaSampah extends Component {
                       <div className="row px-5 text-md">
                         <div className="col-md-4">
                           <div className="form-group">
-                            <label className="text-sm">Nama Sampah:</label>
+                            <label className="text-sm">Nama Sembako:</label>
                           </div>
                         </div>
                         <div className="col-md-8">
@@ -495,12 +501,12 @@ class TableKelolaSampah extends Component {
                             <input
                               type="text"
                               className="form-control text-sm font-weight-bold"
-                              value={this.state.editingItem.name_Sampah}
+                              value={this.state.editingItem.name_sembako}
                               onChange={(e) =>
                                 this.setState({
                                   editingItem: {
                                     ...this.state.editingItem,
-                                    name_Sampah: e.target.value,
+                                    name_sembako: e.target.value,
                                   },
                                 })
                               }
@@ -521,12 +527,12 @@ class TableKelolaSampah extends Component {
                             <input
                               type="number"
                               className="form-control text-sm font-weight-bold "
-                              value={this.state.editingItem.poin_Sampah}
+                              value={this.state.editingItem.poin_sembako}
                               onChange={(e) =>
                                 this.setState({
                                   editingItem: {
                                     ...this.state.editingItem,
-                                    poin_Sampah: parseInt(e.target.value),
+                                    poin_sembako: parseInt(e.target.value),
                                   },
                                 })
                               }
@@ -545,12 +551,12 @@ class TableKelolaSampah extends Component {
                             <input
                               type="number"
                               className="form-control text-sm font-weight-bold"
-                              value={this.state.editingItem.stok_Sampah}
+                              value={this.state.editingItem.stok_sembako}
                               onChange={(e) =>
                                 this.setState({
                                   editingItem: {
                                     ...this.state.editingItem,
-                                    stok_Sampah: parseInt(e.target.value),
+                                    stok_sembako: parseInt(e.target.value),
                                   },
                                 })
                               }
@@ -585,7 +591,7 @@ class TableKelolaSampah extends Component {
             {/* MODALS TAMBAH*/}
             <div
               className={`modal fade ${this.state.isModalOpen ? "show" : ""}`}
-              id="modal_tambah_Sampah"
+              id="modal_tambah_sembako"
               data-backdrop="static"
               data-keyboard="false"
               tabIndex="-1"
@@ -597,7 +603,7 @@ class TableKelolaSampah extends Component {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="staticBackdropLabel">
-                      Tambah Sampah
+                      Tambah Sembako
                     </h5>
                     <button
                       type="button"
@@ -636,7 +642,7 @@ class TableKelolaSampah extends Component {
                       <div className="row px-5 text-md">
                         <div className="col-md-4">
                           <div className="form-group">
-                            <label className="text-sm">ID Sampah:</label>
+                            <label className="text-sm">ID Sembako:</label>
                           </div>
                         </div>
                         <div className="col-md-8">
@@ -644,9 +650,9 @@ class TableKelolaSampah extends Component {
                             <input
                               type="text"
                               className="form-control text-sm font-weight-bold"
-                              value={this.state.id_Sampah}
+                              value={this.state.id_sembako}
                               onChange={(e) =>
-                                this.setState({ id_Sampah: e.target.value })
+                                this.setState({ id_sembako: e.target.value })
                               }
                             />
                           </div>
@@ -655,7 +661,7 @@ class TableKelolaSampah extends Component {
                       <div className="row px-5 text-md">
                         <div className="col-md-4">
                           <div className="form-group">
-                            <label className="text-sm">Nama Sampah:</label>
+                            <label className="text-sm">Nama Sembako:</label>
                           </div>
                         </div>
                         <div className="col-md-8">
@@ -663,9 +669,9 @@ class TableKelolaSampah extends Component {
                             <input
                               type="text"
                               className="form-control text-sm font-weight-bold"
-                              value={this.state.name_Sampah}
+                              value={this.state.name_sembako}
                               onChange={(e) =>
-                                this.setState({ name_Sampah: e.target.value })
+                                this.setState({ name_sembako: e.target.value })
                               }
                             />
                           </div>
@@ -703,9 +709,9 @@ class TableKelolaSampah extends Component {
                             <input
                               type="number"
                               className="form-control text-sm font-weight-bold "
-                              value={this.state.poin_Sampah}
+                              value={this.state.poin_sembako}
                               onChange={(e) =>
-                                this.setState({ poin_Sampah: e.target.value })
+                                this.setState({ poin_sembako: e.target.value })
                               }
                             />
                           </div>
@@ -722,9 +728,9 @@ class TableKelolaSampah extends Component {
                             <input
                               type="number"
                               className="form-control text-sm font-weight-bold"
-                              value={this.state.stok_Sampah}
+                              value={this.state.stok_sembako}
                               onChange={(e) =>
-                                this.setState({ stok_Sampah: e.target.value })
+                                this.setState({ stok_sembako: e.target.value })
                               }
                             />
                           </div>
@@ -752,7 +758,7 @@ class TableKelolaSampah extends Component {
                       type="button"
                       className="btn btn-primary"
                       data-dismiss="modal"
-                      onClick={this.handleTambahSampah}
+                      onClick={this.handleTambahSembako}
                     >
                       Simpan
                     </button>

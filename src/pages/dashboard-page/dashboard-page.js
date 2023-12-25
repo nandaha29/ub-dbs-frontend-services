@@ -7,10 +7,18 @@ import { HiUsers } from "react-icons/hi";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
+import Table_Permintaan_Penukaran from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
+import Table_Stok_Sembako from "../../component/elements/Elements_Home/Table_Stok_Sembako/Table_Stok_Sembako";
+import Table_Riwayat_Penukaran from "../../component/elements/Elements_Home/Table_Riwayat_Penukaran/Table_Riwayat_Penukaran";
+import Table_Permintaan_Verifikasi from "../../component/elements/Elements_Home/Table_Permintaan_Verifikasi/Table_Permintaan_Verifikasi";
+import Grafik_Area from "../../component/share-component/grafikArea";
+import Grafik_Dua from "../../component/elements/Elements_Home/Grafik_Area/Grafik_Area";
+
 const DashboardPage = () => {
   const [nasabahCount, setNasabahCount] = useState(0);
   const [totalSampahCount, setTotalSampahCount] = useState(0);
-  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(0);
+  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] =
+    useState(0);
   const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(0);
   const [authUser, setAuthUser] = useState(null);
 
@@ -19,7 +27,10 @@ const DashboardPage = () => {
   const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${tes}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1",
+        { headers }
+      );
       setNasabahCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -30,7 +41,10 @@ const DashboardPage = () => {
   const getTotalSampahBulanIni = async () => {
     const headers = { Authorization: `Bearer ${tes}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction",
+        { headers }
+      );
       setTotalSampahCount(response.data.length);
       console.log(response.data.length);
     } catch (error) {
@@ -41,7 +55,10 @@ const DashboardPage = () => {
   const getNasabahPerluVerifikasi = async () => {
     const headers = { Authorization: `Bearer ${tes}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0",
+        { headers }
+      );
       setNasabahPerluVerifikasiCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -52,7 +69,10 @@ const DashboardPage = () => {
   const getTransaksiSembako = async () => {
     const headers = { Authorization: `Bearer ${tes}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/slip/penukaran",
+        { headers }
+      );
       setTransaksiSembakoCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -114,8 +134,12 @@ const DashboardPage = () => {
                 </div>
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
-                    <span className="align-middle">Buka • Akan tutup pada 16.00</span>
-                    <button className="btn-secondary border-0 ml-2">edit</button>
+                    <span className="align-middle">
+                      Buka • Akan tutup pada 16.00
+                    </span>
+                    <button className="btn-secondary border-0 ml-2">
+                      edit
+                    </button>
                   </div>
                 </div>
               </div>
@@ -187,8 +211,20 @@ const DashboardPage = () => {
                 {/* </div> */}
               </div>
               <div className="row">
-                <section className="col-lg-5 connectedSortable">dsds</section>
-                <section className="col-lg-7 connectedSortable">sds</section>
+                <section className="col-lg-5 connectedSortable">
+                  {/* Custom tabs (Charts with tabs)*/}
+                  {/* <Modal_Proses /> */}
+                  <Table_Permintaan_Penukaran />
+                  <Grafik_Area />
+                  <Table_Stok_Sembako />
+                </section>
+                {/* /.Left col */}
+                {/* right col (We are only adding the ID to make the widgets sortable)*/}
+                <section className="col-lg-7 connectedSortable">
+                  <Table_Riwayat_Penukaran />
+                  <Grafik_Dua />
+                  <Table_Permintaan_Verifikasi />
+                </section>
               </div>
             </div>
           </section>

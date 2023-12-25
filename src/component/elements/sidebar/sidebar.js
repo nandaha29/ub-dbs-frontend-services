@@ -40,14 +40,20 @@ const Sidebar = () => {
         {/* Brand Logo  */}
         <a href="index3.html" className="brand-link">
           <img src={logo} alt="Logo" className="brand-image " />
-          <span className="brand-text font-weight-light">Bank Sampah Delima</span>
+          <span className="brand-text font-weight-light">
+            Bank Sampah Delima
+          </span>
         </a>
         {/* {/* Sidebar */}
         <div className="sidebar">
           {/* Sidebar user panel (optional) */}
           <div className="user-panel mt-3 mb-3 d-flex">
             <div className="image">
-              <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
+              <img
+                src="dist/img/user2-160x160.jpg"
+                className="img-circle elevation-2"
+                alt="User Image"
+              />
             </div>
             <div className="info">
               <p className="text-white">Agung</p>
@@ -75,7 +81,12 @@ const Sidebar = () => {
           </div> */}
           {/* Sidebar Menu */}
           <nav className="mt-2">
-            <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul
+              className="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
               {/* Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library */}
 
@@ -110,7 +121,7 @@ const Sidebar = () => {
                 </a>
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <a href="/kelsembako" className="nav-link">
+                    <a href="/kelola-sembako" className="nav-link">
                       <i className="far fa-circle nav-icon" />
                       <p>Kelola Sembako</p>
                     </a>

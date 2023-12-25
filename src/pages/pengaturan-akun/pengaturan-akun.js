@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
-import TableBacklist from "../../component/data-backlist/TableBacklist";
+import TableRiwayatSampah from "../../component/riwayat-sampah/TableRiwayatSampah";
 
 import { HiUsers } from "react-icons/hi";
+import GrafikArea from "../../component/share-component/grafikArea";
+import TableKelolaSembako from "../../component/kelola-sembako/TableKelolaSembako";
 
-export default class DataBacklistPage extends Component {
+export default class PengaturanAkun extends Component {
   constructor() {
     super();
     this.state = {
@@ -37,7 +39,7 @@ export default class DataBacklistPage extends Component {
               <div className="container-fluid">
                 <div className="row mb-2">
                   <div className="col-sm-6">
-                    <h1 className="m-0">Data Backlist Nasabah</h1>
+                    <h1 className="m-0">Kelola Sembako</h1>
                   </div>
                   {/* /.col */}
                   <div className="col-sm-6">
@@ -46,22 +48,25 @@ export default class DataBacklistPage extends Component {
                         <a href="/home">Home</a>
                       </li>
                       <li className="breadcrumb-item ">
-                        <a href="/vernas">Verifikasi Nasabah</a>
+                        <a href="/kelola-sampah">Data Sampah</a>
                       </li>
                       <li className="breadcrumb-item active">
-                        <a href="/data-backlist">Data Backlist</a>
+                        <a href="/riwayat-sampah">Kelola Sampah</a>
                       </li>
                     </ol>
                   </div>
+
                   {/* /.col */}
                 </div>
+
                 {/* /.row */}
               </div>
+
               {/* /.container-fluid */}
             </div>
             {/* /.content-header */}
             <section className="content">
-              <TableBacklist />
+              <TableKelolaSembako />
             </section>
           </div>
         </Layout>
