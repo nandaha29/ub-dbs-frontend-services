@@ -7,11 +7,19 @@ import { HiUsers } from "react-icons/hi";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
+import Table_Permintaan_Penukaran from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
+import Table_Stok_Sembako from "../../component/elements/Elements_Home/Table_Stok_Sembako/Table_Stok_Sembako";
+import Table_Riwayat_Penukaran from "../../component/elements/Elements_Home/Table_Riwayat_Penukaran/Table_Riwayat_Penukaran";
+import Table_Permintaan_Verifikasi from "../../component/elements/Elements_Home/Table_Permintaan_Verifikasi/Table_Permintaan_Verifikasi";
+import Grafik_Area from "../../component/share-component/grafikArea";
+import Grafik_Dua from "../../component/elements/Elements_Home/Grafik_Area/Grafik_Area";
+
 const DashboardPage = () => {
   // const [adminName, setAdminName] = useState("Agung");
   const [nasabahCount, setNasabahCount] = useState(852);
   const [totalSampahCount, setTotalSampahCount] = useState(852);
-  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(852);
+  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] =
+    useState(852);
   const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(29);
   const [authUser, setAuthUser] = useState(null);
 
@@ -25,7 +33,10 @@ const DashboardPage = () => {
     const headers = { Authorization: `Bearer ${tes}` };
     // e.preventDefault();
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1",
+        { headers }
+      );
       setNasabahCount(response.data);
       console.log(nasabahCount);
     } catch (error) {
@@ -84,8 +95,12 @@ const DashboardPage = () => {
                 </div>
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
-                    <span className="align-middle">Buka • Akan tutup pada 16.00</span>
-                    <button className="btn-secondary border-0 ml-2">edit</button>
+                    <span className="align-middle">
+                      Buka • Akan tutup pada 16.00
+                    </span>
+                    <button className="btn-secondary border-0 ml-2">
+                      edit
+                    </button>
                   </div>
                 </div>
               </div>
@@ -157,8 +172,20 @@ const DashboardPage = () => {
                 {/* </div> */}
               </div>
               <div className="row">
-                <section className="col-lg-5 connectedSortable">dsds</section>
-                <section className="col-lg-7 connectedSortable">sds</section>
+                <section className="col-lg-5 connectedSortable">
+                  {/* Custom tabs (Charts with tabs)*/}
+                  {/* <Modal_Proses /> */}
+                  <Table_Permintaan_Penukaran />
+                  <Grafik_Area />
+                  <Table_Stok_Sembako />
+                </section>
+                {/* /.Left col */}
+                {/* right col (We are only adding the ID to make the widgets sortable)*/}
+                <section className="col-lg-7 connectedSortable">
+                  <Table_Riwayat_Penukaran />
+                  <Grafik_Dua />
+                  <Table_Permintaan_Verifikasi />
+                </section>
               </div>
             </div>
           </section>
