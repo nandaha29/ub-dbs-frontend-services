@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect,Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 
 import Layout from "../../component/Layout/Layout";
@@ -9,33 +8,40 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
 const DashboardPage = () => {
-  const [adminName, setAdminName] = useState("Agung");
+  // const [adminName, setAdminName] = useState("Agung");
   const [nasabahCount, setNasabahCount] = useState(852);
   const [totalSampahCount, setTotalSampahCount] = useState(852);
   const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(852);
   const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(29);
   const [authUser, setAuthUser] = useState(null);
 
-  // useEffect(() => {
-  //   // Gunakan useEffect untuk melakukan tindakan setelah render pertama
-  //   const unsubscribe = firebaseAuthentification.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       // user telah login
-  //       setAdminName(user.displayName || "Admin"); // Ganti dengan cara yang sesuai untuk mendapatkan nama admin
-  //     } else {
-  //       // user belum login
-  //       // Tindakan yang diperlukan jika user belum login
-  //     }
-  //   });
+  const [tes, setTes] = useState("");
 
-  //   // Membersihkan langganan pada componentWillUnmount
-  //   return () => unsubscribe();
-  // }, []); // [] berarti efek ini hanya dijalankan sekali setelah render pertama
+  const getNasabahAktif = async (e) => {
+    // const headers = {
+    //   accept: "application/json",
+    //   Authorization: tes,
+    // };
+    const headers = { Authorization: `Bearer ${tes}` };
+    // e.preventDefault();
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
+      setNasabahCount(response.data);
+      console.log(nasabahCount);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuthUser(user);
+        setTes(user.accessToken);
+        console.log(tes);
+        console.log("login berhasil");
+        console.log(user);
+        getNasabahAktif();
       } else {
         setAuthUser(null);
       }
@@ -61,25 +67,25 @@ const DashboardPage = () => {
             <div className="container-fluid">
               <div className="row mb-2">
                 {/* style={{ backgroundColor: "blue" }} */}
-                <div className="col-sm-9">
+                <div className="col-sm-9 d-flex">
                   <h1 className="m-0">
                     Dashboard, Welcome
                     {/* {adminName}{" "} */}
                   </h1>
+
                   {authUser ? (
                     <>
-                      <h5 className="text-gray"> {authUser.email}</h5>
+                      <h5 className="text-gray "> {authUser.email}</h5>
                       <button onClick={userKeluarAkun}>Keluar akun</button>
                     </>
                   ) : (
-                    <p>Keluar Akun</p>
+                    <p>Anda tidak Login</p>
                   )}
                 </div>
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
                     <span className="align-middle">Buka • Akan tutup pada 16.00</span>
                     <button className="btn-secondary border-0 ml-2">edit</button>
-
                   </div>
                 </div>
               </div>

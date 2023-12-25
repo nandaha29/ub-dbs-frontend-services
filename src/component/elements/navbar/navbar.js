@@ -66,13 +66,11 @@ class Navbar extends Component {
                 {/* </button>s */}
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="/register" role="button">
-                {/* <button type="button" class="btn btn-info"> */}
                 Ujicoba Regis
-                {/* </button>s */}
               </a>
-            </li>
+            </li> */}
             <li className="nav-item">
               <a className="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i className="fas fa-expand-arrows-alt" />
