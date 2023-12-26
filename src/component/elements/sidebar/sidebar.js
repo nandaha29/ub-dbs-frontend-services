@@ -72,7 +72,7 @@ const Sidebar = () => {
        with font-awesome or any other icon font library */}
 
               <li className="nav-item">
-                <a href="/" className="nav-link">
+                <a href="/dashboard" className="nav-link">
                   <i className="nav-icon mr-2">
                     <IoHome />
                   </i>

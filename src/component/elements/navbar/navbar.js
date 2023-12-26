@@ -60,9 +60,9 @@ class Navbar extends Component {
               </div>
             </li> */}
             <li className="nav-item">
-              <a className="nav-link" href="/login" role="button">
+              <a className="nav-link" href="/" role="button">
                 {/* <button type="button" class="btn btn-info"> */}
-                Login
+                Logout
                 {/* </button>s */}
               </a>
             </li>

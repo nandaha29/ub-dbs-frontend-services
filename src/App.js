@@ -20,8 +20,8 @@ function App() {
   return (
     <div className="wrapper">
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/lupa-password" element={<LupaPasswordPage />} />
         <Route path="/home" element={<DashboardPage />} />

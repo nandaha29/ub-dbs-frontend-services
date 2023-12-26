@@ -16,12 +16,12 @@ const LoginPage = () => {
       .then((userCredential) => {
         console.log(userCredential);
         toastr.success("Login berhasil!", "Sukses");
-        window.location = "/";
+        window.location = "/dashboard";
       })
       .catch((error) => {
         console.log(error);
         toastr.error("Login gagal. Periksa kembali email dan password Anda.", "Gagal");
-        window.location = "/login";
+        window.location = "/";
       });
   };
   return (

@@ -38,8 +38,9 @@ const DashboardPage = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
-      setTotalSampahCount(response.data.length);
-      console.log(response.data.length);
+      const totalBeratSum = response.data.reduce((sum, item) => sum + item.totalBerat, 0);
+      console.log(totalBeratSum);
+      setTotalSampahCount(totalBeratSum);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -106,14 +107,14 @@ const DashboardPage = () => {
                 {/* style={{ backgroundColor: "blue" }} */}
                 <div className="col-sm-9 d-flex">
                   <h1 className="m-0">
-                    Dashboard, Welcome
+                    Welcome, 
                     {/* {adminName}{" "} */}
                   </h1>
 
                   {authUser ? (
                     <>
-                      <h5 className="text-gray "> {authUser.email}</h5>
-                      <button onClick={userKeluarAkun}>Keluar akun</button>
+                      <h1 className="text-gray">{` ${authUser.email}`}</h1>
+                      {/* <button onClick={userKeluarAkun}>Keluar akun</button> */}
                     </>
                   ) : (
                     <p>Anda tidak Login</p>
