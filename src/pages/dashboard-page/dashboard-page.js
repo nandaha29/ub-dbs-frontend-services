@@ -117,7 +117,7 @@ const DashboardPage = () => {
                       {/* <button onClick={userKeluarAkun}>Keluar akun</button> */}
                     </>
                   ) : (
-                    <p>Anda tidak Login</p>
+                    <h1 className="text-gray">Anda belum login</h1>
                   )}
                 </div>
                 <div className="col-sm-3">

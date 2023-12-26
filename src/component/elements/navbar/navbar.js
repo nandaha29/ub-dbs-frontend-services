@@ -1,8 +1,20 @@
 import React, { Component } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../../../config/firebase";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
 
-class Navbar extends Component {
-  state = {};
-  render() {
+const Navbar = () => {
+  const userKeluarAkun = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("udah keluar akun berhasil");
+        toastr.success("Anda berhasil logout")
+        window.location = "/";
+      })
+      .catch((error) => console.log(error));
+  };
+  // render() {
     return (
       <div>
         <nav className="main-header navbar navbar-expand navbar-white navbar-light">
@@ -60,7 +72,7 @@ class Navbar extends Component {
               </div>
             </li> */}
             <li className="nav-item">
-              <a className="nav-link" href="/" role="button">
+              <a className="nav-link" onClick={userKeluarAkun} role="button">
                 {/* <button type="button" class="btn btn-info"> */}
                 Logout
                 {/* </button>s */}
@@ -85,7 +97,7 @@ class Navbar extends Component {
         </nav>
       </div>
     );
-  }
+  // }
 }
 
 export default Navbar;
