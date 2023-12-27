@@ -1,3 +1,5 @@
+//Table_Permintaan_Penukaran_Sembako
+
 import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 
@@ -18,16 +20,20 @@ const dataprofil = [
 
 const sampah = [
   {
-    jenis_sampah: "Kertas",
+    jenis_sampah: "Minyak",
     points: "200 / kg",
   },
   {
-    jenis_sampah: "Kardus",
+    jenis_sampah: "Gula",
     points: "250 / kg",
+  },
+  {
+    jenis_sampah: "Beras",
+    points: "200 / kg",
   },
 ];
 
-const Table_Permintaan_Penukaran = () => {
+const Table_Permintaan_Penukaran_Sembako = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
   const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState(0);
@@ -94,7 +100,7 @@ const Table_Permintaan_Penukaran = () => {
         <div className="card-header border-1">
           <h3 className="card-title">
             <i className="fas fa-chart-pie mr-1" />
-            Table_Permintaan_Penukaran_Sampah
+            Table_Permintaan_Penukaran_Sembako
           </h3>
           <div className="card-tools">
             <button
@@ -126,7 +132,7 @@ const Table_Permintaan_Penukaran = () => {
               aria-controls="nav-home"
               aria-selected="true"
             >
-              Sampah
+              Sembako
             </button>
           </div>
         </nav>
@@ -144,7 +150,7 @@ const Table_Permintaan_Penukaran = () => {
                     <th>ID Order</th>
                     <th>Nama</th>
                     <th>Waktu</th>
-                    <th>Action</th>
+                    <th className="">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -158,7 +164,7 @@ const Table_Permintaan_Penukaran = () => {
                           type="button"
                           className="btn-primary border-0 mr-2"
                           data-toggle="modal"
-                          data-target="#modal_proses_sampah"
+                          data-target="#modal_proses_sembako"
                         >
                           Proses
                         </button>
@@ -175,7 +181,7 @@ const Table_Permintaan_Penukaran = () => {
 
       <div
         className="modal fade"
-        id="modal_proses_sampah"
+        id="modal_proses_sembako"
         data-backdrop="static"
         data-keyboard="false"
         tabIndex="-1"
@@ -231,7 +237,7 @@ const Table_Permintaan_Penukaran = () => {
                   <thead>
                     <tr>
                       <th scope="col">No.</th>
-                      <th scope="col">Jenis Sampah</th>
+                      <th scope="col">Jenis Sembako</th>
                       <th scope="col">Berat Barang</th>
                     </tr>
                   </thead>
@@ -266,7 +272,7 @@ const Table_Permintaan_Penukaran = () => {
               <h5 className="text-center">
                 {" "}
                 <span className="font-weight-normal">Total</span>
-                <span> +304 Poin</span>
+                <span> -304 Poin</span>
               </h5>
               <div className="text-center">
                 <button className="btn btn-dark px-4">Hitung</button>
@@ -298,4 +304,4 @@ const Table_Permintaan_Penukaran = () => {
   );
 };
 
-export default Table_Permintaan_Penukaran;
+export default Table_Permintaan_Penukaran_Sembako;
