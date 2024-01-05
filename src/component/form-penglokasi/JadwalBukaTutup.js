@@ -45,9 +45,13 @@ class JadwalBukaTutup extends Component {
   };
 
   handleSave = () => {
-    // Handle saving the updated data (you can send it to the server or perform any other action)
-    console.log("Saved data:", this.state.data);
-    toastr.success("Data telah diubah", "Berhasil!");
+    const isConfirmed = window.confirm(
+      "Apakah anda yakin ingin merubah data ini?"
+    );
+    if (isConfirmed) {
+      console.log("Saved data:", this.state.data);
+      toastr.success("Data telah dirubah", "Berhasil!");
+    }
   };
 
   // component didmount

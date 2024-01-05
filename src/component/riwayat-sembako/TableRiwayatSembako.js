@@ -10,7 +10,7 @@ import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
 
-const Sampah = [
+const names = [
   {
     id_nasabah: 222,
     name_nasabah: "Andi Lalapan",
@@ -29,12 +29,12 @@ const Sampah = [
     id_nasabah: 4444,
     name_nasabah: "Dono Marbling",
     berat_nasabah: "Berhasil Di Proses",
-    poin_nasabah: 50,
+    poin_nasabah: 550,
     waktu_transaksi: "10/02/2023  |  12.00 PM",
   },
 ];
 
-class TableRiwayatSampah extends Component {
+class TableRiwayatSembako extends Component {
   constructor() {
     super();
     this.state = {
@@ -116,7 +116,7 @@ class TableRiwayatSampah extends Component {
 
   showTable = () => {
     try {
-      return Sampah.map((item, index) => {
+      return names.map((item, index) => {
         return (
           <tr key={index}>
             {/* <td className="mt-1 mx-2">{index + 1}</td> */}
@@ -136,7 +136,7 @@ class TableRiwayatSampah extends Component {
                 {item.berat_nasabah}
               </button>
             </td>
-            <td className="mt-1 mx-2 text-center">+ {item.poin_nasabah}</td>
+            <td className="mt-1 mx-2 text-center">- {item.poin_nasabah}</td>
             <td className="mt-1 mx-2 text-center">{item.waktu_transaksi}</td>
             <td className="d-flex justify-content-center">
               <button className="btn btn-primary btn-sm mt-1 mx-2">
@@ -193,4 +193,4 @@ class TableRiwayatSampah extends Component {
   }
 }
 
-export default TableRiwayatSampah;
+export default TableRiwayatSembako;

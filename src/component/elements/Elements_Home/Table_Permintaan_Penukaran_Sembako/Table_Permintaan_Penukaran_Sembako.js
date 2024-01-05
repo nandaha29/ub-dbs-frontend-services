@@ -119,23 +119,6 @@ const Table_Permintaan_Penukaran_Sembako = () => {
             </button>
           </div>
         </div>
-
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button
-              class="nav-link active"
-              id="nav-home-tab"
-              data-toggle="tab"
-              data-target="#nav-home"
-              type="button"
-              role="tab"
-              aria-controls="nav-home"
-              aria-selected="true"
-            >
-              Sembako
-            </button>
-          </div>
-        </nav>
         <div class="tab-content" id="nav-tabContent">
           <div
             class="tab-pane fade show active"

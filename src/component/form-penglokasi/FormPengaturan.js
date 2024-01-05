@@ -9,6 +9,8 @@ import "datatables.net-buttons/js/buttons.flash.js";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
 
 const datainit = [
   {
@@ -100,28 +102,33 @@ class FormPengaturan extends Component {
   };
 
   handleSimpan = () => {
-    // Handle saving the updated data (you can send it to the server or perform any other action)
-    const newData = {
-      namaLokasi: this.state.namaLokasi,
-      linkGoogleMaps: this.state.linkGoogleMaps,
-      alamat: this.state.alamat,
-    };
-
-    // Update the state using a callback function to ensure the correct order of operations
-    this.setState((prevState) => {
-      const updatedData = [...prevState.data, newData];
-
-      // Log the updated data to the console
-      console.log("Updated Data:", updatedData);
-
-      // Return the updated state
-      return {
-        data: updatedData,
-        namaLokasi: "",
-        linkGoogleMaps: "",
-        alamat: "",
+    const isConfirmed = window.confirm(
+      "Apakah anda ingin menyimpan perubahan ini?"
+    );
+    if (isConfirmed) {
+      const newData = {
+        namaLokasi: this.state.namaLokasi,
+        linkGoogleMaps: this.state.linkGoogleMaps,
+        alamat: this.state.alamat,
       };
-    });
+
+      // Update the state using a callback function to ensure the correct order of operations
+      this.setState((prevState) => {
+        const updatedData = [...prevState.data, newData];
+
+        // Log the updated data to the console
+        console.log("Updated Data:", updatedData);
+        toastr.success("Data telah dirubah", "Berhasil!");
+        // Return the updated state
+        return {
+          data: updatedData,
+          namaLokasi: "",
+          linkGoogleMaps: "",
+          alamat: "",
+        };
+      });
+    }
+    // Handle saving the updated data (you can send it to the server or perform any other action)
   };
 
   render() {

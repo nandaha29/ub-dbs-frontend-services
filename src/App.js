@@ -15,6 +15,7 @@ import DataBacklist from "./pages/data-backlist";
 import LoginPage from "./pages/login";
 import LupaPasswordPage from "./pages/lupa-password";
 import RegisterPage from "./pages/register/register";
+import SemuaOrderPage from "./pages/semua-order/semua-order";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/aktifitas-login" element={<AktivitasLogin />} />
         <Route path="/artikel-banner" element={<ArtikelBannerPage />} />
         <Route path="/data-backlist" element={<DataBacklist />} />
+        <Route path="/semuaorder" element={<SemuaOrderPage />} />
         {/* <Redirect from="/" to="/home" /> */}
       </Routes>
     </div>

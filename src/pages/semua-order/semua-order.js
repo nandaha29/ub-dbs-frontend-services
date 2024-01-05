@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
-import TableRiwayatSembako from "../../component/riwayat-sembako/TableRiwayatSembako";
+// import TableRiwayatSembako from "../../component/riwayat-sembako/TableRiwayatSembako";
+import SemuaOrderTabel from "../../component/semua-order/SemuaOrderTabel";
 
 import { HiUsers } from "react-icons/hi";
 import GrafikArea from "../../component/share-component/grafikArea";
@@ -38,7 +39,7 @@ export default class RiwayatSampahPage extends Component {
               <div className="container-fluid">
                 <div className="row mb-2">
                   <div className="col-sm-6">
-                    <h1 className="m-0">Riwayat Sembako</h1>
+                    <h1 className="m-0">Semua Order</h1>
                   </div>
                   {/* /.col */}
                   <div className="col-sm-6">
@@ -74,7 +75,7 @@ export default class RiwayatSampahPage extends Component {
                 </section>
                 right col
               </div> */}
-              <TableRiwayatSembako />
+              <SemuaOrderTabel />
             </section>
           </div>
         </Layout>

@@ -46,17 +46,17 @@ class TableVerifikasiNasabah extends Component {
     };
   }
 
-  handleDelete = (index) => {
+  handleAgree = (index) => {
     // Show confirmation dialog
     const isConfirmed = window.confirm(
-      "Apakah kamu yakin ingin mengubah status akun ini menjadi blacklist?"
+      "Apakah anda yakin ingin memverifikasi akun ini?"
     );
 
     if (isConfirmed) {
       const updatedDataNasabah = [...this.state.data_nasabah];
       updatedDataNasabah.splice(index, 1);
       this.setState({ data_nasabah: updatedDataNasabah });
-      toastr.success("Data berhasil di blacklist!", "");
+      toastr.success("Data telah berhasil diverifikasi", "Verifikasi Nasabah");
     }
   };
 
@@ -139,14 +139,11 @@ class TableVerifikasiNasabah extends Component {
             <td className="mt-1 text-center">{item.address_nasabah}</td>
             <td className="d-flex justify-content-center">
               {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button className="btn btn-primary btn-sm mt-1 mx-2">
-                Proses
-              </button>
               <button
-                className="btn btn-dark btn-sm mt-1 mx-2"
-                onClick={() => this.handleDelete(index)}
+                className="btn btn-primary btn-sm mt-1 mx-2"
+                onClick={this.handleAgree}
               >
-                Blacklist
+                Setujui
               </button>
               {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
             </td>

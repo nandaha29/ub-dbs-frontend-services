@@ -11,7 +11,7 @@ const dataprofil = [
   {
     id_order: "121405",
     id_nasabah: "100456",
-    nama: "Andi Budiono",
+    nama: "Andi Budiono1",
     waktu: "10-01-2021 08:14",
   },
 ];
@@ -113,23 +113,6 @@ const Table_Permintaan_Penukaran = () => {
             </button>
           </div>
         </div>
-
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button
-              class="nav-link active"
-              id="nav-home-tab"
-              data-toggle="tab"
-              data-target="#nav-home"
-              type="button"
-              role="tab"
-              aria-controls="nav-home"
-              aria-selected="true"
-            >
-              Sampah
-            </button>
-          </div>
-        </nav>
         <div class="tab-content" id="nav-tabContent">
           <div
             class="tab-pane fade show active"

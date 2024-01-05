@@ -62,18 +62,18 @@ export default class RiwayatSampahPage extends Component {
             </div>
             {/* /.content-header */}
             <section className="content">
-              <div className="row">
-                {/* Left col */}
+              {/* <div className="row">
+                Left col
                 <section className="col-lg-5 connectedSortable">
                   <GrafikArea />
                 </section>
 
-                {/* /.Left col */}
+                /.Left col
                 <section className="col-lg-7 connectedSortable">
                   <GrafikArea />
                 </section>
-                {/* right col */}
-              </div>
+                right col
+              </div> */}
               <TableRiwayatSampah />
             </section>
           </div>
