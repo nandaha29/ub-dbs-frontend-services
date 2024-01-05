@@ -9,6 +9,8 @@ import "datatables.net-buttons/js/buttons.flash.js";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $, { noConflict } from "jquery";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
 
 const names = [
   {
@@ -134,28 +136,44 @@ class TableKelolaSampah extends Component {
 
   // Hapus
   handleDelete = (index) => {
-    const { data_nasabah } = this.state;
-    // Buat salinan array data_nasabah
-    const newData = [...data_nasabah];
-    // Hapus baris dengan index tertentu
-    newData.splice(index, 1);
-    // Renew state dengan data yang baru
-    this.setState({
-      data_nasabah: newData,
-    });
+    const isConfirmed = window.confirm(
+      "Apakah anda yakin ingin merubah status barang ini?"
+    );
+    if (isConfirmed) {
+      const { data_nasabah } = this.state;
+      // Buat salinan array data_nasabah
+      const newData = [...data_nasabah];
+      // Hapus baris dengan index tertentu
+      newData.splice(index, 1);
+      // Renew state dengan data yang baru
+      this.setState({
+        data_nasabah: newData,
+      });
+      toastr.success("Item berhasil dihapus!", "Hapus");
+    } else {
+      toastr.error("Item gagal dihapus", "Gagal!");
+    }
   };
 
   //Status
   toggleStatus = (index) => {
-    const newData = [...this.state.data_nasabah]; // membuat salinan array data
-    const currentItem = newData[index]; // mengambil item dengan indeks tertentu
+    const isConfirmed = window.confirm(
+      "Apakah anda yakin ingin merubah status item ini?"
+    );
+    if (isConfirmed) {
+      const newData = [...this.state.data_nasabah]; // membuat salinan array data
+      const currentItem = newData[index]; // mengambil item dengan indeks tertentu
 
-    // Mengubah nilai status berdasarkan kondisi
-    currentItem.status =
-      currentItem.status === "Aktif" ? "Diarsipkan" : "Aktif";
+      // Mengubah nilai status berdasarkan kondisi
+      currentItem.status =
+        currentItem.status === "Aktif" ? "Diarsipkan" : "Aktif";
 
-    // Memperbarui state dengan data yang telah diubah
-    this.setState({ data: newData });
+      // Memperbarui state dengan data yang telah diubah
+      this.setState({ data: newData });
+      toastr.success("Status item berhasil dirubah", "Status");
+    } else {
+      toastr.error("Status item gagal dirubah", "Gagal!");
+    }
   };
 
   //close modal
