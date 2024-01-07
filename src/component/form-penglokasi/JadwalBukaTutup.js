@@ -20,7 +20,6 @@ const data = [
   { hari: "Jumat", jamBuka: "08:00", jamTutup: "17:00" },
   { hari: "Sabtu", jamBuka: "08:00", jamTutup: "17:00" },
   { hari: "Minggu", jamBuka: "08:00", jamTutup: "17:00" },
-  // Add more days if needed
 ];
 class JadwalBukaTutup extends Component {
   constructor() {

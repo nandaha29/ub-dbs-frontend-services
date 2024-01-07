@@ -114,6 +114,39 @@ const DashboardPage = () => {
       .catch((error) => console.log(error));
   };
 
+  const [openHour, setOpenHour] = useState("");
+  const [closeHour, setCloseHour] = useState("");
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleInputChange = (e, setValue) => {
+    const value = e.target.value.replace(/\D/, "").slice(0, 4);
+    if (value.length <= 2) {
+      setValue(value);
+    } else {
+      setValue(`${value.slice(0, 2)}:${value.slice(2)}`); // formatting
+    }
+  };
+
+  const toggleSwitch = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSave = () => {
+    if (window.confirm("Apakah anda yakin ingin menyimpan perubahan?")) {
+      if (openHour && closeHour) {
+        const data = {
+          openHour,
+          closeHour,
+          status: isOpen ? "Buka" : "Tutup",
+        };
+        console.log("Saved Data:", data);
+      } else {
+        console.error("Please fill in both open and close hours.");
+      }
+    } else {
+    }
+  };
+
   return (
     <div>
       <Layout>
@@ -142,7 +175,11 @@ const DashboardPage = () => {
                     <span className="align-middle">
                       Buka • Akan tutup pada 16.00
                     </span>
-                    <button className="btn-secondary border-0 ml-2">
+                    <button
+                      className="btn-secondary border-0 ml-2"
+                      data-toggle="modal"
+                      data-target="#modal_edit_waktu"
+                    >
                       edit
                     </button>
                   </div>
@@ -228,6 +265,92 @@ const DashboardPage = () => {
               </div>
             </div>
           </section>
+        </div>
+        {/* MODAL LIHAT DATA NASABAH SECTION */}
+        <div
+          class="modal fade"
+          id="modal_edit_waktu"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header ">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                  <i className="fas fa-chart-pie mr-1" />
+                  Buka / Tutup Balai
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body justify-content-center">
+                <form className="m-5">
+                  <div class="form-group row">
+                    <label class="col-sm-5">Buka Pada : </label>
+                    <div class="col-sm-7">
+                      <input
+                        type="text"
+                        className="form-control text-sm font-weight-bold"
+                        value={openHour}
+                        onChange={(e) => handleInputChange(e, setOpenHour)}
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5">Tutup Pada : </label>
+                    <div class="col-sm-7">
+                      <input
+                        type="text"
+                        className="form-control text-sm font-weight-bold"
+                        value={closeHour}
+                        onChange={(e) => handleInputChange(e, setCloseHour)}
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-5">Status saat ini : </label>
+                    <div class="col-sm-7">
+                      <button
+                        type="button"
+                        className={`btn ${
+                          isOpen ? "btn-success" : "btn-secondary"
+                        }`}
+                        onClick={toggleSwitch}
+                      >
+                        {isOpen ? "Buka" : "Tutup"}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  class="btn btn-secondary "
+                  type="button"
+                  data-dismiss="modal"
+                >
+                  Tutup
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary "
+                  data-dismiss="modal"
+                  onClick={handleSave}
+                >
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </Layout>
     </div>
