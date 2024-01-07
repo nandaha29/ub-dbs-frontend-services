@@ -139,7 +139,11 @@ class TableRiwayatSembako extends Component {
             <td className="mt-1 mx-2 text-center">- {item.poin_nasabah}</td>
             <td className="mt-1 mx-2 text-center">{item.waktu_transaksi}</td>
             <td className="d-flex justify-content-center">
-              <button className="btn btn-primary btn-sm mt-1 mx-2">
+              <button
+                className="btn btn-primary btn-sm mt-1 mx-2"
+                data-toggle="modal"
+                data-target="#modal_detail_sembako"
+              >
                 Lihat Detail
               </button>
             </td>
@@ -184,6 +188,110 @@ class TableRiwayatSembako extends Component {
 
               <tbody>{this.showTable()}</tbody>
             </table>
+          </div>
+          {/* modal detail  */}
+          <div
+            class="modal fade"
+            id="modal_detail_sembako"
+            data-backdrop="static"
+            data-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    <i className="fas fa-chart-pie mr-1" />
+                    ID Riwayat Penukaran XXXXXXXXX
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5 className="m-4">Profil Penukaran</h5>
+                  <div className="row m-4">
+                    <table class="table table-borderless">
+                      <tr className="thead-light">
+                        <th scope="col">Nama Nasabah</th>
+                        <th scope="col">Waktu Request</th>
+                        <th scope="col">Transaksi Selesai</th>
+                      </tr>
+
+                      <tr>
+                        <td>Andi Budions</td>
+                        <td>100104</td>
+                        <td>2023-01-19 13:14</td>
+                      </tr>
+                      <tr className="thead-light">
+                        <th scope="col">ID Nasabah</th>
+                        <th scope="col">Petugas Pengurus</th>
+                      </tr>
+
+                      <tr>
+                        <td>100104</td>
+                        <td>Agung</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div className="row m-4">
+                    <table class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">No.</th>
+                          <th scope="col">Jenis Sembako</th>
+                          <th scope="col">Berat Barang</th>
+                          <th scope="col">Poin</th>
+                          <th scope="col">Pengurangan Poin</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>Beras</td>
+                          <td>1 Kg</td>
+                          <td>700/0,5 kg</td>
+                          <td>-1400</td>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>Beras</td>
+                          <td>1 Kg</td>
+                          <td>700/0,5 kg</td>
+                          <td>-1400</td>
+                        </tr>
+                        <tr>
+                          <td colspan="4">Total</td>
+
+                          <td>-1400</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="modal-footer ">
+                  <div class="float-sm-left">
+                    <button
+                      type="button"
+                      class="btn btn-secondary "
+                      data-dismiss="modal"
+                    >
+                      Tutup
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

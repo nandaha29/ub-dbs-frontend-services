@@ -334,7 +334,7 @@ const DashboardPage = () => {
               </div>
               <div class="modal-footer">
                 <button
-                  class="btn btn-secondary "
+                  class="btn btn-secondary float-sm-left"
                   type="button"
                   data-dismiss="modal"
                 >
@@ -346,7 +346,7 @@ const DashboardPage = () => {
                   data-dismiss="modal"
                   onClick={handleSave}
                 >
-                  Simpan
+                  Simpan Perubahan
                 </button>
               </div>
             </div>
