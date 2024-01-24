@@ -7,19 +7,13 @@ import { HiUsers } from "react-icons/hi";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
-import Table_Permintaan_Penukaran from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
+import Table_Permintaan_Penukaran_Sampah from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran_Sampah/Table_Permintaan_Penukaran_Sampah";
 import Table_Permintaan_Penukaran_Sembako from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran_Sembako/Table_Permintaan_Penukaran_Sembako";
-import Table_Stok_Sembako from "../../component/elements/Elements_Home/Table_Stok_Sembako/Table_Stok_Sembako";
-import Table_Riwayat_Penukaran from "../../component/elements/Elements_Home/Table_Riwayat_Penukaran/Table_Riwayat_Penukaran";
-import Table_Permintaan_Verifikasi from "../../component/elements/Elements_Home/Table_Permintaan_Verifikasi/Table_Permintaan_Verifikasi";
-import Grafik_Area from "../../component/share-component/grafikArea";
-import Grafik_Dua from "../../component/elements/Elements_Home/Grafik_Area/Grafik_Area";
 
 const DashboardPage = () => {
   const [nasabahCount, setNasabahCount] = useState(0);
   const [totalSampahCount, setTotalSampahCount] = useState(0);
-  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] =
-    useState(0);
+  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(0);
   const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(0);
 
   const [authUser, setAuthUser] = useState(null);
@@ -28,10 +22,7 @@ const DashboardPage = () => {
   const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
       setNasabahCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -42,14 +33,8 @@ const DashboardPage = () => {
   const getTotalSampahBulanIni = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction",
-        { headers }
-      );
-      const totalBeratSum = response.data.reduce(
-        (sum, item) => sum + item.totalBerat,
-        0
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
+      const totalBeratSum = response.data.reduce((sum, item) => sum + item.totalBerat, 0);
       console.log(totalBeratSum);
       setTotalSampahCount(totalBeratSum);
     } catch (error) {
@@ -60,10 +45,7 @@ const DashboardPage = () => {
   const getNasabahPerluVerifikasi = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0", { headers });
       setNasabahPerluVerifikasiCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -74,10 +56,7 @@ const DashboardPage = () => {
   const getTransaksiSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/slip/penukaran",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
       setTransaksiSembakoCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -99,6 +78,7 @@ const DashboardPage = () => {
         getTransaksiSembako();
       } else {
         setAuthUser(null);
+        window.location = "/login";
       }
     });
     return () => {
@@ -172,14 +152,8 @@ const DashboardPage = () => {
                 </div>
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
-                    <span className="align-middle">
-                      Buka • Akan tutup pada 16.00
-                    </span>
-                    <button
-                      className="btn-secondary border-0 ml-2"
-                      data-toggle="modal"
-                      data-target="#modal_edit_waktu"
-                    >
+                    <span className="align-middle">Buka • Akan tutup pada 16.00</span>
+                    <button className="btn-secondary border-0 ml-2" data-toggle="modal" data-target="#modal_edit_waktu">
                       edit
                     </button>
                   </div>
@@ -255,10 +229,9 @@ const DashboardPage = () => {
               <div className="row">
                 <section className="col-lg-6 connectedSortable">
                   {/* Custom tabs (Charts with tabs)*/}
-                  <Table_Permintaan_Penukaran />
+                  <Table_Permintaan_Penukaran_Sampah />
                 </section>
                 {/* /.Left col */}
-                {/* right col (We are only adding the ID to make the widgets sortable)*/}
                 <section className="col-lg-6 connectedSortable">
                   <Table_Permintaan_Penukaran_Sembako />
                 </section>
@@ -267,15 +240,7 @@ const DashboardPage = () => {
           </section>
         </div>
         {/* MODAL LIHAT DATA NASABAH SECTION */}
-        <div
-          class="modal fade"
-          id="modal_edit_waktu"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_edit_waktu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header ">
@@ -283,12 +248,7 @@ const DashboardPage = () => {
                   <i className="fas fa-chart-pie mr-1" />
                   Buka / Tutup Balai
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -297,35 +257,19 @@ const DashboardPage = () => {
                   <div class="form-group row">
                     <label class="col-sm-5">Buka Pada : </label>
                     <div class="col-sm-7">
-                      <input
-                        type="text"
-                        className="form-control text-sm font-weight-bold"
-                        value={openHour}
-                        onChange={(e) => handleInputChange(e, setOpenHour)}
-                      />
+                      <input type="text" className="form-control text-sm font-weight-bold" value={openHour} onChange={(e) => handleInputChange(e, setOpenHour)} />
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-sm-5">Tutup Pada : </label>
                     <div class="col-sm-7">
-                      <input
-                        type="text"
-                        className="form-control text-sm font-weight-bold"
-                        value={closeHour}
-                        onChange={(e) => handleInputChange(e, setCloseHour)}
-                      />
+                      <input type="text" className="form-control text-sm font-weight-bold" value={closeHour} onChange={(e) => handleInputChange(e, setCloseHour)} />
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-sm-5">Status saat ini : </label>
                     <div class="col-sm-7">
-                      <button
-                        type="button"
-                        className={`btn ${
-                          isOpen ? "btn-success" : "btn-secondary"
-                        }`}
-                        onClick={toggleSwitch}
-                      >
+                      <button type="button" className={`btn ${isOpen ? "btn-success" : "btn-secondary"}`} onClick={toggleSwitch}>
                         {isOpen ? "Buka" : "Tutup"}
                       </button>
                     </div>
@@ -333,19 +277,10 @@ const DashboardPage = () => {
                 </form>
               </div>
               <div class="modal-footer">
-                <button
-                  class="btn btn-secondary float-sm-left"
-                  type="button"
-                  data-dismiss="modal"
-                >
+                <button class="btn btn-secondary float-sm-left" type="button" data-dismiss="modal">
                   Tutup
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-primary "
-                  data-dismiss="modal"
-                  onClick={handleSave}
-                >
+                <button type="button" class="btn btn-primary " data-dismiss="modal" onClick={handleSave}>
                   Simpan Perubahan
                 </button>
               </div>

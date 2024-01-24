@@ -27,20 +27,17 @@ const sampah = [
   },
 ];
 
-const Table_Permintaan_Penukaran = () => {
+const Table_Permintaan_Penukaran_Sampah = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
-  const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState(0);
+  const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState([]);
 
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim&isPagination=true",
-        { headers }
-      );
-      setPermintaanPenukaranSampah(response.data.data.length);
-      console.log(response.data.data.length);
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim", { headers });
+      setPermintaanPenukaranSampah(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -62,27 +59,15 @@ const Table_Permintaan_Penukaran = () => {
     };
   }, []);
 
-  const userKeluarAkun = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("udah keluar akun berhasil");
-      })
-      .catch((error) => console.log(error));
-  };
-
   const tolakPermintaan = () => {
-    const isConfirmed = window.confirm(
-      "Apakah Anda yakin ingin menolak permintaan ini?"
-    );
+    const isConfirmed = window.confirm("Apakah Anda yakin ingin menolak permintaan ini?");
     if (isConfirmed) {
       toastr.error("Permintaan telah ditolak!", "Berhasil!");
     }
   };
 
   const setujuiPermintaan = () => {
-    const isConfirmed = window.confirm(
-      "Apakah Anda yakin ingin menyetujui permintaan ini?"
-    );
+    const isConfirmed = window.confirm("Apakah Anda yakin ingin menyetujui permintaan ini?");
     if (isConfirmed) {
       toastr.success("Perimntaan telah disetujui!", "Berhasil!");
     }
@@ -97,29 +82,16 @@ const Table_Permintaan_Penukaran = () => {
             Table_Permintaan_Penukaran_Sampah
           </h3>
           <div className="card-tools">
-            <button
-              type="button"
-              className="btn btn-tool"
-              data-card-widget="collapse"
-            >
+            <button type="button" className="btn btn-tool" data-card-widget="collapse">
               <i className="fas fa-minus" />
             </button>
-            <button
-              type="button"
-              className="btn btn-tool"
-              data-card-widget="remove"
-            >
+            <button type="button" className="btn btn-tool" data-card-widget="remove">
               <i className="fas fa-times" />
             </button>
           </div>
         </div>
         <div class="tab-content" id="nav-tabContent">
-          <div
-            class="tab-pane fade show active"
-            id="nav-home"
-            role="tabpanel"
-            aria-labelledby="nav-home-tab"
-          >
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div className="card-body table-responsive p-0">
               <table className="table table-striped table-valign-middle ">
                 <thead>
@@ -131,21 +103,16 @@ const Table_Permintaan_Penukaran = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {dataprofil.map((item) => (
-                    <tr key={item.id_order}>
-                      <td>{item.id_order}</td>
-                      <td>{item.nama}</td>
-                      <td>{item.waktu}</td>
+                  {permintaanPenukaranSampah.map((item) => (
+                    <tr key={item.id_slip}>
+                      <td>{item.id_slip}</td>
+                      <td>{item.nama_user}</td>
+                      <td>{item.tanggal.date.year}</td>
                       <td className="d-flex">
-                        <button
-                          type="button"
-                          className="btn-primary border-0 mr-2"
-                          data-toggle="modal"
-                          data-target="#modal_proses_sampah"
-                        >
-                          Proses
+                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah">
+                          Detail
                         </button>
-                        <button className="btn-danger border-0">Tolak</button>
+                        {/* <button className="btn-danger border-0">Tolak</button> */}
                       </td>
                     </tr>
                   ))}
@@ -156,15 +123,7 @@ const Table_Permintaan_Penukaran = () => {
         </div>
       </div>
 
-      <div
-        className="modal fade"
-        id="modal_proses_sampah"
-        data-backdrop="static"
-        data-keyboard="false"
-        tabIndex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
+      <div className="modal fade" id="modal_proses_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header border-0">
@@ -172,12 +131,7 @@ const Table_Permintaan_Penukaran = () => {
                 <i className="fas fa-chart-pie mr-1" />
                 ID Penukaran XXXXXXXXX
               </h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -230,11 +184,7 @@ const Table_Permintaan_Penukaran = () => {
                         </td>
                         <td>
                           <div className="input-group mb-3">
-                            <input
-                              type="number"
-                              className="form-control"
-                              aria-label={`berat_barang_${index}`}
-                            />
+                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} />
                             <div className="input-group-append">
                               <span className="input-group-text">kg</span>
                             </div>
@@ -257,20 +207,10 @@ const Table_Permintaan_Penukaran = () => {
             </div>
 
             <div className="modal-footer text-center justify-content-center">
-              <button
-                type="button"
-                className="btn btn-danger px-5 py-2 "
-                data-dismiss="modal"
-                onClick={tolakPermintaan}
-              >
+              <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={tolakPermintaan}>
                 Tolak
               </button>
-              <button
-                type="button"
-                className="btn btn-success px-5 py-2"
-                data-dismiss="modal"
-                onClick={setujuiPermintaan}
-              >
+              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={setujuiPermintaan}>
                 Setujui
               </button>
             </div>
@@ -281,4 +221,4 @@ const Table_Permintaan_Penukaran = () => {
   );
 };
 
-export default Table_Permintaan_Penukaran;
+export default Table_Permintaan_Penukaran_Sampah;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
-import Table_Permintaan_Penukaran from "../elements/Elements_Home/Table_Permintaan_Penukaran/Table_Permintaan_Penukaran";
+import Table_Permintaan_Penukaran_Sampah from "../elements/Elements_Home/Table_Permintaan_Penukaran_Sampah/Table_Permintaan_Penukaran_Sampah";
 import Table_Permintaan_Penukaran_Sembako from "../elements/Elements_Home/Table_Permintaan_Penukaran_Sembako/Table_Permintaan_Penukaran_Sembako";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
@@ -13,10 +13,7 @@ const SemuaOrderTabel = () => {
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim&isPagination=true",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim&isPagination=true", { headers });
       setPermintaanPenukaranSampah(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -53,18 +50,10 @@ const SemuaOrderTabel = () => {
       <div className="card">
         <div className="card-header border-1">
           <div className="card-tools">
-            <button
-              type="button"
-              className="btn btn-tool"
-              data-card-widget="collapse"
-            >
+            <button type="button" className="btn btn-tool" data-card-widget="collapse">
               <i className="fas fa-minus" />
             </button>
-            <button
-              type="button"
-              className="btn btn-tool"
-              data-card-widget="remove"
-            >
+            <button type="button" className="btn btn-tool" data-card-widget="remove">
               <i className="fas fa-times" />
             </button>
           </div>
@@ -72,49 +61,21 @@ const SemuaOrderTabel = () => {
 
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button
-              class="nav-link active"
-              id="nav-home-tab"
-              data-toggle="tab"
-              data-target="#nav-home"
-              type="button"
-              role="tab"
-              aria-controls="nav-home"
-              aria-selected="true"
-            >
+            <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
               Sampah
             </button>
-            <button
-              class="nav-link"
-              id="nav-profile-tab"
-              data-toggle="tab"
-              data-target="#nav-profile"
-              type="button"
-              role="tab"
-              aria-controls="nav-profile"
-              aria-selected="false"
-            >
+            <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
               Sembako
             </button>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-          <div
-            class="tab-pane fade show active"
-            id="nav-home"
-            role="tabpanel"
-            aria-labelledby="nav-home-tab"
-          >
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div className="card-body table-responsive p-0 m-2">
-              <Table_Permintaan_Penukaran />
+              <Table_Permintaan_Penukaran_Sampah />
             </div>
           </div>
-          <div
-            class="tab-pane fade"
-            id="nav-profile"
-            role="tabpanel"
-            aria-labelledby="nav-profile-tab"
-          >
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div className="card-body table-responsive p-0 m-2">
               <Table_Permintaan_Penukaran_Sembako />
             </div>
@@ -122,15 +83,7 @@ const SemuaOrderTabel = () => {
         </div>
       </div>
 
-      <div
-        className="modal fade"
-        id="modal_proses"
-        data-backdrop="static"
-        data-keyboard="false"
-        tabIndex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
+      <div className="modal fade" id="modal_proses" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header border-0">
@@ -138,12 +91,7 @@ const SemuaOrderTabel = () => {
                 <i className="fas fa-chart-pie mr-1" />
                 ID Penukaran XXXXXXXXX
               </h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -171,11 +119,7 @@ const SemuaOrderTabel = () => {
 
               <div className="justify-content-center d-flex justify-content-between m-4">
                 <h5>Pengaturan Penukaran</h5>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">
                   Tambah Data
                 </button>
               </div>
@@ -196,10 +140,7 @@ const SemuaOrderTabel = () => {
                       <td>1</td>
                       <td>
                         <div className="input-group mb-3">
-                          <select
-                            className="custom-select"
-                            id="inputGroupSelect01"
-                          >
+                          <select className="custom-select" id="inputGroupSelect01">
                             <option selected>Pilih Jenis</option>
                             <option value="1">Kertas</option>
                             <option value="1">Buku</option>
@@ -211,20 +152,14 @@ const SemuaOrderTabel = () => {
                       </td>
                       <td>
                         <div className="input-group mb-3">
-                          <input
-                            type="number"
-                            className="form-control"
-                            aria-label="20202"
-                          />
+                          <input type="number" className="form-control" aria-label="20202" />
                           <div className="input-group-append">
                             <span className="input-group-text">kg</span>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <button className="btn-danger border-0 mr-2">
-                          Hapus
-                        </button>
+                        <button className="btn-danger border-0 mr-2">Hapus</button>
                       </td>
                     </tr>
                   </tbody>
