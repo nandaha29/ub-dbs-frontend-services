@@ -45,7 +45,7 @@ const DashboardPage = () => {
   const getNasabahPerluVerifikasi = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0", { headers });
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50", { headers });
       setNasabahPerluVerifikasiCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
