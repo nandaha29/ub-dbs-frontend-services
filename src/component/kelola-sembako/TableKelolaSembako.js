@@ -48,11 +48,11 @@ const TableKelolaSembako = () => {
   const [kelolaSembako, setKelolaSembako] = useState([]);
 
   const [data_nasabah, setDataNasabah] = useState([]);
-  const [id_sembako, setIdSembako] = useState("");
-  const [name_sembako, setNameSembako] = useState("");
+  const [id_slip, setIdSembako] = useState(0);
+  const [nama_sembako, setNameSembako] = useState("");
   const [status, setStatus] = useState("");
-  const [poin_sembako, setPoinSembako] = useState(0);
-  const [stok_sembako, setStokSembako] = useState(0);
+  const [poin_per, setPoinSembako] = useState(0);
+  const [stok, setStokSembako] = useState(0);
 
   const getKelolaSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
@@ -153,16 +153,16 @@ const TableKelolaSembako = () => {
       </div>
       <div class="container-fluid">
         <div class="table-responsive p-0 pb-2">
-          <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
+          <table id="table" className="table mb-0 table-striped">
             <thead>
               <tr>
-                <th className="text-uppercase  text-sm text-center pl-4">ID Sembako</th>
-                <th className="text-uppercase  text-sm text-center pl-4">Foto</th>
-                <th className="text-uppercase  text-sm text-center pl-4">Nama Sembako</th>
-                <th className="text-uppercase  text-sm text-center pl-4">Poin per 0,5 kg</th>
-                <th className="text-uppercase  text-sm text-center pl-4">Stok</th>
-                <th className="text-uppercase  text-sm text-center pl-4">Status</th>
-                <th className="text-uppercase  text-sm text-center">Action</th>
+                <th className="text-uppercase  text-sm ">ID Sembako</th>
+                <th className="text-uppercase  text-sm ">Foto</th>
+                <th className="text-uppercase  text-sm ">Nama Sembako</th>
+                <th className="text-uppercase  text-sm ">Poin per 0,5 kg</th>
+                <th className="text-uppercase  text-sm ">Stok</th>
+                <th className="text-uppercase  text-sm ">Status</th>
+                <th className="text-uppercase  text-sm ">Action</th>
               </tr>
             </thead>
 
@@ -175,18 +175,29 @@ const TableKelolaSembako = () => {
                   <td>{item.nama_sembako}</td>
                   <td>{item.poin_per}</td>
                   <td>{item.stok}</td>
-                  <td>{item.status}</td>
-                  <td className="d-flex">
-                    <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah">
-                      Detail
+                  <td className="">
+                    <button
+                      className={`mt-1 mx-2 text-center ${item.status === "Aktif" ? "btn btn-success btn-sm pl-5 pr-5 text-center" : item.status === "Diarsipkan" ? "btn btn-secondary btn-sm pl-4 pr-4 text-center" : ""}`}
+                      style={{ pointerEvents: "none" }}
+                    >
+                      {item.status}
                     </button>
-                    <button className="btn-danger border-0">Tolak</button>
+                  </td>
+                  <td className="d-flex ">
+                    <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_return_whitelist" onClick={() => editItem(item)}>
+                      Edit
+                    </button>
+                    <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => toggleStatus(item)}>
+                      {item.status === "Aktif" ? "Arsipkan" : "Aktifkan"}
+                    </button>
+                    <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => handleDelete(item)}>
+                      Hapus
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {/* MODALS EDIT */}
         </div>
       </div>
 
