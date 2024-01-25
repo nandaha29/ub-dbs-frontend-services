@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, useRef, Component } from "react";
 import axios from "axios";
+import $ from 'jquery';
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../../config/firebase";
@@ -31,17 +32,42 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
   const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState([]);
+  const [formData, setFormData] = useState({})
+  const modalRef = useRef(null);
+  // modalRef.current.style.display = 'block';
+  // modalRef.current.style.display = 'none';
 
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim", { headers });
       setPermintaanPenukaranSampah(response.data.data);
-      // console.log(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  const getPermintaanID = async (ids) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get(`https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`, { headers });
+      setFormData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleDetailClick = async (id) => {
+    try {
+      await getPermintaanID(id);
+      modalRef.current.open = true;
+    } catch (error) {
+      console.error("Error handling detail click:", error);
+    }
+  };
+
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -59,16 +85,34 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     };
   }, []);
 
-  const tolakPermintaan = () => {
+  const accga = async (ids,stat) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/slip/menabung?status=${stat}`,
+      {
+        "no_tabungan": ids,
+        "id_petugas": "PETUGASxVQsD34MhNI-gjKnMaiYp",
+        "status": stat,
+        "items_sampah": formData.list_sampah
+      }, { headers });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const tolakPermintaan = (ids) => {
     const isConfirmed = window.confirm("Apakah Anda yakin ingin menolak permintaan ini?");
     if (isConfirmed) {
+      accga(ids,2)
       toastr.error("Permintaan telah ditolak!", "Berhasil!");
     }
   };
 
-  const setujuiPermintaan = () => {
+  const setujuiPermintaan = (ids) => {
     const isConfirmed = window.confirm("Apakah Anda yakin ingin menyetujui permintaan ini?");
     if (isConfirmed) {
+      accga(ids,1)
       toastr.success("Perimntaan telah disetujui!", "Berhasil!");
     }
   };
@@ -90,8 +134,8 @@ const Table_Permintaan_Penukaran_Sampah = () => {
             </button>
           </div>
         </div>
-        <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div className="tab-content" id="nav-tabContent">
+          <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div className="card-body table-responsive p-0">
               <table className="table table-striped table-valign-middle ">
                 <thead>
@@ -109,7 +153,12 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                       <td>{item.nama_user}</td>
                       <td>{item.tanggal.date.year}</td>
                       <td className="d-flex">
-                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah">
+                        <button
+                          type="button"
+                          className="btn-primary border-0 mr-2"
+                          data-toggle="modal" data-target="#modal_proses_sampah"
+                          onClick={() => handleDetailClick(item.id_slip)}
+                        >
                           Detail
                         </button>
                         {/* <button className="btn-danger border-0">Tolak</button> */}
@@ -123,13 +172,13 @@ const Table_Permintaan_Penukaran_Sampah = () => {
         </div>
       </div>
 
-      <div className="modal fade" id="modal_proses_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div className="modal fade" ref={modalRef} id="modal_proses_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header border-0">
               <h5 className="modal-title" id="staticBackdropLabel">
                 <i className="fas fa-chart-pie mr-1" />
-                ID Penukaran XXXXXXXXX
+                ID Penukaran <p className="text-secondary">{formData.no_tabungan}</p>
               </h5>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -142,19 +191,19 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                   <thead>
                     <tr>
                       <th scope="col">Nama Pemohon</th>
-                      <th scope="col">Waktu Request</th>
+                      {/* <th scope="col">Waktu Request</th> */}
                       <th scope="col">ID Pemohon</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {dataprofil.map((item) => (
-                      <tr key={item.id_order}>
-                        <td>{item.nama}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.id_nasabah}</td>
+                    {/* {dataprofil.map((item) => ( */}
+                      <tr key={formData.no_tabungan}>
+                        <td>{formData.nasabah}</td>
+                        {/* <td>{formData.tanggal.date}</td> */}
+                        <td>{formData.id_user}</td>
                       </tr>
-                    ))}
+                    {/* ))} */}
                   </tbody>
                 </table>
               </div>
@@ -174,17 +223,17 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                   </thead>
 
                   <tbody>
-                    {sampah.map((item, index) => (
+                  {formData.list_sampah && formData.list_sampah.map((item, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
-                          <label>{item.jenis_sampah}</label>
+                          <label>{item.nama_sampah}</label>
                           <br />
                           <label className="text-sm">{item.points}</label>
                         </td>
                         <td>
                           <div className="input-group mb-3">
-                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} />
+                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} disabled/>
                             <div className="input-group-append">
                               <span className="input-group-text">kg</span>
                             </div>
@@ -199,7 +248,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
               <h5 className="text-center">
                 {" "}
                 <span className="font-weight-normal">Total</span>
-                <span> +304 Poin</span>
+                <span> {formData.total_poin} Poin</span>
               </h5>
               <div className="text-center">
                 <button className="btn btn-dark px-4">Hitung</button>
@@ -207,10 +256,10 @@ const Table_Permintaan_Penukaran_Sampah = () => {
             </div>
 
             <div className="modal-footer text-center justify-content-center">
-              <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={tolakPermintaan}>
+              <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={()=>tolakPermintaan(formData.no_tabungan)}>
                 Tolak
               </button>
-              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={setujuiPermintaan}>
+              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={()=>setujuiPermintaan(formData.no_tabungan)}>
                 Setujui
               </button>
             </div>
