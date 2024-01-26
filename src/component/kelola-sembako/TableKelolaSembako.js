@@ -48,18 +48,19 @@ const TableKelolaSembako = () => {
   const [kelolaSembako, setKelolaSembako] = useState([]);
 
   const [data_nasabah, setDataNasabah] = useState([]);
-  const [id_slip, setIdSembako] = useState(0);
-  const [nama_sembako, setNameSembako] = useState("");
+  const [id, setIdSembako] = useState(0);
+  const [nama, setNameSembako] = useState("");
+  const [thumbnail, setFotoSembako] = useState("");
   const [status, setStatus] = useState("");
-  const [poin_per, setPoinSembako] = useState(0);
+  const [harga_tukar_poin, setPoinSembako] = useState(0);
   const [stok, setStokSembako] = useState(0);
 
   const getKelolaSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true", { headers });
-      setKelolaSembako(response.data.data);
-      console.log(response.data.data);
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran", { headers });
+      setKelolaSembako(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -124,6 +125,7 @@ const TableKelolaSembako = () => {
   const clearFields = () => {
     setIdSembako("");
     setNameSembako("");
+    setFotoSembako("");
     setStatus("");
     setPoinSembako(0);
     setStokSembako(0);
@@ -168,20 +170,20 @@ const TableKelolaSembako = () => {
 
             {/* <tbody className="text-center">{this.showTable()}</tbody> */}
             <tbody>
-              {dataprofil.map((item) => (
-                <tr key={item.id_slip}>
-                  <td>{item.id_slip}</td>
-                  <td>{item.thumbnail}</td>
-                  <td>{item.nama_sembako}</td>
-                  <td>{item.poin_per}</td>
+              {kelolaSembako.map((item) => (
+                <tr key={item.id}>
+                  <td className="col-md-1">{item.id}</td>
+                  <td className="col-md-1">{item.img_url}</td>
+                  <td>{item.nama}</td>
+                  <td>{item.harga_tukar_poin}</td>
                   <td>{item.stok}</td>
                   <td className="">
-                    <button
+                    {/* <button
                       className={`mt-1 mx-2 text-center ${item.status === "Aktif" ? "btn btn-success btn-sm pl-5 pr-5 text-center" : item.status === "Diarsipkan" ? "btn btn-secondary btn-sm pl-4 pr-4 text-center" : ""}`}
                       style={{ pointerEvents: "none" }}
-                    >
-                      {item.status}
-                    </button>
+                    > */}
+                    {item.status}
+                    {/* </button> */}
                   </td>
                   <td className="d-flex ">
                     <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_return_whitelist" onClick={() => editItem(item)}>
