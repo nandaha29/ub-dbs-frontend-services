@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Component } from "react";
 import axios from "axios";
-import $ from 'jquery';
+import $ from "jquery";
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../../config/firebase";
@@ -32,7 +32,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
   const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState([]);
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
   // modalRef.current.style.display = 'block';
   // modalRef.current.style.display = 'none';
@@ -68,7 +68,6 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     }
   };
 
-
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -85,16 +84,19 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     };
   }, []);
 
-  const accga = async (ids,stat) => {
+  const getParam = async (ids, stat) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/slip/menabung?status=${stat}`,
-      {
-        "no_tabungan": ids,
-        "id_petugas": "PETUGASxVQsD34MhNI-gjKnMaiYp",
-        "status": stat,
-        "items_sampah": formData.list_sampah
-      }, { headers });
+      const response = await axios.put(
+        `https://devel4-filkom.ub.ac.id/slip/menabung?status=${stat}`,
+        {
+          no_tabungan: ids,
+          id_petugas: "PETUGASxVQsD34MhNI-gjKnMaiYp",
+          status: stat,
+          items_sampah: formData.list_sampah,
+        },
+        { headers }
+      );
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -104,7 +106,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const tolakPermintaan = (ids) => {
     const isConfirmed = window.confirm("Apakah Anda yakin ingin menolak permintaan ini?");
     if (isConfirmed) {
-      accga(ids,2)
+      getParam(ids, 2);
       toastr.error("Permintaan telah ditolak!", "Berhasil!");
     }
   };
@@ -112,7 +114,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const setujuiPermintaan = (ids) => {
     const isConfirmed = window.confirm("Apakah Anda yakin ingin menyetujui permintaan ini?");
     if (isConfirmed) {
-      accga(ids,1)
+      getParam(ids, 1);
       toastr.success("Perimntaan telah disetujui!", "Berhasil!");
     }
   };
@@ -153,12 +155,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                       <td>{item.nama_user}</td>
                       <td>{item.tanggal.date.year}</td>
                       <td className="d-flex">
-                        <button
-                          type="button"
-                          className="btn-primary border-0 mr-2"
-                          data-toggle="modal" data-target="#modal_proses_sampah"
-                          onClick={() => handleDetailClick(item.id_slip)}
-                        >
+                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail
                         </button>
                         {/* <button className="btn-danger border-0">Tolak</button> */}
@@ -185,24 +182,27 @@ const Table_Permintaan_Penukaran_Sampah = () => {
               </button>
             </div>
             <div className="modal-body">
-              <h5 className="m-4">Profil Penukaran</h5>
+              <h5 className="mb-4 ml-4">Profil Penukaran</h5>
               <div className="row m-4">
                 <table className="table table-bordered">
                   <thead>
                     <tr>
                       <th scope="col">Nama Pemohon</th>
-                      {/* <th scope="col">Waktu Request</th> */}
+                      <th scope="col">Waktu Request</th>
                       <th scope="col">ID Pemohon</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     {/* {dataprofil.map((item) => ( */}
-                      <tr key={formData.no_tabungan}>
-                        <td>{formData.nasabah}</td>
-                        {/* <td>{formData.tanggal.date}</td> */}
-                        <td>{formData.id_user}</td>
-                      </tr>
+                    <tr key={formData.no_tabungan}>
+                      <td>{formData.nasabah}</td>
+                      <td>
+                        {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
+                        {/* {formData.tanggal.date.day} */} 12/09
+                      </td>
+                      <td>{formData.id_user}</td>
+                    </tr>
                     {/* ))} */}
                   </tbody>
                 </table>
@@ -218,29 +218,37 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                     <tr>
                       <th scope="col">No.</th>
                       <th scope="col">Jenis Sampah</th>
+                      <th scope="col">Poin/kg</th>
                       <th scope="col">Berat Barang</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                  {formData.list_sampah && formData.list_sampah.map((item, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>
-                          <label>{item.nama_sampah}</label>
-                          <br />
-                          <label className="text-sm">{item.points}</label>
-                        </td>
-                        <td>
-                          <div className="input-group mb-3">
-                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} disabled/>
-                            <div className="input-group-append">
-                              <span className="input-group-text">kg</span>
+                    {formData.list_sampah &&
+                      formData.list_sampah.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>
+                            <label>{item.nama_sampah}</label>
+                          </td>
+                          <td>
+                            <label className="text-sm ">{item.jumlah_poin}</label>
+                          </td>
+                          {/* <td>
+                            <label>{item.nama_sampah}</label>
+                            <br />
+                            <label className="text-sm text-sx">{item.points}</label>
+                          </td> */}
+                          <td>
+                            <div className="input-group mb-3">
+                              <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} />
+                              <div className="input-group-append">
+                                <span className="input-group-text">kg</span>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -248,18 +256,16 @@ const Table_Permintaan_Penukaran_Sampah = () => {
               <h5 className="text-center">
                 {" "}
                 <span className="font-weight-normal">Total</span>
+                {/* <span> {formData.total_poin + formData.jumlah_poin} Poin</span> */}
                 <span> {formData.total_poin} Poin</span>
               </h5>
-              <div className="text-center">
-                <button className="btn btn-dark px-4">Hitung</button>
-              </div>
             </div>
 
             <div className="modal-footer text-center justify-content-center">
-              <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={()=>tolakPermintaan(formData.no_tabungan)}>
+              <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={() => tolakPermintaan(formData.no_tabungan)}>
                 Tolak
               </button>
-              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={()=>setujuiPermintaan(formData.no_tabungan)}>
+              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={() => setujuiPermintaan(formData.no_tabungan)}>
                 Setujui
               </button>
             </div>

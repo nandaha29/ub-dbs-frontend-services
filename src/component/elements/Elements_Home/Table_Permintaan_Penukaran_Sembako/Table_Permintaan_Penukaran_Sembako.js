@@ -1,6 +1,6 @@
 //Table_Permintaan_Penukaran_Sembako
 
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, useRef, Component } from "react";
 import axios from "axios";
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -36,6 +36,8 @@ const sampah = [
 const Table_Permintaan_Penukaran_Sembako = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
+  const [formData, setFormData] = useState({});
+  const modalRef = useRef(null);
   const [permintaanPenukaranSembako, setPermintaanPenukaranSembako] = useState([]);
 
   const getPermintaanPenukaranSembako = async () => {
@@ -44,6 +46,27 @@ const Table_Permintaan_Penukaran_Sembako = () => {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true", { headers });
       setPermintaanPenukaranSembako(response.data.data);
       console.log(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getPermintaanID = async (ids) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/slip/penukaran/${ids}`,
+        {
+          id: ids,
+          nama: formData.nama,
+          harga_tukar_poin: formData.harga_tukar_poin,
+          img_url: formData.img_url,
+          items_sampah: formData.list_sampah,
+        },
+        { headers }
+      );
+      setFormData(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -87,6 +110,15 @@ const Table_Permintaan_Penukaran_Sembako = () => {
     }
   };
 
+  const handleDetailClick = async (id) => {
+    try {
+      await getPermintaanID(id);
+      modalRef.current.open = true;
+    } catch (error) {
+      console.error("Error handling detail click:", error);
+    }
+  };
+
   return (
     <div>
       <div className="card">
@@ -123,7 +155,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                       <td>{item.nama_user}</td>
                       <td>{item.tanggal.date.year}</td>
                       <td className="d-flex">
-                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sembako">
+                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sembako" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail
                         </button>
                         {/* <button className="btn-danger border-0">Tolak</button> */}
@@ -137,20 +169,20 @@ const Table_Permintaan_Penukaran_Sembako = () => {
         </div>
       </div>
 
-      <div className="modal fade" id="modal_proses_sembako" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div className="modal fade" ref={modalRef} id="modal_proses_sembako" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header border-0">
               <h5 className="modal-title" id="staticBackdropLabel">
                 <i className="fas fa-chart-pie mr-1" />
-                ID Penukaran XXXXXXXXX
+                ID Penukaran <p className="text-secondary">{formData.id}</p>
               </h5>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className="modal-body">
-              <h5 className="m-4">Profil Penukaran</h5>
+              <h5 className="ml-4">Profil Penukaran</h5>
               <div className="row m-4">
                 <table className="table table-bordered">
                   <thead>
@@ -162,13 +194,14 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                   </thead>
 
                   <tbody>
-                    {dataprofil.map((item) => (
-                      <tr key={item.id_order}>
-                        <td>{item.nama}</td>
-                        <td>{item.waktu}</td>
-                        <td>{item.id_nasabah}</td>
-                      </tr>
-                    ))}
+                    <tr key={formData.no_tabungan}>
+                      <td>{formData.nasabah}</td>
+                      <td>
+                        {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
+                        12/09
+                      </td>
+                      <td>{formData.id_user}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -183,29 +216,56 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                     <tr>
                       <th scope="col">No.</th>
                       <th scope="col">Jenis Sembako</th>
+                      <th scope="col">Poin/kg</th>
                       <th scope="col">Berat Barang</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {sampah.map((item, index) => (
+                    {/* {sampah.map((item, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
                           <label>{item.jenis_sampah}</label>
-                          <br />
+                        </td>
+                        <td>
                           <label className="text-sm">{item.points}</label>
                         </td>
                         <td>
                           <div className="input-group mb-3">
-                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} />
+                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} disabled />
                             <div className="input-group-append">
                               <span className="input-group-text">kg</span>
                             </div>
                           </div>
                         </td>
                       </tr>
-                    ))}
+                    ))} */}
+                    {formData.items_penukaran &&
+                      formData.items_penukaran.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>
+                            <label>{item.nama_barang}</label>
+                          </td>
+                          <td>
+                            <label className="text-sm">{item.total_harga_poin}</label>
+                          </td>
+                          {/* <td>
+                            <label>{item.nama_sampah}</label>
+                            <br />
+                            <label className="text-sm text-sx">{item.points}</label>
+                          </td> */}
+                          <td>
+                            <div className="input-group mb-3">
+                              <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} readOnly />
+                              <div className="input-group-append">
+                                <span className="input-group-text">kg</span>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -213,11 +273,8 @@ const Table_Permintaan_Penukaran_Sembako = () => {
               <h5 className="text-center">
                 {" "}
                 <span className="font-weight-normal">Total</span>
-                <span> -304 Poin</span>
+                <span> ... Poin</span>
               </h5>
-              <div className="text-center">
-                <button className="btn btn-dark px-4">Hitung</button>
-              </div>
             </div>
 
             <div className="modal-footer text-center justify-content-center">

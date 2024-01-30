@@ -20,20 +20,6 @@ const names = [
     age: 28,
     address_nasabah: "Software Developer",
   },
-  {
-    id_nasabah: 1001022,
-    name_nasabah: "Harry Styles",
-    no_telp: "081234567893",
-    age: 28,
-    address_nasabah: "Software Developer",
-  },
-  {
-    id_nasabah: 1001033,
-    name_nasabah: "Harry haha",
-    no_telp: "081234567893",
-    age: 28,
-    address_nasabah: "Software Developer",
-  },
 ];
 
 // DATA DUMMY BUAT TABEL RIwAYAT NASABAH
@@ -116,15 +102,11 @@ class TableDataNasabah extends Component {
 
   handleDeleteNasabah = async () => {
     const { editingItem } = this.state;
-    const confirmDelete = window.confirm(
-      "Apakah Anda yakin ingin menghapus nasabah ini?"
-    );
+    const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus nasabah ini?");
 
     if (confirmDelete) {
       try {
-        const newData = this.state.data_nasabah.filter(
-          (nasabah) => nasabah.id_nasabah !== editingItem.id_nasabah
-        );
+        const newData = this.state.data_nasabah.filter((nasabah) => nasabah.id_nasabah !== editingItem.id_nasabah);
 
         // Close the modal after 500 milliseconds (adjust the time as needed)
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -153,11 +135,7 @@ class TableDataNasabah extends Component {
     const { editingItemIndex, editingItem, data_nasabah } = this.state;
 
     // Validasi input (tambahkan validasi sesuai kebutuhan)
-    if (
-      !editingItem.name_nasabah ||
-      !editingItem.no_telp ||
-      !editingItem.address_nasabah
-    ) {
+    if (!editingItem.name_nasabah || !editingItem.no_telp || !editingItem.address_nasabah) {
       alert("Semua field harus diisi");
       return;
     }
@@ -189,9 +167,7 @@ class TableDataNasabah extends Component {
   };
 
   handleLihatNasabah = (selectedId) => {
-    const selectedNasabah = names.find(
-      (nasabah) => nasabah.id_nasabah === selectedId
-    );
+    const selectedNasabah = names.find((nasabah) => nasabah.id_nasabah === selectedId);
     this.setState({ selectedNasabah });
   };
 
@@ -240,12 +216,7 @@ class TableDataNasabah extends Component {
               // },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -330,27 +301,13 @@ class TableDataNasabah extends Component {
             <td className="mt-1 mx-2">{item.address_nasabah}</td>
             <td className="d-flex justify-content-center">
               {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button
-                className="btn btn-primary btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_liat_data_nasabah"
-                onClick={() => this.handleLihatNasabah(item.id_nasabah)}
-              >
+              <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_liat_data_nasabah" onClick={() => this.handleLihatNasabah(item.id_nasabah)}>
                 Lihat
               </button>
-              <button
-                className="btn btn-success btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_tiwayat_transaksi"
-              >
+              <button className="btn btn-success btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_tiwayat_transaksi">
                 Riwayat
               </button>
-              <button
-                className="btn btn-warning btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_edit_nasabah"
-                onClick={() => this.editItem(index)}
-              >
+              <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit_nasabah" onClick={() => this.editItem(index)}>
                 Edit
               </button>
               {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
@@ -364,24 +321,14 @@ class TableDataNasabah extends Component {
   };
 
   render() {
-    const { activeButton, showSemuaTable, showSampahTable, showSembakoTable } =
-      this.state;
-    const {
-      activeButtonEdit,
-      showInfoTable,
-      newNasabah,
-      showUbahTable,
-      showHapusTable,
-    } = this.state;
+    const { activeButton, showSemuaTable, showSampahTable, showSembakoTable } = this.state;
+    const { activeButtonEdit, showInfoTable, newNasabah, showUbahTable, showHapusTable } = this.state;
 
     return (
       <>
         <div class="container-fluid">
           <div class="table-responsive p-0 pb-2">
-            <table
-              id="table"
-              className="table align-items-center justify-content-center mb-0 table-striped"
-            >
+            <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
               <thead>
                 <tr>
                   <th className="text-uppercase   ">#</th>
@@ -398,15 +345,7 @@ class TableDataNasabah extends Component {
           </div>
         </div>
         {/* MODAL EDIT DATA NASABAH SECTION */}
-        <div
-          class="modal fade"
-          id="modal_edit_nasabah"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_edit_nasabah" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
@@ -414,12 +353,7 @@ class TableDataNasabah extends Component {
                   <i className="fas fa-chart-pie mr-1" />
                   Edit Data Nasabah
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -429,17 +363,11 @@ class TableDataNasabah extends Component {
                     {/* PROFIL */}
                     <div className="col-md-5" id="">
                       <div className="text-center">
-                        <img
-                          src="dist/img/user2-160x160.jpg"
-                          className="img-circle elevation-2"
-                          alt="User Image"
-                        />
+                        <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
                       </div>
                       <form className="m-5">
                         <div class="form-group row ">
-                          <label class="col-sm-5 col-form-label">
-                            ID Nasabah
-                          </label>
+                          <label class="col-sm-5 col-form-label">ID Nasabah</label>
                           <div class="col-sm-7 ">
                             <div type="text" className="mt-2  font-weight-bold">
                               : {this.state.editingItem.id_nasabah}
@@ -449,35 +377,23 @@ class TableDataNasabah extends Component {
                         <div class="form-group row">
                           <label class="col-sm-5">Nama</label>
                           <div class="col-sm-7">
-                            <div className=" font-weight-bold">
-                              : {this.state.editingItem.name_nasabah}
-                            </div>
+                            <div className=" font-weight-bold">: {this.state.editingItem.name_nasabah}</div>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label
-                            for="inputPassword"
-                            class="col-sm-5 col-form-label"
-                          >
+                          <label for="inputPassword" class="col-sm-5 col-form-label">
                             No HP / WA
                           </label>
                           <div class="col-sm-7">
-                            <div className="mt-2 font-weight-bold">
-                              : {this.state.editingItem.no_telp}
-                            </div>
+                            <div className="mt-2 font-weight-bold">: {this.state.editingItem.no_telp}</div>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label
-                            for="inputPassword"
-                            class="col-sm-5 col-form-label"
-                          >
+                          <label for="inputPassword" class="col-sm-5 col-form-label">
                             Alamat Nasabah
                           </label>
                           <div class="col-sm-7">
-                            <div className=" font-weight-bold mt-2">
-                              : {this.state.editingItem.address_nasabah}
-                            </div>
+                            <div className=" font-weight-bold mt-2">: {this.state.editingItem.address_nasabah}</div>
                           </div>
                         </div>
                       </form>
@@ -485,40 +401,13 @@ class TableDataNasabah extends Component {
                     {/* info dkk */}
                     <div className="col-md-7 custom-border">
                       <div className="btn-group ml-3">
-                        <button
-                          className={`btn ${
-                            activeButtonEdit === "Info Nasabah"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() =>
-                            this.handleButtonClickonEdit("Info Nasabah")
-                          }
-                        >
+                        <button className={`btn ${activeButtonEdit === "Info Nasabah" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClickonEdit("Info Nasabah")}>
                           Info Nasabah
                         </button>
-                        <button
-                          className={`btn ${
-                            activeButtonEdit === "Ubah Password"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() =>
-                            this.handleButtonClickonEdit("Ubah Password")
-                          }
-                        >
+                        <button className={`btn ${activeButtonEdit === "Ubah Password" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClickonEdit("Ubah Password")}>
                           Ubah Password
                         </button>
-                        <button
-                          className={`btn ${
-                            activeButtonEdit === "Hapus Akun"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() =>
-                            this.handleButtonClickonEdit("Hapus Akun")
-                          }
-                        >
+                        <button className={`btn ${activeButtonEdit === "Hapus Akun" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClickonEdit("Hapus Akun")}>
                           Hapus Akun
                         </button>
                       </div>
@@ -529,64 +418,23 @@ class TableDataNasabah extends Component {
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label for="namaNasabah">Nama Nasabah</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  id="namaNasabah"
-                                  placeholder="Nama"
-                                  value={this.state.editingItem.name_nasabah}
-                                  onChange={(e) =>
-                                    this.handleEditInputChange(
-                                      "name_nasabah",
-                                      e.target.value
-                                    )
-                                  }
-                                />
+                                <input type="text" className="form-control" id="namaNasabah" placeholder="Nama" value={this.state.editingItem.name_nasabah} onChange={(e) => this.handleEditInputChange("name_nasabah", e.target.value)} />
                               </div>
                             </div>
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label for="noHpWa">No HP/WA</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  id="noHpWa"
-                                  placeholder="Nomor HP"
-                                  value={this.state.editingItem.no_telp}
-                                  onChange={(e) =>
-                                    this.handleEditInputChange(
-                                      "no_telp",
-                                      e.target.value
-                                    )
-                                  }
-                                />
+                                <input type="text" className="form-control" id="noHpWa" placeholder="Nomor HP" value={this.state.editingItem.no_telp} onChange={(e) => this.handleEditInputChange("no_telp", e.target.value)} />
                               </div>
                             </div>
                             <div className="col-md-12">
                               <div className="form-group">
                                 <label for="alamat">Alamat</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  id="alamat"
-                                  placeholder="Alamat"
-                                  value={this.state.editingItem.address_nasabah}
-                                  onChange={(e) =>
-                                    this.handleEditInputChange(
-                                      "address_nasabah",
-                                      e.target.value
-                                    )
-                                  }
-                                />
+                                <input type="text" className="form-control" id="alamat" placeholder="Alamat" value={this.state.editingItem.address_nasabah} onChange={(e) => this.handleEditInputChange("address_nasabah", e.target.value)} />
                               </div>
                             </div>
                             <div className="modal-footer float-sm-right">
-                              <button
-                                type="button"
-                                className="btn btn-primary "
-                                data-dismiss="modal"
-                                onClick={this.handleEditNasabah}
-                              >
+                              <button type="button" className="btn btn-primary " data-dismiss="modal" onClick={this.handleEditNasabah}>
                                 Simpan
                               </button>
                             </div>
@@ -597,23 +445,13 @@ class TableDataNasabah extends Component {
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label for="namaNasabah">Password Baru</label>
-                                <input
-                                  type="password"
-                                  className="form-control"
-                                  id="PwdChange"
-                                  placeholder=""
-                                />
+                                <input type="password" className="form-control" id="PwdChange" placeholder="" />
                               </div>
                             </div>
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label for="noHpWa">Konfirmasi Password</label>
-                                <input
-                                  type="password"
-                                  className="form-control"
-                                  id="PwdConf"
-                                  placeholder=""
-                                />
+                                <input type="password" className="form-control" id="PwdConf" placeholder="" />
                               </div>
                             </div>
                           </div>
@@ -622,27 +460,11 @@ class TableDataNasabah extends Component {
                           <div className="">
                             <div className="col-md-10">
                               <div className="form-group">
-                                <div className="bg-red font-weight-bold pl-3 text-white text-lg">
-                                  Perhatian!
-                                </div>
+                                <div className="bg-red font-weight-bold pl-3 text-white text-lg">Perhatian!</div>
                                 <div className="bg-grey text-black text-md py-3">
-                                  <div className="font-weight-semibold text-justify">
-                                    Dengan menekan tombol “Hapus Akun” dibawah,
-                                    akun nasabah beserta data yang telah ada
-                                    akan terhapus secara permanen dan tidak
-                                    dapat dipulihkan lagi.
-                                  </div>
-                                  <button
-                                    type="button"
-                                    className="text-left btn bg-red text-white text-md my-3"
-                                    data-dismiss="modal"
-                                    aria-label="Close"
-                                    onClick={this.handleDeleteNasabah}
-                                  >
-                                    <span
-                                      className=" px-2 py-2 font-weight-semibold"
-                                      aria-hidden="true"
-                                    >
+                                  <div className="font-weight-semibold text-justify">Dengan menekan tombol “Hapus Akun” dibawah, akun nasabah beserta data yang telah ada akan terhapus secara permanen dan tidak dapat dipulihkan lagi.</div>
+                                  <button type="button" className="text-left btn bg-red text-white text-md my-3" data-dismiss="modal" aria-label="Close" onClick={this.handleDeleteNasabah}>
+                                    <span className=" px-2 py-2 font-weight-semibold" aria-hidden="true">
                                       Hapus Akun
                                     </span>
                                   </button>
@@ -660,15 +482,7 @@ class TableDataNasabah extends Component {
           </div>
         </div>
         {/* MODAL LIHAT DATA NASABAH SECTION */}
-        <div
-          class="modal fade"
-          id="modal_liat_data_nasabah"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_liat_data_nasabah" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header ">
@@ -676,12 +490,7 @@ class TableDataNasabah extends Component {
                   <i className="fas fa-chart-pie mr-1" />
                   Detail Nasabah
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -690,19 +499,13 @@ class TableDataNasabah extends Component {
                 <div className="modal-image d-flex justify-content-center">
                   {/* <img src={logo} alt="Logo" className="brand-image " /> */}
                   {/* MAKE A LINGKARAN FOR IMAGE */}
-                  <img
-                    src="dist/img/avatar5.png"
-                    className="img-circle elevation-2"
-                    alt="User Image"
-                  />
+                  <img src="dist/img/avatar5.png" className="img-circle elevation-2" alt="User Image" />
                 </div>
                 <form className="m-5">
                   {this.state.selectedNasabah && (
                     <>
                       <div class="form-group row ">
-                        <label class="col-sm-5 col-form-label">
-                          ID Nasabah
-                        </label>
+                        <label class="col-sm-5 col-form-label">ID Nasabah</label>
                         <div class="col-sm-7 ">
                           <div type="text" className="mt-2  font-weight-bold">
                             : {this.state.selectedNasabah.id_nasabah}
@@ -712,35 +515,23 @@ class TableDataNasabah extends Component {
                       <div class="form-group row">
                         <label class="col-sm-5">Nama</label>
                         <div class="col-sm-7">
-                          <div className=" font-weight-bold">
-                            : {this.state.selectedNasabah.name_nasabah}
-                          </div>
+                          <div className=" font-weight-bold">: {this.state.selectedNasabah.name_nasabah}</div>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label
-                          for="inputPassword"
-                          class="col-sm-5 col-form-label"
-                        >
+                        <label for="inputPassword" class="col-sm-5 col-form-label">
                           No HP / WA
                         </label>
                         <div class="col-sm-7">
-                          <div className="mt-2 font-weight-bold">
-                            : {this.state.selectedNasabah.no_telp}
-                          </div>
+                          <div className="mt-2 font-weight-bold">: {this.state.selectedNasabah.no_telp}</div>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label
-                          for="inputPassword"
-                          class="col-sm-5 col-form-label"
-                        >
+                        <label for="inputPassword" class="col-sm-5 col-form-label">
                           Alamat Nasabah
                         </label>
                         <div class="col-sm-7">
-                          <div className=" font-weight-bold mt-2">
-                            : {this.state.selectedNasabah.address_nasabah}
-                          </div>
+                          <div className=" font-weight-bold mt-2">: {this.state.selectedNasabah.address_nasabah}</div>
                         </div>
                       </div>
                     </>
@@ -758,27 +549,14 @@ class TableDataNasabah extends Component {
           </div>
         </div>
         {/* MODAL rIWAYAT NASABAH SECTION ORI (GANTI id ke modal_detail_nasabah buat ngaktifin terus ganti id yg satunya)*/}
-        <div
-          class="modal fade"
-          id="modal_tiwayat_transaksi1"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_tiwayat_transaksi1" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header ">
                 <h5 class="modal-title" id="staticBackdropLabel">
                   Riwayat Transaksi Nasabah
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -788,17 +566,11 @@ class TableDataNasabah extends Component {
                     {/* PROFILE */}
                     <div className="mt-5 col-md-3">
                       <div className="text-center">
-                        <img
-                          src="dist/img/user2-160x160.jpg"
-                          className="img-circle elevation-2"
-                          alt="User Image"
-                        />
+                        <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
                       </div>
                       <form className="m-5">
                         <div class="form-group row ">
-                          <label class="col-sm-5 col-form-label">
-                            ID Nasabah
-                          </label>
+                          <label class="col-sm-5 col-form-label">ID Nasabah</label>
                           <div class="col-sm-7 ">
                             <div type="text" className="mt-2  font-weight-bold">
                               : 100104
@@ -808,48 +580,31 @@ class TableDataNasabah extends Component {
                         <div class="form-group row">
                           <label class="col-sm-5">Nama</label>
                           <div class="col-sm-7">
-                            <div className=" font-weight-bold">
-                              : Harry Styles
-                            </div>
+                            <div className=" font-weight-bold">: Harry Styles</div>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label
-                            for="inputPassword"
-                            class="col-sm-5 col-form-label"
-                          >
+                          <label for="inputPassword" class="col-sm-5 col-form-label">
                             No HP / WA
                           </label>
                           <div class="col-sm-7">
-                            <div className="mt-2 font-weight-bold">
-                              : 085155280972
-                            </div>
+                            <div className="mt-2 font-weight-bold">: 085155280972</div>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label
-                            for="inputPassword"
-                            class="col-sm-5 col-form-label"
-                          >
+                          <label for="inputPassword" class="col-sm-5 col-form-label">
                             Verifikator
                           </label>
                           <div class="col-sm-7">
-                            <div className="mt-2 font-weight-bold">
-                              : Mimi Kapaldi
-                            </div>
+                            <div className="mt-2 font-weight-bold">: Mimi Kapaldi</div>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label
-                            for="inputPassword"
-                            class="col-sm-5 col-form-label"
-                          >
+                          <label for="inputPassword" class="col-sm-5 col-form-label">
                             Alamat Nasabah
                           </label>
                           <div class="col-sm-7">
-                            <div className=" font-weight-bold mt-2">
-                              : Di kota Malang deket UB
-                            </div>
+                            <div className=" font-weight-bold mt-2">: Di kota Malang deket UB</div>
                           </div>
                         </div>
                       </form>
@@ -857,34 +612,13 @@ class TableDataNasabah extends Component {
                     {/* BUTTONS */}
                     <div className="col-md-9 mt-5">
                       <div className="btn-group ml-3">
-                        <button
-                          className={`btn ${
-                            activeButton === "Semua"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() => this.handleButtonClick("Semua")}
-                        >
+                        <button className={`btn ${activeButton === "Semua" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClick("Semua")}>
                           Semua
                         </button>
-                        <button
-                          className={`btn ${
-                            activeButton === "Sampah"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() => this.handleButtonClick("Sampah")}
-                        >
+                        <button className={`btn ${activeButton === "Sampah" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClick("Sampah")}>
                           Sampah
                         </button>
-                        <button
-                          className={`btn ${
-                            activeButton === "Sembako"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() => this.handleButtonClick("Sembako")}
-                        >
+                        <button className={`btn ${activeButton === "Sembako" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClick("Sembako")}>
                           Sembako
                         </button>
                       </div>
@@ -910,23 +644,11 @@ class TableDataNasabah extends Component {
                                   <td>{item.tanggal_sembako}</td>
                                   <td>{item.Petugas}</td>
                                   <td>
-                                    <button
-                                      className={
-                                        item.transaksi === "Tukar Sembako"
-                                          ? "btn btn-success"
-                                          : "btn btn-warning"
-                                      }
-                                    >
-                                      {item.transaksi}
-                                    </button>
+                                    <button className={item.transaksi === "Tukar Sembako" ? "btn btn-success" : "btn btn-warning"}>{item.transaksi}</button>
                                   </td>
                                   <td>{item.poin}</td>
                                   <td>
-                                    <button
-                                      className="btn btn-primary"
-                                      data-toggle="modal"
-                                      data-target="#modal_detail_nasabah"
-                                    >
+                                    <button className="btn btn-primary" data-toggle="modal" data-target="#modal_detail_nasabah">
                                       Detail
                                     </button>
                                   </td>
@@ -949,26 +671,18 @@ class TableDataNasabah extends Component {
                             </thead>
                             <tbody className="text-center">
                               {sampah
-                                .filter(
-                                  (item) => item.transaksi === "Tukar Sampah"
-                                )
+                                .filter((item) => item.transaksi === "Tukar Sampah")
                                 .map((item) => (
                                   <tr key={item.id_sembako}>
                                     <td>{item.id_sembako}</td>
                                     <td>{item.tanggal_sembako}</td>
                                     <td>{item.Petugas}</td>
                                     <td>
-                                      <button className="btn btn-warning">
-                                        {item.transaksi}
-                                      </button>
+                                      <button className="btn btn-warning">{item.transaksi}</button>
                                     </td>
                                     <td>{item.poin}</td>
                                     <td>
-                                      <button
-                                        className="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#modal_detail_nasabah"
-                                      >
+                                      <button className="btn btn-primary" data-toggle="modal" data-target="#modal_detail_nasabah">
                                         Detail
                                       </button>
                                     </td>
@@ -991,26 +705,18 @@ class TableDataNasabah extends Component {
                             </thead>
                             <tbody className="text-center">
                               {sampah
-                                .filter(
-                                  (item) => item.transaksi === "Tukar Sembako"
-                                )
+                                .filter((item) => item.transaksi === "Tukar Sembako")
                                 .map((item) => (
                                   <tr key={item.id_sembako}>
                                     <td>{item.id_sembako}</td>
                                     <td>{item.tanggal_sembako}</td>
                                     <td>{item.Petugas}</td>
                                     <td>
-                                      <button className="btn btn-success">
-                                        {item.transaksi}
-                                      </button>
+                                      <button className="btn btn-success">{item.transaksi}</button>
                                     </td>
                                     <td>{item.poin}</td>
                                     <td>
-                                      <button
-                                        className="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#modal_detail_nasabah"
-                                      >
+                                      <button className="btn btn-primary" data-toggle="modal" data-target="#modal_detail_nasabah">
                                         Detail
                                       </button>
                                     </td>
@@ -1038,27 +744,14 @@ class TableDataNasabah extends Component {
           </div>
         </div>
         {/* MODAL rIWAYAT NASABAH SECTION (GANTI id ke modal_detail_nasabah buat ngaktifin terus ganti id yg satunya)*/}
-        <div
-          class="modal fade"
-          id="modal_tiwayat_transaksi"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_tiwayat_transaksi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header ">
                 <h5 class="modal-title" id="staticBackdropLabel">
                   Riwayat Transaksi Nasabah
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -1068,34 +761,13 @@ class TableDataNasabah extends Component {
                     {/* BUTTONS */}
                     <div className="col-xl-12 mt-5">
                       <div className="btn-group">
-                        <button
-                          className={`btn ${
-                            activeButton === "Semua"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() => this.handleButtonClick("Semua")}
-                        >
+                        <button className={`btn ${activeButton === "Semua" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClick("Semua")}>
                           Semua
                         </button>
-                        <button
-                          className={`btn ${
-                            activeButton === "Sampah"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() => this.handleButtonClick("Sampah")}
-                        >
+                        <button className={`btn ${activeButton === "Sampah" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClick("Sampah")}>
                           Sampah
                         </button>
-                        <button
-                          className={`btn ${
-                            activeButton === "Sembako"
-                              ? "btn-primary mr-2"
-                              : "btn mr-2"
-                          }`}
-                          onClick={() => this.handleButtonClick("Sembako")}
-                        >
+                        <button className={`btn ${activeButton === "Sembako" ? "btn-primary mr-2" : "btn mr-2"}`} onClick={() => this.handleButtonClick("Sembako")}>
                           Sembako
                         </button>
                       </div>
@@ -1121,23 +793,11 @@ class TableDataNasabah extends Component {
                                   <td>{item.tanggal_sembako}</td>
                                   <td>{item.Petugas}</td>
                                   <td>
-                                    <button
-                                      className={
-                                        item.transaksi === "Tukar Sembako"
-                                          ? "btn btn-success"
-                                          : "btn btn-warning"
-                                      }
-                                    >
-                                      {item.transaksi}
-                                    </button>
+                                    <button className={item.transaksi === "Tukar Sembako" ? "btn btn-success" : "btn btn-warning"}>{item.transaksi}</button>
                                   </td>
                                   <td>{item.poin}</td>
                                   <td>
-                                    <button
-                                      className="btn btn-primary"
-                                      data-toggle="modal"
-                                      data-target="#modal_detail_nasabah"
-                                    >
+                                    <button className="btn btn-primary" data-toggle="modal" data-target="#modal_detail_nasabah">
                                       Detail
                                     </button>
                                   </td>
@@ -1160,26 +820,18 @@ class TableDataNasabah extends Component {
                             </thead>
                             <tbody className="text-center">
                               {sampah
-                                .filter(
-                                  (item) => item.transaksi === "Tukar Sampah"
-                                )
+                                .filter((item) => item.transaksi === "Tukar Sampah")
                                 .map((item) => (
                                   <tr key={item.id_sembako}>
                                     <td>{item.id_sembako}</td>
                                     <td>{item.tanggal_sembako}</td>
                                     <td>{item.Petugas}</td>
                                     <td>
-                                      <button className="btn btn-warning">
-                                        {item.transaksi}
-                                      </button>
+                                      <button className="btn btn-warning">{item.transaksi}</button>
                                     </td>
                                     <td>{item.poin}</td>
                                     <td>
-                                      <button
-                                        className="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#modal_detail_nasabah"
-                                      >
+                                      <button className="btn btn-primary" data-toggle="modal" data-target="#modal_detail_nasabah">
                                         Detail
                                       </button>
                                     </td>
@@ -1202,26 +854,18 @@ class TableDataNasabah extends Component {
                             </thead>
                             <tbody className="text-center">
                               {sampah
-                                .filter(
-                                  (item) => item.transaksi === "Tukar Sembako"
-                                )
+                                .filter((item) => item.transaksi === "Tukar Sembako")
                                 .map((item) => (
                                   <tr key={item.id_sembako}>
                                     <td>{item.id_sembako}</td>
                                     <td>{item.tanggal_sembako}</td>
                                     <td>{item.Petugas}</td>
                                     <td>
-                                      <button className="btn btn-success">
-                                        {item.transaksi}
-                                      </button>
+                                      <button className="btn btn-success">{item.transaksi}</button>
                                     </td>
                                     <td>{item.poin}</td>
                                     <td>
-                                      <button
-                                        className="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#modal_detail_nasabah"
-                                      >
+                                      <button className="btn btn-primary" data-toggle="modal" data-target="#modal_detail_nasabah">
                                         Detail
                                       </button>
                                     </td>
@@ -1249,15 +893,7 @@ class TableDataNasabah extends Component {
           </div>
         </div>
         {/* MODAL DETAIL RIWAYAT */}
-        <div
-          class="modal fade"
-          id="modal_detail_nasabah"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_detail_nasabah" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
@@ -1265,12 +901,7 @@ class TableDataNasabah extends Component {
                   <i className="fas fa-chart-pie mr-1" />
                   ID Penukaran XXXXXXXX
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -1279,40 +910,27 @@ class TableDataNasabah extends Component {
                   <div className="row" id="outer-container">
                     {/* info dkk */}
                     <div>
-                      <div className="font-weight-semibold ml-4">
-                        Profile Penukaran
-                      </div>
+                      <div className="font-weight-semibold ml-4">Profile Penukaran</div>
                       <div className="row">
                         <div className="col-md-8">
-                          <div
-                            id="ini_left"
-                            className="ml-5 bg-grey mt-2 col-md-12"
-                          >
+                          <div id="ini_left" className="ml-5 bg-grey mt-2 col-md-12">
                             <div className="row">
                               <div className="col-md-6">
-                                <div className="text-black font-weight-bold">
-                                  Nama Nasabah
-                                </div>
+                                <div className="text-black font-weight-bold">Nama Nasabah</div>
                                 <div>Andi Budiono</div>
                               </div>
                               <div className="col-md-6">
-                                <div className="text-black font-weight-bold">
-                                  Waktu Request
-                                </div>
+                                <div className="text-black font-weight-bold">Waktu Request</div>
                                 <div>2023-01-10 08:14</div>
                               </div>
                             </div>
                             <div className="row">
                               <div className="col-md-6">
-                                <div className="text-black font-weight-bold">
-                                  ID Nasabah
-                                </div>
+                                <div className="text-black font-weight-bold">ID Nasabah</div>
                                 <div>100104</div>
                               </div>
                               <div className="col-md-6">
-                                <div className="text-black font-weight-bold">
-                                  Petugas
-                                </div>
+                                <div className="text-black font-weight-bold">Petugas</div>
                                 <div>Agung</div>
                               </div>
                             </div>
@@ -1320,9 +938,7 @@ class TableDataNasabah extends Component {
                         </div>
                         <div className="col-md-5">
                           <div id="right" className="col-md-12">
-                            <div className="text-black font-weight-bold mt-2 ml-4">
-                              Transaksi Selesai
-                            </div>
+                            <div className="text-black font-weight-bold mt-2 ml-4">Transaksi Selesai</div>
                             <div className="ml-4">2023-01-19 13:14</div>
                           </div>
                         </div>
@@ -1364,9 +980,7 @@ class TableDataNasabah extends Component {
                       <div className="row text-right mt-4">
                         <div className="col-md-12 d-flex justify-content-end align-items-end">
                           <div className="text-right">total</div>
-                          <div className="font-weight-bold text-right ml-2">
-                            2,375 Poin
-                          </div>
+                          <div className="font-weight-bold text-right ml-2">2,375 Poin</div>
                         </div>
                       </div>
                     </div>

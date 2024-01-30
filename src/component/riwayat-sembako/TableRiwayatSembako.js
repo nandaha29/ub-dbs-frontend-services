@@ -85,12 +85,7 @@ class TableRiwayatSembako extends Component {
               // },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -124,13 +119,7 @@ class TableRiwayatSembako extends Component {
             <td className="mt-1 mx-2 text-center">{item.name_nasabah}</td>
             <td className="text-center justify-content-center flex">
               <button
-                className={`mt-1 mx-2 ${
-                  item.berat_nasabah === "Berhasil Di Proses"
-                    ? "btn btn-success btn-sm px-3 text-center"
-                    : item.berat_nasabah === "Ditolak"
-                    ? "btn btn-danger btn-sm px-5 text-center"
-                    : ""
-                }`}
+                className={`mt-1 mx-2 ${item.berat_nasabah === "Berhasil Di Proses" ? "btn btn-success btn-sm px-3 text-center" : item.berat_nasabah === "Ditolak" ? "btn btn-danger btn-sm px-5 text-center" : ""}`}
                 style={{ pointerEvents: "none" }}
               >
                 {item.berat_nasabah}
@@ -139,11 +128,7 @@ class TableRiwayatSembako extends Component {
             <td className="mt-1 mx-2 text-center">- {item.poin_nasabah}</td>
             <td className="mt-1 mx-2 text-center">{item.waktu_transaksi}</td>
             <td className="d-flex justify-content-center">
-              <button
-                className="btn btn-primary btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_detail_sembako"
-              >
+              <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sembako">
                 Lihat Detail
               </button>
             </td>
@@ -160,29 +145,16 @@ class TableRiwayatSembako extends Component {
       <>
         <div class="container-fluid">
           <div class="table-responsive p-0 pb-2">
-            <table
-              id="table"
-              className="table align-items-center justify-content-center mb-0 table-striped"
-            >
+            <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
               <thead>
                 <tr>
                   {/* <th className="text-uppercase  text-sm ">#</th> */}
-                  <th className="text-uppercase  text-sm text-center">
-                    ID Transaksi
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Nama Nasabah
-                  </th>
-                  <th className="text-uppercase  text-sm text-center ">
-                    Status
-                  </th>
+                  <th className="text-uppercase  text-sm text-center">ID Transaksi</th>
+                  <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
+                  <th className="text-uppercase  text-sm text-center ">Status</th>
                   <th className="text-uppercase  text-sm text-center">Poin</th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Waktu Transaksi
-                  </th>
-                  <th className="text-uppercase  text-sm text-center ">
-                    Action
-                  </th>
+                  <th className="text-uppercase  text-sm text-center">Waktu Transaksi</th>
+                  <th className="text-uppercase  text-sm text-center ">Action</th>
                 </tr>
               </thead>
 
@@ -190,15 +162,7 @@ class TableRiwayatSembako extends Component {
             </table>
           </div>
           {/* modal detail  */}
-          <div
-            class="modal fade"
-            id="modal_detail_sembako"
-            data-backdrop="static"
-            data-keyboard="false"
-            tabindex="-1"
-            aria-labelledby="staticBackdropLabel"
-            aria-hidden="true"
-          >
+          <div class="modal fade" id="modal_detail_sembako" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header border-0">
@@ -206,12 +170,7 @@ class TableRiwayatSembako extends Component {
                     <i className="fas fa-chart-pie mr-1" />
                     ID Riwayat Penukaran XXXXXXXXX
                   </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -281,11 +240,7 @@ class TableRiwayatSembako extends Component {
 
                 <div class="modal-footer ">
                   <div class="float-sm-left">
-                    <button
-                      type="button"
-                      class="btn btn-secondary "
-                      data-dismiss="modal"
-                    >
+                    <button type="button" class="btn btn-secondary " data-dismiss="modal">
                       Tutup
                     </button>
                   </div>

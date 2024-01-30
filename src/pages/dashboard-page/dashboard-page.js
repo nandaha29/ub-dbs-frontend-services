@@ -134,12 +134,8 @@ const DashboardPage = () => {
           <div className="content-header">
             <div className="container-fluid">
               <div className="row mb-2">
-                {/* style={{ backgroundColor: "blue" }} */}
                 <div className="col-sm-9 d-flex">
-                  <h1 className="m-0">
-                    Welcome,
-                    {/* {adminName}{" "} */}
-                  </h1>
+                  <h1 className="m-0">Welcome,</h1>
 
                   {authUser ? (
                     <>
@@ -173,9 +169,9 @@ const DashboardPage = () => {
                     <div className="icon">
                       <HiUsers />
                     </div>
-                    <a href="#" className="small-box-footer">
+                    {/* <a href="#" className="small-box-footer">
                       Selengkapnya <i className="fas fa-arrow-circle-right" />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 {/* Tambahkan bagian lainnya sesuai kebutuhan */}
@@ -189,9 +185,9 @@ const DashboardPage = () => {
                     <div className="icon">
                       <HiUsers />
                     </div>
-                    <a href="#" className="small-box-footer">
+                    {/* <a href="#" className="small-box-footer">
                       Selengkapnya <i className="fas fa-arrow-circle-right" />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 <div className="col-lg-3 col-6">
@@ -204,9 +200,9 @@ const DashboardPage = () => {
                     <div className="icon">
                       <HiUsers />
                     </div>
-                    <a href="#" className="small-box-footer">
+                    {/* <a href="#" className="small-box-footer">
                       Selengkapnya <i className="fas fa-arrow-circle-right" />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 <div className="col-lg-3 col-6">
@@ -219,9 +215,9 @@ const DashboardPage = () => {
                     <div className="icon">
                       <HiUsers />
                     </div>
-                    <a href="#" className="small-box-footer">
+                    {/* <a href="#" className="small-box-footer">
                       Selengkapnya <i className="fas fa-arrow-circle-right" />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 {/* </div> */}
