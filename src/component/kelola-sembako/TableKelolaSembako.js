@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, Component } from "react";
 import axios from "axios";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
+import { useForm } from "react-hook-form";
 
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
@@ -48,14 +49,17 @@ const TableKelolaSembako = () => {
   const [kelolaSembako, setKelolaSembako] = useState([]);
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const [data_nasabah, setDataNasabah] = useState([]);
-  const [id, setIdSembako] = useState(0);
-  const [nama, setNameSembako] = useState("");
-  const [thumbnail, setFotoSembako] = useState("");
-  const [status, setStatus] = useState("");
-  const [harga_tukar_poin, setPoinSembako] = useState(0);
-  const [stok, setStokSembako] = useState(0);
+  const form = useForm({
+    defaultValues: {
+      id: formData.id,
+      nama: formData.nama,
+      hargaTukar: formData.harga_tukar_poin,
+      thumbnail: formData.img_url,
+      stok: formData.stok
+    }
+  });
 
   const getKelolaSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
@@ -68,68 +72,14 @@ const TableKelolaSembako = () => {
     }
   };
 
-  // const showTable = () => {
-  //   return kelolaSembako.map((item, index) => {
-  //     return (
-  //       <tr key={index}>
-  //         <td className="mt-1 mx-2">{index + 1}</td>
-  //         <td className="mt-1 mx-2">{item.id_sembako}</td>
-  //         <td className="mt-1 mx-2">
-  //           <img src={`data:image/png;base64, ${item.foto_sembako}`} alt={`Foto ${item.foto_sembako}`} style={{ width: "50px" }} />
-  //         </td>
-  //         <td className="mt-1 mx-2">{item.name_sembako}</td>
-  //         <td className="mt-1 mx-2">{item.poin_sembako}</td>
-  //         <td className="mt-1 mx-2">{item.stok_sembako}</td>
-  //         <td>
-  //           <button
-  //             className={`mt-1 mx-2 text-center ${item.status === "Aktif" ? "btn btn-success btn-sm pl-5 pr-5 text-center" : item.status === "Diarsipkan" ? "btn btn-secondary btn-sm pl-4 pr-4 text-center" : ""}`}
-  //             style={{ pointerEvents: "none" }}
-  //           >
-  //             {item.status}
-  //           </button>
-  //         </td>
-  //         <td className="d-flex justify-content-center">
-  //           <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_return_whitelist" onClick={() => editItem(index)}>
-  //             Edit
-  //           </button>
-  //           <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => toggleStatus(index)}>
-  //             {item.status === "Aktif" ? "Arsipkan" : "Aktifkan"}
-  //           </button>
-  //           <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => handleDelete(index)}>
-  //             Hapus
-  //           </button>
-  //         </td>
-  //       </tr>
-  //     );
-  //   });
-  // };
-
-  const handleTambahSembako = () => {
-    // Add new sembako to data_nasabah using setDataNasabah
-  };
-
-  const clearFields = () => {
-    setIdSembako("");
-    setNameSembako("");
-    setFotoSembako("");
-    setStatus("");
-    setPoinSembako(0);
-    setStokSembako(0);
-  };
-
-  const editItem = (index) => {
-    // Set editingItem using data_nasabah[index]
-    // Open modal for editing
-  };
-
-  const toggleStatus = (index) => {
-    // Change status of data_nasabah[index]
-    // Update data_nasabah using setDataNasabah
-  };
-
-  const handleDelete = (index) => {
-    // Remove data\_nasabah[index] from data\_nasabah
-    // Update data\_nasabah using setDataNasabah
+  const evidenceRef = useRef(null);
+  const handleGambar = (e) => {
+    const gambarmu = e.target.files?.[0];
+    if (gambarmu) {
+      const imageUrl = URL.createObjectURL(gambarmu);
+      setSelectedImage(imageUrl);
+    }
+    form.setValue('thumbnail', gambarmu);
   };
 
   const getPermintaanID = async (ids) => {
@@ -138,6 +88,42 @@ const TableKelolaSembako = () => {
       const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       setFormData(response.data);
       console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const arsip = async (ids, stat) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      let response;
+      response = await (stat === "AKTIF"
+        ? axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=false`, {}, { headers })
+        : axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`, {}, { headers })
+      );
+      console.log(response)
+      if (response.status === 200) {
+        alert('Berhasil mengubah status barang penukaran');
+      } else {
+        alert('Gagal mengubah status barang penukaran');
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const hapus = async (ids) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.delete(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
+      console.log(response.data);
+      if (response.status === 200) {
+        alert('Berhasil menghapus barang penukaran');
+      } else {
+        alert('Gagal menghapus barang penukaran');
+      }
+      window.location.reload();
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -152,6 +138,40 @@ const TableKelolaSembako = () => {
     }
   };
 
+  const handleApprove = async (formData) => {
+    const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data', };
+    try {
+      const formDataWithFile = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'thumbnail' && key !== 'id') {
+          formDataWithFile.append(key, value);
+        }
+      });
+      if (formData.thumbnail) {
+        formDataWithFile.append('thumbnail', formData.thumbnail);
+      }
+      for (var pair of formDataWithFile.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+      }
+      const response = await axios.put(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`,
+        formDataWithFile,
+        { headers }
+      )
+      if (response.status === 200) {
+        alert('Berhasil mengubah isi barang penukaran');
+      } else {
+        alert('Gagal mengubah isi barang penukaran');
+      }
+      console.log(response)
+      form.reset();
+      window.location.reload();
+    } catch (error) {
+      console.error('Error approving program:', error);
+    }
+  };
+
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -162,11 +182,18 @@ const TableKelolaSembako = () => {
       } else {
         setAuthUser(null);
       }
-    });
+    },
+      form.setValue('id', formData.id),
+      form.setValue('nama', formData.nama),
+      form.setValue('hargaTukar', formData.harga_tukar_poin),
+      form.setValue('thumbnail', formData.img_url),
+      form.setValue('stok', formData.stok),
+      setSelectedImage(formData.img_url)
+    );
     return () => {
       listen();
     };
-  }, []);
+  }, [formData]);
   return (
     <>
       <div className="mr-4 float-sm-right">
@@ -194,7 +221,7 @@ const TableKelolaSembako = () => {
               {kelolaSembako.map((item) => (
                 <tr key={item.id}>
                   <td className="col-md-1">{item.id}</td>
-                  <td className="col-md-1">{item.img_url}</td>
+                  <td className="col-md-1"><img src={item.img_url} width="50" height="50"></img></td>
                   <td>{item.nama}</td>
                   <td>{item.harga_tukar_poin}</td>
                   <td>{item.stok}</td>
@@ -207,13 +234,13 @@ const TableKelolaSembako = () => {
                     {/* </button> */}
                   </td>
                   <td className="d-flex ">
-                    <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id_slip)}>
+                    <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
                       Edit
                     </button>
-                    <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => toggleStatus(item)}>
-                      Arsipkan
+                    <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => arsip(item.id, item.status)}>
+                      {item.status === "AKTIF" ? "Arsipkan" : "Aktifkan"}
                     </button>
-                    <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => handleDelete(item)}>
+                    <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => hapus(item.id)}>
                       Hapus
                     </button>
                   </td>
@@ -244,10 +271,17 @@ const TableKelolaSembako = () => {
                     <div className="form-group"></div>
                   </div>
                   <div className="col-md-8 pb-4">
-                    <div className="">
-                      {/* <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div> */}
+                    <div className="text-center">
+                      <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div>
                       {/* <input type="file" accept=".png" onChange={this.handleImageUpload} /> */}
-                      preview foto aja
+                      <input
+                        type="file"
+                        ref={evidenceRef}
+                        className="w-full input-bordered pt-2"
+                        accept="image/*"
+                        onChange={handleGambar}
+                      // {...form.register('banner')}
+                      />
                     </div>
                   </div>
                 </div>
@@ -273,27 +307,20 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      {/* <input
+                      <input
                         type="text"
-                        className="form-control text-sm font-weight-bold"
-                        value={formData.nama_sembako}
-                        onChange={(e) =>
-                          this.setState({
-                            editingItem: {
-                              ...this.state.editingItem,
-                              name_sembako: e.target.value,
-                            },
-                          })
-                        }
-                      /> */}
-                      <div className="input-group mb-3">
+                        className="form-control text-sm"
+                        // value={formData.nama}
+                        {...form.register('nama')}
+                      />
+                      {/* <div className="input-group mb-3">
                         <input
                           type="number"
                           className="form-control"
                           // aria-label={formData.nama}
                           placeholder={formData.nama}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -305,27 +332,20 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      {/* <input
-                        type="number"
-                        className="form-control text-sm font-weight-bold "
-                        value={formData.poin_per}
-                        onChange={(e) =>
-                          this.setState({
-                            editingItem: {
-                              ...this.state.editingItem,
-                              poin_sembako: parseInt(e.target.value),
-                            },
-                          })
-                        }
-                      /> */}
-                      <div className="input-group mb-3">
+                      <input
+                        type="text"
+                        className="form-control text-sm"
+                        // value={formData.nama}
+                        {...form.register('hargaTukar')}
+                      />
+                      {/* <div className="input-group mb-3">
                         <input
                           type="number"
                           className="form-control"
                           // aria-label={formData.nama}
                           placeholder={formData.harga_tukar_poin}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -337,27 +357,20 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      {/* <input
-                        type="number"
-                        className="form-control text-sm font-weight-bold"
-                        value={stok}
-                        onChange={(e) =>
-                          this.setState({
-                            editingItem: {
-                              ...this.state.editingItem,
-                              stok_sembako: parseInt(e.target.value),
-                            },
-                          })
-                        }
-                      /> */}
-                      <div className="input-group mb-3">
+                      <input
+                        type="text"
+                        className="form-control text-sm"
+                        // value={formData.nama}
+                        {...form.register('stok')}
+                      />
+                      {/* <div className="input-group mb-3">
                         <input
                           type="number"
                           className="form-control"
                           // aria-label={formData.nama}
                           placeholder={formData.nama}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -368,7 +381,7 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                // onClick={this.closeModal}
+              // onClick={this.closeModal}
               >
                 Batal
               </button>
@@ -376,7 +389,8 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-primary"
                 data-dismiss="modal"
-                // onClick={this.saveChanges}
+                onClick={form.handleSubmit(handleApprove)}
+              // onClick={this.saveChanges}
               >
                 Simpan
               </button>
@@ -422,8 +436,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                        // value={this.state.id_sembako}
-                        // onChange={(e) => this.setState({ id_sembako: e.target.value })}
+                      // value={this.state.id_sembako}
+                      // onChange={(e) => this.setState({ id_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -439,8 +453,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                        // value={this.state.name_sembako}
-                        // onChange={(e) => this.setState({ name_sembako: e.target.value })}
+                      // value={this.state.name_sembako}
+                      // onChange={(e) => this.setState({ name_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -456,8 +470,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                        // value={this.state.status}
-                        // onChange={(e) => this.setState({ status: e.target.value })}
+                      // value={this.state.status}
+                      // onChange={(e) => this.setState({ status: e.target.value })}
                       />
                     </div>
                   </div>
@@ -473,8 +487,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="number"
                         className="form-control text-sm font-weight-bold "
-                        // value={this.state.poin_sembako}
-                        // onChange={(e) => this.setState({ poin_sembako: e.target.value })}
+                      // value={this.state.poin_sembako}
+                      // onChange={(e) => this.setState({ poin_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -490,8 +504,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="number"
                         className="form-control text-sm font-weight-bold"
-                        // value={this.state.stok_sembako}
-                        // onChange={(e) => this.setState({ stok_sembako: e.target.value })}
+                      // value={this.state.stok_sembako}
+                      // onChange={(e) => this.setState({ stok_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -503,14 +517,14 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                // onClick={this.closeModal}
+              // onClick={this.closeModal}
               >
                 Batal
               </button>
               <button
                 type="button"
                 className="btn btn-secondary"
-                // onClick={this.clearFields}
+              // onClick={this.clearFields}
               >
                 Refresh
               </button>
@@ -518,7 +532,7 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-primary"
                 data-dismiss="modal"
-                // onClick={this.handleTambahSembako}
+              // onClick={this.handleTambahSembako}
               >
                 Simpan
               </button>
