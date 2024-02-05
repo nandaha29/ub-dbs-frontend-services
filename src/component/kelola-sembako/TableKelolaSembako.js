@@ -57,8 +57,8 @@ const TableKelolaSembako = () => {
       nama: formData.nama,
       hargaTukar: formData.harga_tukar_poin,
       thumbnail: formData.img_url,
-      stok: formData.stok
-    }
+      stok: formData.stok,
+    },
   });
 
   const getKelolaSembako = async () => {
@@ -79,7 +79,7 @@ const TableKelolaSembako = () => {
       const imageUrl = URL.createObjectURL(gambarmu);
       setSelectedImage(imageUrl);
     }
-    form.setValue('thumbnail', gambarmu);
+    form.setValue("thumbnail", gambarmu);
   };
 
   const getPermintaanID = async (ids) => {
@@ -99,13 +99,12 @@ const TableKelolaSembako = () => {
       let response;
       response = await (stat === "AKTIF"
         ? axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=false`, {}, { headers })
-        : axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`, {}, { headers })
-      );
-      console.log(response)
+        : axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`, {}, { headers }));
+      console.log(response);
       if (response.status === 200) {
-        alert('Berhasil mengubah status barang penukaran');
+        alert("Berhasil mengubah status barang penukaran");
       } else {
-        alert('Gagal mengubah status barang penukaran');
+        alert("Gagal mengubah status barang penukaran");
       }
       window.location.reload();
     } catch (error) {
@@ -119,9 +118,9 @@ const TableKelolaSembako = () => {
       const response = await axios.delete(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       console.log(response.data);
       if (response.status === 200) {
-        alert('Berhasil menghapus barang penukaran');
+        alert("Berhasil menghapus barang penukaran");
       } else {
-        alert('Gagal menghapus barang penukaran');
+        alert("Gagal menghapus barang penukaran");
       }
       window.location.reload();
     } catch (error) {
@@ -138,56 +137,54 @@ const TableKelolaSembako = () => {
     }
   };
 
-  const handleApprove = async (formData) => {
-    const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data', };
+  const handleUpdate = async (formData) => {
+    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" };
     try {
       const formDataWithFile = new FormData();
 
       Object.entries(formData).forEach(([key, value]) => {
-        if (key !== 'thumbnail' && key !== 'id') {
+        if (key !== "thumbnail" && key !== "id") {
           formDataWithFile.append(key, value);
         }
       });
       if (formData.thumbnail) {
-        formDataWithFile.append('thumbnail', formData.thumbnail);
+        formDataWithFile.append("thumbnail", formData.thumbnail);
       }
       for (var pair of formDataWithFile.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
+        console.log(pair[0] + ", " + pair[1]);
       }
-      const response = await axios.put(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`,
-        formDataWithFile,
-        { headers }
-      )
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`, formDataWithFile, { headers });
       if (response.status === 200) {
-        alert('Berhasil mengubah isi barang penukaran');
+        alert("Berhasil mengubah isi barang penukaran");
       } else {
-        alert('Gagal mengubah isi barang penukaran');
+        alert("Gagal mengubah isi barang penukaran");
       }
-      console.log(response)
+      console.log(response);
       form.reset();
       window.location.reload();
     } catch (error) {
-      console.error('Error approving program:', error);
+      console.error("Error program:", error);
     }
   };
 
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthUser(user);
-        setToken(user.accessToken);
-        // console.log(tes);
-        getKelolaSembako();
-      } else {
-        setAuthUser(null);
-      }
-    },
-      form.setValue('id', formData.id),
-      form.setValue('nama', formData.nama),
-      form.setValue('hargaTukar', formData.harga_tukar_poin),
-      form.setValue('thumbnail', formData.img_url),
-      form.setValue('stok', formData.stok),
+    const listen = onAuthStateChanged(
+      auth,
+      (user) => {
+        if (user) {
+          setAuthUser(user);
+          setToken(user.accessToken);
+          // console.log(tes);
+          getKelolaSembako();
+        } else {
+          setAuthUser(null);
+        }
+      },
+      form.setValue("id", formData.id),
+      form.setValue("nama", formData.nama),
+      form.setValue("hargaTukar", formData.harga_tukar_poin),
+      form.setValue("thumbnail", formData.img_url),
+      form.setValue("stok", formData.stok),
       setSelectedImage(formData.img_url)
     );
     return () => {
@@ -221,7 +218,9 @@ const TableKelolaSembako = () => {
               {kelolaSembako.map((item) => (
                 <tr key={item.id}>
                   <td className="col-md-1">{item.id}</td>
-                  <td className="col-md-1"><img src={item.img_url} width="50" height="50"></img></td>
+                  <td className="col-md-1">
+                    <img src={item.img_url} width="50" height="50"></img>
+                  </td>
                   <td>{item.nama}</td>
                   <td>{item.harga_tukar_poin}</td>
                   <td>{item.stok}</td>
@@ -280,7 +279,7 @@ const TableKelolaSembako = () => {
                         className="w-full input-bordered pt-2"
                         accept="image/*"
                         onChange={handleGambar}
-                      // {...form.register('banner')}
+                        // {...form.register('banner')}
                       />
                     </div>
                   </div>
@@ -311,7 +310,7 @@ const TableKelolaSembako = () => {
                         type="text"
                         className="form-control text-sm"
                         // value={formData.nama}
-                        {...form.register('nama')}
+                        {...form.register("nama")}
                       />
                       {/* <div className="input-group mb-3">
                         <input
@@ -336,7 +335,7 @@ const TableKelolaSembako = () => {
                         type="text"
                         className="form-control text-sm"
                         // value={formData.nama}
-                        {...form.register('hargaTukar')}
+                        {...form.register("hargaTukar")}
                       />
                       {/* <div className="input-group mb-3">
                         <input
@@ -361,7 +360,7 @@ const TableKelolaSembako = () => {
                         type="text"
                         className="form-control text-sm"
                         // value={formData.nama}
-                        {...form.register('stok')}
+                        {...form.register("stok")}
                       />
                       {/* <div className="input-group mb-3">
                         <input
@@ -381,7 +380,7 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-              // onClick={this.closeModal}
+                // onClick={this.closeModal}
               >
                 Batal
               </button>
@@ -389,8 +388,8 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-primary"
                 data-dismiss="modal"
-                onClick={form.handleSubmit(handleApprove)}
-              // onClick={this.saveChanges}
+                onClick={form.handleSubmit(handleUpdate)}
+                // onClick={this.saveChanges}
               >
                 Simpan
               </button>
@@ -436,8 +435,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                      // value={this.state.id_sembako}
-                      // onChange={(e) => this.setState({ id_sembako: e.target.value })}
+                        // value={this.state.id_sembako}
+                        // onChange={(e) => this.setState({ id_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -453,8 +452,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                      // value={this.state.name_sembako}
-                      // onChange={(e) => this.setState({ name_sembako: e.target.value })}
+                        // value={this.state.name_sembako}
+                        // onChange={(e) => this.setState({ name_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -470,8 +469,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                      // value={this.state.status}
-                      // onChange={(e) => this.setState({ status: e.target.value })}
+                        // value={this.state.status}
+                        // onChange={(e) => this.setState({ status: e.target.value })}
                       />
                     </div>
                   </div>
@@ -487,8 +486,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="number"
                         className="form-control text-sm font-weight-bold "
-                      // value={this.state.poin_sembako}
-                      // onChange={(e) => this.setState({ poin_sembako: e.target.value })}
+                        // value={this.state.poin_sembako}
+                        // onChange={(e) => this.setState({ poin_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -504,8 +503,8 @@ const TableKelolaSembako = () => {
                       <input
                         type="number"
                         className="form-control text-sm font-weight-bold"
-                      // value={this.state.stok_sembako}
-                      // onChange={(e) => this.setState({ stok_sembako: e.target.value })}
+                        // value={this.state.stok_sembako}
+                        // onChange={(e) => this.setState({ stok_sembako: e.target.value })}
                       />
                     </div>
                   </div>
@@ -517,14 +516,14 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-              // onClick={this.closeModal}
+                // onClick={this.closeModal}
               >
                 Batal
               </button>
               <button
                 type="button"
                 className="btn btn-secondary"
-              // onClick={this.clearFields}
+                // onClick={this.clearFields}
               >
                 Refresh
               </button>
@@ -532,7 +531,7 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-primary"
                 data-dismiss="modal"
-              // onClick={this.handleTambahSembako}
+                // onClick={this.handleTambahSembako}
               >
                 Simpan
               </button>
