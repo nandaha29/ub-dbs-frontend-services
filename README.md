@@ -13,4 +13,4 @@ clone repository ini :
 https://github.com/nandaha29/ub-dbs-frontend-services
 
 Online vercel:
-https://ub-dbs-frontend-services-k3dl2onon-nandaha29.vercel.app/
+banksampahdelima.vercel.app/
