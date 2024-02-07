@@ -196,10 +196,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                   <tbody>
                     <tr key={formData.no_tabungan}>
                       <td>{formData.nasabah}</td>
-                      <td>
-                        {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
-                        12/09
-                      </td>
+                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
                       <td>{formData.id_user}</td>
                     </tr>
                   </tbody>
@@ -222,25 +219,6 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                   </thead>
 
                   <tbody>
-                    {/* {sampah.map((item, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>
-                          <label>{item.jenis_sampah}</label>
-                        </td>
-                        <td>
-                          <label className="text-sm">{item.points}</label>
-                        </td>
-                        <td>
-                          <div className="input-group mb-3">
-                            <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} disabled />
-                            <div className="input-group-append">
-                              <span className="input-group-text">kg</span>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))} */}
                     {formData.items_penukaran &&
                       formData.items_penukaran.map((item, index) => (
                         <tr key={index}>
@@ -251,11 +229,6 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                           <td>
                             <label className="text-sm">{item.total_harga_poin}</label>
                           </td>
-                          {/* <td>
-                            <label>{item.nama_sampah}</label>
-                            <br />
-                            <label className="text-sm text-sx">{item.points}</label>
-                          </td> */}
                           <td>
                             <div className="input-group mb-3">
                               <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} readOnly />
@@ -273,7 +246,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
               <h5 className="text-center">
                 {" "}
                 <span className="font-weight-normal">Total</span>
-                <span> ... Poin</span>
+                <span> {formData.debet} Poin</span>
               </h5>
             </div>
 
