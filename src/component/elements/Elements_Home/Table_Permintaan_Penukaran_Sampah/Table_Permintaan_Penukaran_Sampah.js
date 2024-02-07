@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, Component } from "react";
 import axios from "axios";
-import $ from "jquery";
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../../../config/firebase";
@@ -34,8 +33,6 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState([]);
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
-  // modalRef.current.style.display = 'block';
-  // modalRef.current.style.display = 'none';
 
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
@@ -115,7 +112,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     const isConfirmed = window.confirm("Apakah Anda yakin ingin menyetujui permintaan ini?");
     if (isConfirmed) {
       getParam(ids, 1);
-      toastr.success("Perimntaan telah disetujui!", "Berhasil!");
+      toastr.success("Permintaan telah disetujui!", "Berhasil!");
     }
   };
 
@@ -153,7 +150,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                     <tr key={item.id_slip}>
                       <td>{item.id_slip}</td>
                       <td>{item.nama_user}</td>
-                      <td>{item.tanggal.date.year}</td>
+                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
                       <td className="d-flex">
                         <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail
@@ -194,16 +191,11 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                   </thead>
 
                   <tbody>
-                    {/* {dataprofil.map((item) => ( */}
                     <tr key={formData.no_tabungan}>
                       <td>{formData.nasabah}</td>
-                      <td>
-                        {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
-                        {/* {formData.tanggal.date.day} */} 12/09
-                      </td>
+                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
                       <td>{formData.id_user}</td>
                     </tr>
-                    {/* ))} */}
                   </tbody>
                 </table>
               </div>
@@ -234,11 +226,6 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                           <td>
                             <label className="text-sm ">{item.jumlah_poin}</label>
                           </td>
-                          {/* <td>
-                            <label>{item.nama_sampah}</label>
-                            <br />
-                            <label className="text-sm text-sx">{item.points}</label>
-                          </td> */}
                           <td>
                             <div className="input-group mb-3">
                               <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} />
@@ -254,9 +241,11 @@ const Table_Permintaan_Penukaran_Sampah = () => {
               </div>
 
               <h5 className="text-center">
-                {" "}
                 <span className="font-weight-normal">Total</span>
-                {/* <span> {formData.total_poin + formData.jumlah_poin} Poin</span> */}
+                {/* <span> {formData.total_poin + item.jumlah_poin} Poin</span> */}
+                {/* <span>
+                  {formData.total_poin} + {formData.item.jumlah_poin} Poin
+                </span> */}
                 <span> {formData.total_poin} Poin</span>
               </h5>
             </div>

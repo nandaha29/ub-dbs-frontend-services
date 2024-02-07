@@ -153,7 +153,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                     <tr key={item.id_slip}>
                       <td>{item.id_slip}</td>
                       <td>{item.nama_user}</td>
-                      <td>{item.tanggal.date.year}</td>
+                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
                       <td className="d-flex">
                         <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sembako" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail
