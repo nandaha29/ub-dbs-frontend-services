@@ -3,12 +3,13 @@
 Project web base yang digunakan untuk pendataan admin dari user yang sudah terdaftar sebagai customer di Delima Bank Sampah
 
 ## Important Note
-Jalankan web ini dengan run 
+Supaya dapat melihat data yang dikeluarkan, silahkan jalankan ini
 ```
 $ win + R
 lalu ketik
 $ chrome.exe --user-data-dir="C://Chrome dev session" --disable-web-security
 ```
+karena terdapat cors yang menghalangi di bagian BE
 
 ## Tech
 ReactJS + adminlte + axios + firebase 
