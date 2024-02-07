@@ -176,7 +176,7 @@ const Sidebar = () => {
                   <p>Riwayat Sampah</p>
                 </a>
               </li>
-              <div class="dropdown-divider"></div>
+              {/* <div class="dropdown-divider"></div>
 
               <li className="nav-item">
                 <a href="/data-penjualan-sampah" className="nav-link">
@@ -185,10 +185,10 @@ const Sidebar = () => {
                   </i>
                   <p>Data Penjualan Sampah</p>
                 </a>
-              </li>
+              </li> */}
 
               <div class="dropdown-divider"></div>
-
+              {/* 
               <li className="nav-header ">ARTIKEL & INFORMASI</li>
 
               <li className="nav-item">
@@ -200,7 +200,7 @@ const Sidebar = () => {
                 </a>
               </li>
 
-              <div class="dropdown-divider"></div>
+              <div class="dropdown-divider"></div> */}
 
               {/* <li className="nav-header ">LAINNYA</li>
               <li className="nav-item">
@@ -228,14 +228,14 @@ const Sidebar = () => {
                   <p>Verifikasi Nasabah</p>
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a href="/data-backlist" className="nav-link">
                   <i className="nav-icon mr-2">
                     <HiUsers />
                   </i>
                   <p>Daftar Backlist</p>
                 </a>
-              </li>
+              </li> */}
 
               <div class="dropdown-divider"></div>
 
@@ -283,7 +283,7 @@ const Sidebar = () => {
                   <p>Pengaturan Lokasi</p>
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a href="/semuaorder" className="nav-link">
                   <i className="nav-icon mr-2">
                     <IoMdSettings />
@@ -298,7 +298,7 @@ const Sidebar = () => {
                   </i>
                   <p>Aktivitas Login</p>
                 </a>
-              </li>
+              </li> */}
             </ul>
           </nav>
           {/* /.sidebar-menu */}
