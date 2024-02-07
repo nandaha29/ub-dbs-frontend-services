@@ -148,7 +148,7 @@ const Sidebar = () => {
                 </a>
               </li>
               <li className="nav-item">
-                <a href="/riwsembako" className="nav-link">
+                <a href="/riwayat-sembako" className="nav-link">
                   <i className="nav-icon mr-2">
                     <FaBox />
                   </i>

@@ -28,15 +28,12 @@ function App() {
         <Route path="/home" element={<DashboardPage />} />
         <Route path="/data-nasabah" element={<DataNasabahPage />} />
         <Route path="/riwayat-sampah" element={<RiwayatSampahPage />} />
-        <Route path="/riwsembako" element={<RiwayatSembakoPage />} />
+        <Route path="/riwayat-sembako" element={<RiwayatSembakoPage />} />
         <Route path="/kelola-sampah" element={<KelolaSampahPage />} />
         <Route path="/kelola-sembako" element={<KelolaSembakoPage />} />
-        <Route path="/aturlokasi" element={<PengaturanLokasi />} />
+        <Route path="/atur-lokasi" element={<PengaturanLokasi />} />
         <Route path="/verifikasi-nasabah" element={<VerifikasiNasabahPage />} />
-        <Route
-          path="/data-penjualan-sampah"
-          element={<DataPenjualanSampahPage />}
-        />
+        <Route path="/data-penjualan-sampah" element={<DataPenjualanSampahPage />} />
         <Route path="/aktifitas-login" element={<AktivitasLogin />} />
         <Route path="/artikel-banner" element={<ArtikelBannerPage />} />
         <Route path="/data-backlist" element={<DataBacklist />} />
