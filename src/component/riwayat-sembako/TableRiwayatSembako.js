@@ -212,7 +212,8 @@ const TableRiwayatSembako = () => {
                     <tr>
                       <td>{formData.id_user}</td>
                       <td>
-                        ?{/* {formData.id_petugas.nama} */}
+                        {formData.id_petugas != null ? formData.id_petugas.nama : null}
+                        {/* {formData.id_petugas.nama} */}
                         {/* {formData.id_petugas} */}
                       </td>
                     </tr>
