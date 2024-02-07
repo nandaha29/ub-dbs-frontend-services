@@ -206,10 +206,7 @@ const TableRiwayatSembako = () => {
                     </tr>
                     <tr>
                       <td>{formData.nasabah}</td>
-                      <td>
-                        {formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}
-                        {/* 12/09 */}
-                      </td>
+                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
                       <td>?</td>
                     </tr>
                     <tr className="thead-light">

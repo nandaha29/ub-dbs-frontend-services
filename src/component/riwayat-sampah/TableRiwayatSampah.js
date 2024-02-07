@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
@@ -30,7 +30,7 @@ const TableRiwayatSampah = () => {
   const [token, setToken] = useState([]);
   const [riwayatSampah, setRiwayatSampah] = useState([]);
   const [formData, setFormData] = useState({});
-  // const modalRef = useRef(null);
+  const modalRef = useRef(null);
 
   // const getRiwayatSampah = async () => {
   //   const headers = { Authorization: `Bearer ${token}` };
@@ -50,6 +50,7 @@ const TableRiwayatSampah = () => {
 
       if (Array.isArray(response.data.data)) {
         setRiwayatSampah(response.data.data);
+        console.log(response.data.data);
       } else {
         console.error("Data is not an array:", response.data.data);
       }
@@ -58,33 +59,64 @@ const TableRiwayatSampah = () => {
     }
   };
 
-  // const showTable = () => {
-  //   try {
-  //     return riwayatSampah.map((item, index) => (
-  //       <tr key={index}>
-  //         <td className="mt-1 mx-2 text-center">{item.id_nasabah}</td>
-  //         <td className="mt-1 mx-2 text-center">{item.name_nasabah}</td>
-  //         <td className="text-center justify-content-center flex">
-  //           <button
-  //             className={`mt-1 mx-2 ${item.berat_nasabah === "Berhasil Di Proses" ? "btn btn-success btn-sm px-3 text-center" : item.berat_nasabah === "Ditolak" ? "btn btn-danger btn-sm px-5 text-center" : ""}`}
-  //             style={{ pointerEvents: "none" }}
-  //           >
-  //             {item.berat_nasabah}
-  //           </button>
-  //         </td>
-  //         <td className="mt-1 mx-2 text-center">+ {item.poin_nasabah}</td>
-  //         <td className="mt-1 mx-2 text-center">{item.waktu_transaksi}</td>
-  //         <td className="d-flex justify-content-center">
-  //           <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sampah">
-  //             Lihat Detail
-  //           </button>
-  //         </td>
-  //       </tr>
-  //     ));
-  //   } catch (e) {
-  //     alert(e.message);
-  //   }
-  // };
+  const getPermintaanID = async (ids) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`,
+        {
+          id: ids,
+          nama: formData.nama,
+          harga_tukar_poin: formData.harga_tukar_poin,
+          img_url: formData.img_url,
+          items_sampah: formData.list_sampah,
+        },
+        { headers }
+      );
+      setFormData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleDetailClick = async (id) => {
+    try {
+      await getPermintaanID(id);
+      modalRef.current.open = true;
+    } catch (error) {
+      console.error("Error handling detail click:", error);
+    }
+  };
+
+  // Function to format the date
+  const formatDate = (dateObj) => {
+    const { day, month, year } = dateObj;
+    return `${day}/${month}/${year}`;
+  };
+
+  const showTable = () => {
+    try {
+      return riwayatSampah.map((item, index) => {
+        return (
+          <tr key={index}>
+            <td className="mt-1 mx-2 text-center">{item.id_user}</td>
+            <td className="mt-1 mx-2 text-center">{item.nama_user}</td>
+            <td className="text-center justify-content-center flex">{item.status}</td>
+            <td className="mt-1 mx-2 text-center">{item.total_poin}</td>
+            <td className="mt-1 mx-2 text-center">{formatDate(item.tanggal.date)}</td>
+            <td className="d-flex justify-content-center">
+              <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sampah" onClick={() => handleDetailClick(item.id_slip)}>
+                Lihat Detail
+              </button>
+            </td>
+          </tr>
+        );
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -98,7 +130,8 @@ const TableRiwayatSampah = () => {
       }
     });
 
-    if (!$.fn.DataTable.isDataTable("#myTable")) {
+    // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
+    if (!$.fn.DataTable.isDataTable("#table")) {
       $(document).ready(function () {
         setTimeout(function () {
           $("#table").DataTable({
@@ -149,6 +182,7 @@ const TableRiwayatSampah = () => {
       });
     }
 
+    // Membersihkan listener saat komponen dibongkar
     return () => {
       listen();
     };
@@ -169,40 +203,17 @@ const TableRiwayatSampah = () => {
                 <th className="text-uppercase  text-sm text-center ">Action</th>
               </tr>
             </thead>
-            <tbody>
-              {/* {showTable()} */}
-              {riwayatSampah.map((item, index) => (
-                <tr key={index}>
-                  <td className="mt-1 mx-2 text-center">{item.id_nasabah}</td>
-                  <td className="mt-1 mx-2 text-center">{item.name_nasabah}</td>
-                  <td className="text-center justify-content-center flex">
-                    <button
-                      className={`mt-1 mx-2 ${item.berat_nasabah === "Berhasil Di Proses" ? "btn btn-success btn-sm px-3 text-center" : item.berat_nasabah === "Ditolak" ? "btn btn-danger btn-sm px-5 text-center" : ""}`}
-                      style={{ pointerEvents: "none" }}
-                    >
-                      {item.berat_nasabah}
-                    </button>
-                  </td>
-                  <td className="mt-1 mx-2 text-center">+ {item.poin_nasabah}</td>
-                  <td className="mt-1 mx-2 text-center">{item.waktu_transaksi}</td>
-                  <td className="d-flex justify-content-center">
-                    <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sampah">
-                      Lihat Detail
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            <tbody>{showTable()}</tbody>
           </table>
         </div>
         {/* modal detail  */}
-        <div className="modal fade" id="modal_detail_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal fade" ref={modalRef} id="modal_detail_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header border-0">
                 <h5 className="modal-title" id="staticBackdropLabel">
                   <i className="fas fa-chart-pie mr-1" />
-                  ID Riwayat Penukaran XXXXXXXXX
+                  ID Riwayat Penukaran <p className="text-secondary">{formData.no_tabungan}</p>
                 </h5>
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -218,17 +229,17 @@ const TableRiwayatSampah = () => {
                       <th scope="col">Transaksi Selesai</th>
                     </tr>
                     <tr>
-                      <td>Andi Budions</td>
-                      <td>100104</td>
-                      <td>2023-01-19 13:14</td>
+                      <td>{formData.nasabah}</td>
+                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                      <td>?</td>
                     </tr>
                     <tr className="thead-light">
                       <th scope="col">ID Nasabah</th>
                       <th scope="col">Petugas Pengurus</th>
                     </tr>
                     <tr>
-                      <td>100104</td>
-                      <td>Agung</td>
+                      <td>{formData.id_user}</td>
+                      <td>{formData.petugas != null ? formData.petugas.nama : null}</td>
                     </tr>
                   </table>
                 </div>
@@ -244,23 +255,21 @@ const TableRiwayatSampah = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Beras</td>
-                        <td>1 Kg</td>
-                        <td>700/0,5 kg</td>
-                        <td>+900</td>
-                      </tr>
-                      <tr>
-                        <td>1</td>
-                        <td>Beras</td>
-                        <td>1 Kg</td>
-                        <td>700/0,5 kg</td>
-                        <td>+100</td>
-                      </tr>
+                      {formData.list_sampah &&
+                        formData.list_sampah.map((item, index) => (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{item.nama_sampah}</td>
+                            <td>{item.berat} Kg</td>
+                            <td>{item.jumlah_poin}</td>
+                            <td>
+                              {item.total_harga_poin} - {item.debet}
+                            </td>
+                          </tr>
+                        ))}
                       <tr>
                         <td colSpan="4">Total</td>
-                        <td>+1400</td>
+                        <td>{formData.total_poin}</td>
                       </tr>
                     </tbody>
                   </table>
