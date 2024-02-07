@@ -47,6 +47,7 @@ const TableRiwayatSembako = () => {
           harga_tukar_poin: formData.harga_tukar_poin,
           img_url: formData.img_url,
           items_sampah: formData.list_sampah,
+          tanggal: { day: formData.date.day, month: formData.date.month, year: formData.date.year },
         },
         { headers }
       );
@@ -64,6 +65,12 @@ const TableRiwayatSembako = () => {
     } catch (error) {
       console.error("Error handling detail click:", error);
     }
+  };
+
+  // Function to format the date
+  const formatDate = (dateObj) => {
+    const { day, month, year } = dateObj;
+    return `${day}/${month}/${year}`;
   };
 
   const showTable = () => {
@@ -84,7 +91,8 @@ const TableRiwayatSembako = () => {
             </td>
             <td className="mt-1 mx-2 text-center">{item.total_poin}</td>
             <td className="mt-1 mx-2 text-center">
-              {item.tanggal.date.year}
+              {/* {item.tanggal.date.year} */}
+              {formatDate(item.tanggal.date)}
               {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
             </td>
             <td className="d-flex justify-content-center">
@@ -201,7 +209,9 @@ const TableRiwayatSembako = () => {
                       <td>{formData.nasabah}</td>
                       <td>
                         {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
-                        {/* 12/09 */}?
+                        {/* 12/09 */}
+                        {/* {formatDate(formData.tanggal.date)} */}
+                        {formatDate(formData.tanggal.date)}
                       </td>
                       <td>?</td>
                     </tr>
@@ -211,11 +221,7 @@ const TableRiwayatSembako = () => {
                     </tr>
                     <tr>
                       <td>{formData.id_user}</td>
-                      <td>
-                        {formData.id_petugas != null ? formData.id_petugas.nama : null}
-                        {/* {formData.id_petugas.nama} */}
-                        {/* {formData.id_petugas} */}
-                      </td>
+                      <td>{formData.id_petugas != null ? formData.id_petugas.nama : null}</td>
                     </tr>
                   </table>
                 </div>
