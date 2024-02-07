@@ -47,7 +47,6 @@ const TableRiwayatSembako = () => {
           harga_tukar_poin: formData.harga_tukar_poin,
           img_url: formData.img_url,
           items_sampah: formData.list_sampah,
-          tanggal: { day: formData.date.day, month: formData.date.month, year: formData.date.year },
         },
         { headers }
       );
