@@ -1,14 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import "jquery/dist/jquery.min.js";
+import React, { useEffect, useState, useRef } from "react";
+import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-buttons/js/dataTables.buttons.js";
-import "datatables.net-buttons/js/buttons.colVis.js";
-import "datatables.net-buttons/js/buttons.flash.js";
-import "datatables.net-buttons/js/buttons.html5.js";
-import "datatables.net-buttons/js/buttons.print.js";
-import $ from "jquery";
-// import DataTable from "react-datatables";
 
 import axios from "axios";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -262,9 +255,7 @@ const TableRiwayatSampah = () => {
                             <td>{item.nama_sampah}</td>
                             <td>{item.berat} Kg</td>
                             <td>{item.jumlah_poin}</td>
-                            <td>
-                              {item.total_harga_poin} - {item.debet}
-                            </td>
+                            <td>{/* {item.total_harga_poin} - {formData.debet} */} -</td>
                           </tr>
                         ))}
                       <tr>

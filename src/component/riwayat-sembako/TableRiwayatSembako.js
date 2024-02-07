@@ -89,11 +89,7 @@ const TableRiwayatSembako = () => {
               {item.status}
             </td>
             <td className="mt-1 mx-2 text-center">{item.total_poin}</td>
-            <td className="mt-1 mx-2 text-center">
-              {/* {item.tanggal.date.year} */}
-              {formatDate(item.tanggal.date)}
-              {/* {formData.tanggal.date.day}/{formData.tanggal.date.month}/{formData.tanggal.date.year} */}
-            </td>
+            <td className="mt-1 mx-2 text-center">{formatDate(item.tanggal.date)}</td>
             <td className="d-flex justify-content-center">
               <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sembako" onClick={() => handleDetailClick(item.id_slip)}>
                 Lihat Detail
@@ -136,6 +132,18 @@ const TableRiwayatSembako = () => {
                 extend: "pageLength",
                 className: "btn btn-dark bg-dark",
               },
+              {
+                extend: "csv",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "print",
+                customize: function (win) {
+                  $(win.document.body).css("font-size", "10pt");
+                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                },
+                className: "btn btn-secondary bg-secondary",
+              },
             ],
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
@@ -163,7 +171,7 @@ const TableRiwayatSembako = () => {
     return () => {
       listen();
     };
-  }, []);
+  }, [formData]);
 
   return (
     <>
@@ -238,14 +246,12 @@ const TableRiwayatSembako = () => {
                             <td>{item.nama_barang}</td>
                             <td>{item.berat} Kg</td>
                             <td>{item.total_harga_poin}</td>
-                            <td>
-                              {item.total_harga_poin} - {item.debet}
-                            </td>
+                            <td>{/* {formData.debet} -{item.total_harga_poin} */} -</td>
                           </tr>
                         ))}
                       <tr>
                         <td colSpan="4">Total</td>
-                        <td>?</td>
+                        <td>{formData.debet}</td>
                       </tr>
                     </tbody>
                   </table>
