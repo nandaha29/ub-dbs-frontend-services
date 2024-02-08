@@ -44,14 +44,15 @@ const TableDataNasabah = () => {
         {
           id: ids,
           nama: formData.nama,
-          harga_tukar_poin: formData.harga_tukar_poin,
-          img_url: formData.img_url,
-          items_sampah: formData.list_sampah,
+          nomor_handphone: formData.nomor_handphone,
+          tgl_verifikasi: "?",
+          alamat: formData.alamat,
+          avatar: formData.avatar,
         },
         { headers }
       );
-      setFormData(response.data);
-      console.log(response.data);
+      setFormData(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -87,7 +88,7 @@ const TableDataNasabah = () => {
                 data-toggle="modal"
                 data-target="#modal_liat_data_nasabah"
                 // onClick={() => this.handleLihatNasabah(item.id_nasabah)}
-                // onClick={() => handleDetailClick(item.user_id)}
+                onClick={() => handleDetailClick(item.user_id)}
               >
                 Lihat
               </button>
@@ -375,7 +376,7 @@ const TableDataNasabah = () => {
           </div>
         </div>
         {/* MODAL LIHAT DATA NASABAH SECTION */}
-        <div class="modal fade" id="modal_liat_data_nasabah" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" ref={modalRef} id="modal_liat_data_nasabah" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header ">
@@ -388,27 +389,24 @@ const TableDataNasabah = () => {
                 </button>
               </div>
               <div class="modal-body justify-content-center">
-                {/* <h5 className="m-3">Profil Nasabah</h5> */}
                 <div className="modal-image d-flex justify-content-center">
-                  {/* <img src={logo} alt="Logo" className="brand-image " /> */}
-                  {/* MAKE A LINGKARAN FOR IMAGE */}
-                  <img src="dist/img/avatar5.png" className="img-circle elevation-2" alt="User Image" />
+                  {/* <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" /> */}
+                  <img src={formData.avatar} width="50" height="50"></img>
                 </div>
                 <form className="m-5">
-                  {/* {this.state.selectedNasabah && ( */}
                   <>
                     <div class="form-group row ">
                       <label class="col-sm-5 col-form-label">ID Nasabah</label>
                       <div class="col-sm-7 ">
                         <div type="text" className="mt-2  font-weight-bold">
-                          :
+                          : {formData.user_id}
                         </div>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-5">Nama</label>
                       <div class="col-sm-7">
-                        <div className=" font-weight-bold">: </div>
+                        <div className=" font-weight-bold">: {formData.nama}</div>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -416,7 +414,15 @@ const TableDataNasabah = () => {
                         No HP / WA
                       </label>
                       <div class="col-sm-7">
-                        <div className="mt-2 font-weight-bold">: </div>
+                        <div className="mt-2 font-weight-bold">: {formData.nomor_handphone}</div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="inputPassword" class="col-sm-5 col-form-label">
+                        Tanggal Verifikasi
+                      </label>
+                      <div class="col-sm-7">
+                        <div className=" font-weight-bold mt-2">: ?</div>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -424,13 +430,11 @@ const TableDataNasabah = () => {
                         Alamat Nasabah
                       </label>
                       <div class="col-sm-7">
-                        <div className=" font-weight-bold mt-2">: </div>
+                        <div className=" font-weight-bold mt-2">: {formData.alamat}</div>
                       </div>
                     </div>
                   </>
-                  {/* )} */}
                 </form>
-                {/* </div> */}
               </div>
 
               {/* <div class="modal-footer">
