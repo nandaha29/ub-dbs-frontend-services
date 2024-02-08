@@ -201,31 +201,6 @@ const TableKelolaSampah = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const listen = onAuthStateChanged(
-  //     auth,
-  //     (user) => {
-  //       if (user) {
-  //         setAuthUser(user);
-  //         setToken(user.accessToken);
-  //         // console.log(tes);
-  //         getKelolaSampah();
-  //       } else {
-  //         setAuthUser(null);
-  //       }
-  //     },
-  //     form.setValue("id", formData.id),
-  //     form.setValue("nama", formData.nama),
-  //     form.setValue("hargaTukar", formData.nilai_tukar),
-  //     form.setValue("thumbnail", formData.thumbnail),
-  //     form.setValue("stok", formData.stok),
-  //     setSelectedImage(formData.thumbnail)
-  //   );
-  //   return () => {
-  //     listen();
-  //   };
-  // }, [formData]);
-
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
