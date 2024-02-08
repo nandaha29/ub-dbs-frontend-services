@@ -7,11 +7,7 @@ import { useForm } from "react-hook-form";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-buttons/js/dataTables.buttons.js";
-import "datatables.net-buttons/js/buttons.colVis.js";
-import "datatables.net-buttons/js/buttons.flash.js";
-import "datatables.net-buttons/js/buttons.html5.js";
-import "datatables.net-buttons/js/buttons.print.js";
+
 import $, { noConflict } from "jquery";
 import "toastr/build/toastr.css";
 import toastr from "toastr";
@@ -167,30 +163,121 @@ const TableKelolaSembako = () => {
     }
   };
 
+  // Function to format the date
+  const formatDate = (dateObj) => {
+    const { day, month, year } = dateObj;
+    return `${day}/${month}/${year}`;
+  };
+
+  const showTable = () => {
+    try {
+      return kelolaSembako.map((item, index) => (
+        <tr key={index}>
+          <td className="col-md-1">{item.id}</td>
+          <td className="col-md-1">
+            <img src={item.img_url} width="50" height="50" alt={item.nama} />
+          </td>
+          <td>{item.nama}</td>
+          <td>{item.harga_tukar_poin}</td>
+          <td>{item.stok}</td>
+          <td className="">{item.status}</td>
+          <td className="d-flex ">
+            <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
+              Edit
+            </button>
+            <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => arsip(item.id, item.status)}>
+              {item.status === "AKTIF" ? "Arsipkan" : "Aktifkan"}
+            </button>
+            <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => hapus(item.id)}>
+              Hapus
+            </button>
+          </td>
+        </tr>
+      ));
+    } catch (e) {
+      alert(e.message);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    const listen = onAuthStateChanged(
-      auth,
-      (user) => {
-        if (user) {
-          setAuthUser(user);
-          setToken(user.accessToken);
-          // console.log(tes);
-          getKelolaSembako();
-        } else {
-          setAuthUser(null);
-        }
-      },
-      form.setValue("id", formData.id),
-      form.setValue("nama", formData.nama),
-      form.setValue("hargaTukar", formData.harga_tukar_poin),
-      form.setValue("thumbnail", formData.img_url),
-      form.setValue("stok", formData.stok),
-      setSelectedImage(formData.img_url)
-    );
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+        setToken(user.accessToken);
+        // console.log(tes);
+        getKelolaSembako();
+      } else {
+        setAuthUser(null);
+      }
+    });
+
+    // Set nilai-nilai form berdasarkan data formData
+    form.setValue("id", formData.id);
+    form.setValue("nama", formData.nama);
+    form.setValue("hargaTukar", formData.harga_tukar_poin);
+    form.setValue("thumbnail", formData.img_url);
+    form.setValue("stok", formData.stok);
+    setSelectedImage(formData.img_url);
+
+    // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
+    if (!$.fn.DataTable.isDataTable("#table")) {
+      $(document).ready(function () {
+        setTimeout(function () {
+          $("#table").DataTable({
+            pagingType: "full_numbers",
+            pageLength: 20,
+            processing: true,
+            dom: "Bfrtip",
+            select: {
+              style: "single",
+            },
+            buttons: [
+              {
+                extend: "pageLength",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "csv",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "print",
+                customize: function (win) {
+                  $(win.document.body).css("font-size", "10pt");
+                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                },
+                className: "btn btn-secondary bg-secondary",
+              },
+            ],
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+              var index = iDisplayIndexFull + 1;
+              $("td:first", nRow).html(index);
+              return nRow;
+            },
+            lengthMenu: [
+              [10, 20, 30, 50, -1],
+              [10, 20, 30, 50, "All"],
+            ],
+            columnDefs: [
+              {
+                targets: 0,
+                render: function (data, type, row, meta) {
+                  return type === "export" ? meta.row + 1 : data;
+                },
+              },
+            ],
+          });
+        }, 1000);
+      });
+    }
+
+    // Membersihkan listener saat komponen dibongkar
     return () => {
       listen();
     };
   }, [formData]);
+
   return (
     <>
       <div className="mr-4 float-sm-right">
@@ -213,39 +300,7 @@ const TableKelolaSembako = () => {
               </tr>
             </thead>
 
-            {/* <tbody className="text-center">{this.showTable()}</tbody> */}
-            <tbody>
-              {kelolaSembako.map((item) => (
-                <tr key={item.id}>
-                  <td className="col-md-1">{item.id}</td>
-                  <td className="col-md-1">
-                    <img src={item.img_url} width="50" height="50"></img>
-                  </td>
-                  <td>{item.nama}</td>
-                  <td>{item.harga_tukar_poin}</td>
-                  <td>{item.stok}</td>
-                  <td className="">
-                    {/* <button
-                      className={`mt-1 mx-2 text-center ${item.status === "Aktif" ? "btn btn-success btn-sm pl-5 pr-5 text-center" : item.status === "Diarsipkan" ? "btn btn-secondary btn-sm pl-4 pr-4 text-center" : ""}`}
-                      style={{ pointerEvents: "none" }}
-                    > */}
-                    {item.status}
-                    {/* </button> */}
-                  </td>
-                  <td className="d-flex ">
-                    <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
-                      Edit
-                    </button>
-                    <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => arsip(item.id, item.status)}>
-                      {item.status === "AKTIF" ? "Arsipkan" : "Aktifkan"}
-                    </button>
-                    <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => hapus(item.id)}>
-                      Hapus
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            <tbody className="text-center">{showTable()}</tbody>
           </table>
         </div>
       </div>
