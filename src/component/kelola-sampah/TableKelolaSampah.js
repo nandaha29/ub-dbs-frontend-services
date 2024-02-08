@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
@@ -7,11 +7,7 @@ import { useForm } from "react-hook-form";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-buttons/js/dataTables.buttons.js";
-import "datatables.net-buttons/js/buttons.colVis.js";
-import "datatables.net-buttons/js/buttons.flash.js";
-import "datatables.net-buttons/js/buttons.html5.js";
-import "datatables.net-buttons/js/buttons.print.js";
+
 import $, { noConflict } from "jquery";
 import "toastr/build/toastr.css";
 import toastr from "toastr";
@@ -168,30 +164,146 @@ const TableKelolaSampah = () => {
     }
   };
 
+  // Function to format the date
+  const formatDate = (dateObj) => {
+    const { day, month, year } = dateObj;
+    return `${day}/${month}/${year}`;
+  };
+
+  const showTable = () => {
+    try {
+      return kelolaSampah.map((item, index) => (
+        <tr key={index}>
+          <td className="mt-1 mx-2 text-center">{item.id}</td>
+          <td className="mt-1 mx-2 text-center">
+            <img src={item.thumbnail} width="50" height="50" alt={item.nama} />
+          </td>
+          <td>{item.nama}</td>
+          <td className="text-center">{item.nilai_tukar}</td>
+          <td className="text-center">{item.perolehan}</td>
+          <td className="text-center justify-content-center flex">{item.status}</td>
+          <td className="d-flex justify-content-center">
+            <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
+              Edit
+            </button>
+            <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" onClick={() => arsip(item.id, item.status)}>
+              {item.status === "AKTIF" ? "Arsipkan" : "Aktifkan"}
+            </button>
+            <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" onClick={() => hapus(item.id)}>
+              Hapus
+            </button>
+          </td>
+        </tr>
+      ));
+    } catch (e) {
+      alert(e.message);
+      return null;
+    }
+  };
+
+  // useEffect(() => {
+  //   const listen = onAuthStateChanged(
+  //     auth,
+  //     (user) => {
+  //       if (user) {
+  //         setAuthUser(user);
+  //         setToken(user.accessToken);
+  //         // console.log(tes);
+  //         getKelolaSampah();
+  //       } else {
+  //         setAuthUser(null);
+  //       }
+  //     },
+  //     form.setValue("id", formData.id),
+  //     form.setValue("nama", formData.nama),
+  //     form.setValue("hargaTukar", formData.nilai_tukar),
+  //     form.setValue("thumbnail", formData.thumbnail),
+  //     form.setValue("stok", formData.stok),
+  //     setSelectedImage(formData.thumbnail)
+  //   );
+  //   return () => {
+  //     listen();
+  //   };
+  // }, [formData]);
+
   useEffect(() => {
-    const listen = onAuthStateChanged(
-      auth,
-      (user) => {
-        if (user) {
-          setAuthUser(user);
-          setToken(user.accessToken);
-          // console.log(tes);
-          getKelolaSampah();
-        } else {
-          setAuthUser(null);
-        }
-      },
-      form.setValue("id", formData.id),
-      form.setValue("nama", formData.nama),
-      form.setValue("hargaTukar", formData.nilai_tukar),
-      form.setValue("thumbnail", formData.thumbnail),
-      form.setValue("stok", formData.stok),
-      setSelectedImage(formData.thumbnail)
-    );
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+        setToken(user.accessToken);
+        // console.log(tes);
+        getKelolaSampah();
+      } else {
+        setAuthUser(null);
+      }
+    });
+
+    // Set nilai-nilai form berdasarkan data formData
+    form.setValue("id", formData.id);
+    form.setValue("nama", formData.nama);
+    form.setValue("hargaTukar", formData.nilai_tukar);
+    form.setValue("thumbnail", formData.thumbnail);
+    form.setValue("stok", formData.stok);
+    setSelectedImage(formData.thumbnail);
+
+    // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
+    if (!$.fn.DataTable.isDataTable("#table")) {
+      $(document).ready(function () {
+        setTimeout(function () {
+          $("#table").DataTable({
+            pagingType: "full_numbers",
+            pageLength: 20,
+            processing: true,
+            dom: "Bfrtip",
+            select: {
+              style: "single",
+            },
+            buttons: [
+              {
+                extend: "pageLength",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "csv",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "print",
+                customize: function (win) {
+                  $(win.document.body).css("font-size", "10pt");
+                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                },
+                className: "btn btn-secondary bg-secondary",
+              },
+            ],
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+              var index = iDisplayIndexFull + 1;
+              $("td:first", nRow).html(index);
+              return nRow;
+            },
+            lengthMenu: [
+              [10, 20, 30, 50, -1],
+              [10, 20, 30, 50, "All"],
+            ],
+            columnDefs: [
+              {
+                targets: 0,
+                render: function (data, type, row, meta) {
+                  return type === "export" ? meta.row + 1 : data;
+                },
+              },
+            ],
+          });
+        }, 1000);
+      });
+    }
+
+    // Membersihkan listener saat komponen dibongkar
     return () => {
       listen();
     };
   }, [formData]);
+
   return (
     <>
       <div className="mr-4 float-sm-right">
@@ -214,8 +326,8 @@ const TableKelolaSampah = () => {
               </tr>
             </thead>
 
-            {/* <tbody className="text-center">{this.showTable()}</tbody> */}
-            <tbody>
+            <tbody className="text-center">{showTable()}</tbody>
+            {/* <tbody>
               {kelolaSampah.map((item) => (
                 <tr key={item.id}>
                   <td className="col-md-1">{item.id}</td>
@@ -225,14 +337,7 @@ const TableKelolaSampah = () => {
                   <td>{item.nama}</td>
                   <td>{item.nilai_tukar}</td>
                   <td>{item.perolehan}</td>
-                  <td className="">
-                    {/* <button
-                      className={`mt-1 mx-2 text-center ${item.status === "Aktif" ? "btn btn-success btn-sm pl-5 pr-5 text-center" : item.status === "Diarsipkan" ? "btn btn-secondary btn-sm pl-4 pr-4 text-center" : ""}`}
-                      style={{ pointerEvents: "none" }}
-                    > */}
-                    {item.status}
-                    {/* </button> */}
-                  </td>
+                  <td className="">{item.status}</td>
                   <td className="d-flex ">
                     <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
                       Edit
@@ -246,7 +351,7 @@ const TableKelolaSampah = () => {
                   </td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
