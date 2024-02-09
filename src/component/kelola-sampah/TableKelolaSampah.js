@@ -122,6 +122,7 @@ const TableKelolaSampah = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error fetching data:", error);
+      toastr.error("fitur delete belum tersedia");
     }
   };
 

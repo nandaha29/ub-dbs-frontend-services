@@ -6,6 +6,7 @@ import { auth } from "../../../../config/firebase";
 
 import "toastr/build/toastr.css";
 import toastr from "toastr";
+import { useForm } from "react-hook-form";
 
 const dataprofil = [
   {
@@ -34,6 +35,15 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
 
+  const form = useForm({
+    defaultValues: {
+      no_tabungan: "",
+      id_petugas: "",
+      status: 0,
+      items_sampah: {},
+    },
+  });
+
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -51,6 +61,13 @@ const Table_Permintaan_Penukaran_Sampah = () => {
       const response = await axios.get(`https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`, { headers });
       setFormData(response.data);
       console.log(response.data);
+      form.setValue("no_tabungan", formData.no_tabungan);
+      form.setValue("id_petugas", "PETUGASf5oLoRF2gPY9mrcY7UUfa");
+      form.setValue("status", 1);
+      form.setValue("items_sampah", formData.list_sampah);
+
+      // console.log(response.data.no_tabungan);
+      // console.log(response.data.list_sampah);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -59,6 +76,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const handleDetailClick = async (id) => {
     try {
       await getPermintaanID(id);
+      console.log(formData);
       modalRef.current.open = true;
     } catch (error) {
       console.error("Error handling detail click:", error);
@@ -76,6 +94,10 @@ const Table_Permintaan_Penukaran_Sampah = () => {
         setAuthUser(null);
       }
     });
+
+    // Set nilai-nilai form berdasarkan data formData
+    // form.setValue("id", formData.id);
+    // form.setValue("berat", formData.berat);
     return () => {
       listen();
     };
@@ -120,6 +142,25 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const formatDate = (dateObj) => {
     const { day, month, year } = dateObj;
     return `${day}/${month}/${year}`;
+  };
+
+  const handleUpdate = async (formData) => {
+    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+    console.log(formData);
+    try {
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/slip/menabung/${formData.no_tabungan}`, formData, { headers });
+
+      if (response.status === 200) {
+        alert("Berhasil mengubah isi barang");
+      } else {
+        alert("Gagal mengubah isi barang");
+      }
+
+      getPermintaanPenukaranSampah();
+      modalRef.current.open = false;
+    } catch (error) {
+      console.error("Error program:", error);
+    }
   };
 
   return (
@@ -235,6 +276,12 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                           <td>
                             <div className="input-group mb-3">
                               <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} />
+                              {/* <input
+                                type="number"
+                                className="form-control text-sm"
+                                // value={formData.nama}
+                                {...form.register(item.berat)}
+                              /> */}
                               <div className="input-group-append">
                                 <span className="input-group-text">kg</span>
                               </div>
@@ -260,7 +307,16 @@ const Table_Permintaan_Penukaran_Sampah = () => {
               <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={() => tolakPermintaan(formData.no_tabungan)}>
                 Tolak
               </button>
-              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={() => setujuiPermintaan(formData.no_tabungan)}>
+              {/* <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={() => setujuiPermintaan(formData.no_tabungan)}>
+                Setujui
+              </button> */}
+              <button
+                type="button"
+                className="btn btn-success"
+                data-dismiss="modal"
+                onClick={form.handleSubmit(handleUpdate)}
+                // onClick={this.saveChanges}
+              >
                 Setujui
               </button>
             </div>
