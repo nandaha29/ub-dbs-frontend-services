@@ -61,10 +61,10 @@ const Table_Permintaan_Penukaran_Sampah = () => {
       const response = await axios.get(`https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`, { headers });
       setFormData(response.data);
       console.log(response.data);
-      form.setValue("no_tabungan", formData.no_tabungan);
+      form.setValue("no_tabungan", response.data.no_tabungan);
       form.setValue("id_petugas", "PETUGASf5oLoRF2gPY9mrcY7UUfa");
       form.setValue("status", 1);
-      form.setValue("items_sampah", formData.list_sampah);
+      form.setValue("items_sampah", response.data.list_sampah);
 
       // console.log(response.data.no_tabungan);
       // console.log(response.data.list_sampah);
@@ -76,7 +76,6 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const handleDetailClick = async (id) => {
     try {
       await getPermintaanID(id);
-      console.log(formData);
       modalRef.current.open = true;
     } catch (error) {
       console.error("Error handling detail click:", error);
@@ -144,11 +143,31 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const handleUpdate = async (formData) => {
-    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
-    console.log(formData);
+  const handleUpdate = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    const oldVals = form.getValues();
+    const formData = new FormData();
+
+    // Append form fields to formData object
+    formData.append("id_tabungan", oldVals.no_tabungan);
+    formData.append("id_petugas", oldVals.id_petugas);
+    formData.append("status", oldVals.status);
+    formData.append("items_sampah", oldVals.items_sampah);
+
+    const body = {
+      id_tabungan: oldVals.no_tabungan,
+      id_petugas: oldVals.id_petugas,
+      status: 1,
+      items_sampah: oldVals.items_sampah,
+    };
+
     try {
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/slip/menabung/${formData.no_tabungan}`, formData, { headers });
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/slip/menabung?status=1`, body, {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data", // Set correct content type
+        },
+      });
 
       if (response.status === 200) {
         alert("Berhasil mengubah isi barang");
@@ -159,7 +178,10 @@ const Table_Permintaan_Penukaran_Sampah = () => {
       getPermintaanPenukaranSampah();
       modalRef.current.open = false;
     } catch (error) {
-      console.error("Error program:", error);
+      console.error("Error updating data:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+      }
     }
   };
 
