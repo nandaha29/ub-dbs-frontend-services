@@ -57,6 +57,13 @@ const TableKelolaSembako = () => {
     },
   });
 
+  const addForm = useForm({
+    nama: "",
+    hargaTukar: 0,
+    thumbnail: "",
+    stok: 0,
+  });
+
   const getKelolaSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -86,6 +93,38 @@ const TableKelolaSembako = () => {
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleTambah = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    const oldVals = addForm.getValues();
+    const formData = new FormData();
+
+    // Append form fields to formData object
+    formData.append("nama", oldVals.nama);
+    formData.append("hargaTukar", oldVals.hargaTukar);
+    formData.append("stok", oldVals.stok);
+    formData.append("thumbnail", oldVals.thumbnail);
+
+    try {
+      const response = await axios.post(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`, formData, {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data", // Set correct content type
+        },
+      });
+      console.log(response.data);
+      // Optionally, you can reset the form after successful submission
+      addForm.reset();
+    } catch (error) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up the request:", error.message);
+      }
     }
   };
 
@@ -474,25 +513,7 @@ const TableKelolaSembako = () => {
                   <div className="col-md-8 pb-4">
                     <div className="">
                       {/* <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div> */}
-                      {/* <input type="file" accept=".png" onChange={this.handleImageUpload} /> */}
-                      preview aja
-                    </div>
-                  </div>
-                </div>
-                <div className="row px-5 text-md">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label className="text-sm">ID Sembako:</label>
-                    </div>
-                  </div>
-                  <div className="col-md-8">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control text-sm font-weight-bold"
-                        // value={this.state.id_sembako}
-                        // onChange={(e) => this.setState({ id_sembako: e.target.value })}
-                      />
+                      <input type="file" accept=".png" onChange={(e) => addForm.setValue("thumbnail", e.target.files[0])} />
                     </div>
                   </div>
                 </div>
@@ -508,28 +529,12 @@ const TableKelolaSembako = () => {
                         type="text"
                         className="form-control text-sm font-weight-bold"
                         // value={this.state.name_sembako}
-                        // onChange={(e) => this.setState({ name_sembako: e.target.value })}
+                        onChange={(e) => addForm.setValue("nama", e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
-                <div className="row px-5 text-md">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label className="text-sm">Status:</label>
-                    </div>
-                  </div>
-                  <div className="col-md-8">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control text-sm font-weight-bold"
-                        // value={this.state.status}
-                        // onChange={(e) => this.setState({ status: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                </div>
+
                 <div className="row px-5 text-md">
                   <div className="col-md-4">
                     <div className="form-group ">
@@ -542,7 +547,7 @@ const TableKelolaSembako = () => {
                         type="number"
                         className="form-control text-sm font-weight-bold "
                         // value={this.state.poin_sembako}
-                        // onChange={(e) => this.setState({ poin_sembako: e.target.value })}
+                        onChange={(e) => addForm.setValue("hargaTukar", e.target.value)}
                       />
                     </div>
                   </div>
@@ -559,7 +564,7 @@ const TableKelolaSembako = () => {
                         type="number"
                         className="form-control text-sm font-weight-bold"
                         // value={this.state.stok_sembako}
-                        // onChange={(e) => this.setState({ stok_sembako: e.target.value })}
+                        onChange={(e) => addForm.setValue("stok", e.target.value)}
                       />
                     </div>
                   </div>
@@ -575,19 +580,7 @@ const TableKelolaSembako = () => {
               >
                 Batal
               </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                // onClick={this.clearFields}
-              >
-                Refresh
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-dismiss="modal"
-                // onClick={this.handleTambahSembako}
-              >
+              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={handleTambah}>
                 Simpan
               </button>
             </div>
