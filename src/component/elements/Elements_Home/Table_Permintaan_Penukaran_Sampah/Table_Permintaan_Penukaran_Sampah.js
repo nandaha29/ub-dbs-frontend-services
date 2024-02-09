@@ -116,6 +116,12 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     }
   };
 
+  // Function to format the date
+  const formatDate = (dateObj) => {
+    const { day, month, year } = dateObj;
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div>
       <div className="card">
@@ -150,7 +156,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                     <tr key={item.id_slip}>
                       <td>{item.id_slip}</td>
                       <td>{item.nama_user}</td>
-                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                      <td>{formatDate(item.tanggal.date)}</td>
                       <td className="d-flex">
                         <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail

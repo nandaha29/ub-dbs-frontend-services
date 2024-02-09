@@ -302,31 +302,6 @@ const TableKelolaSampah = () => {
             </thead>
 
             <tbody className="text-center">{showTable()}</tbody>
-            {/* <tbody>
-              {kelolaSampah.map((item) => (
-                <tr key={item.id}>
-                  <td className="col-md-1">{item.id}</td>
-                  <td className="col-md-1">
-                    <img src={item.thumbnail} width="50" height="50"></img>
-                  </td>
-                  <td>{item.nama}</td>
-                  <td>{item.nilai_tukar}</td>
-                  <td>{item.perolehan}</td>
-                  <td className="">{item.status}</td>
-                  <td className="d-flex ">
-                    <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
-                      Edit
-                    </button>
-                    <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" onClick={() => arsip(item.id, item.status)}>
-                      {item.status === "AKTIF" ? "Arsipkan" : "Aktifkan"}
-                    </button>
-                    <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" onClick={() => hapus(item.id)}>
-                      Hapus
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody> */}
           </table>
         </div>
       </div>
