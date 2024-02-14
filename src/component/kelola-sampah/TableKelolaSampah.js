@@ -51,10 +51,19 @@ const TableKelolaSampah = () => {
     defaultValues: {
       id: formData.id,
       nama: formData.nama,
-      hargaTukar: formData.harga_tukar_poin,
+      nilai_tukar: formData.nilai_tukar,
+      // konten: formData.konten,
       thumbnail: formData.thumbnail,
       stok: formData.stok,
     },
+  });
+
+  const addForm = useForm({
+    nama: "",
+    nilai_tukar: 0,
+    thumbnail: "",
+    // konten: "",
+    stok: 0,
   });
 
   const getKelolaSampah = async () => {
@@ -165,6 +174,39 @@ const TableKelolaSampah = () => {
     }
   };
 
+  const handleTambah = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    const oldVals = addForm.getValues();
+    const formData = new FormData();
+
+    // Append form fields to formData object
+    formData.append("nama", oldVals.nama);
+    formData.append("nilai_tukar", oldVals.nilai_tukar);
+    // formData.append("konten", oldVals.konten);
+    formData.append("stok", oldVals.stok);
+    formData.append("thumbnail", oldVals.thumbnail);
+
+    try {
+      const response = await axios.post(`https://devel4-filkom.ub.ac.id/bank-sampah/sampah`, formData, {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data", // Set correct content type
+        },
+      });
+      console.log(response.data);
+      // Optionally, you can reset the form after successful submission
+      addForm.reset();
+    } catch (error) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up the request:", error.message);
+      }
+    }
+  };
+
   // Function to format the date
   const formatDate = (dateObj) => {
     const { day, month, year } = dateObj;
@@ -217,7 +259,8 @@ const TableKelolaSampah = () => {
     // Set nilai-nilai form berdasarkan data formData
     form.setValue("id", formData.id);
     form.setValue("nama", formData.nama);
-    form.setValue("hargaTukar", formData.nilai_tukar);
+    form.setValue("nilai_tukar", formData.nilai_tukar);
+    // form.setValue("konten", formData.konten);
     form.setValue("thumbnail", formData.thumbnail);
     form.setValue("stok", formData.stok);
     setSelectedImage(formData.thumbnail);
@@ -392,7 +435,7 @@ const TableKelolaSampah = () => {
                         type="text"
                         className="form-control text-sm"
                         // value={formData.nama}
-                        {...form.register("hargaTukar")}
+                        {...form.register("nilai_tukar")}
                       />
                       {/* <div className="input-group mb-3">
                         <input
@@ -451,25 +494,7 @@ const TableKelolaSampah = () => {
                   <div className="col-md-8 pb-4">
                     <div className="">
                       {/* <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div> */}
-                      {/* <input type="file" accept=".png" onChange={this.handleImageUpload} /> */}
-                      preview aja
-                    </div>
-                  </div>
-                </div>
-                <div className="row px-5 text-md">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label className="text-sm">ID Sampah:</label>
-                    </div>
-                  </div>
-                  <div className="col-md-8">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control text-sm font-weight-bold"
-                        // value={this.state.id_Sampah}
-                        // onChange={(e) => this.setState({ id_Sampah: e.target.value })}
-                      />
+                      <input type="file" accept=".png" onChange={(e) => addForm.setValue("thumbnail", e.target.files[0])} />
                     </div>
                   </div>
                 </div>
@@ -484,29 +509,13 @@ const TableKelolaSampah = () => {
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
-                        // value={this.state.name_Sampah}
-                        // onChange={(e) => this.setState({ name_Sampah: e.target.value })}
+                        // value={this.state.name_sembako}
+                        onChange={(e) => addForm.setValue("nama", e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
-                <div className="row px-5 text-md">
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label className="text-sm">Status:</label>
-                    </div>
-                  </div>
-                  <div className="col-md-8">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control text-sm font-weight-bold"
-                        // value={this.state.status}
-                        // onChange={(e) => this.setState({ status: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                </div>
+
                 <div className="row px-5 text-md">
                   <div className="col-md-4">
                     <div className="form-group ">
@@ -518,8 +527,8 @@ const TableKelolaSampah = () => {
                       <input
                         type="number"
                         className="form-control text-sm font-weight-bold "
-                        // value={this.state.poin_Sampah}
-                        // onChange={(e) => this.setState({ poin_Sampah: e.target.value })}
+                        // value={this.state.poin_sembako}
+                        onChange={(e) => addForm.setValue("nilai_tukar", e.target.value)}
                       />
                     </div>
                   </div>
@@ -535,8 +544,8 @@ const TableKelolaSampah = () => {
                       <input
                         type="number"
                         className="form-control text-sm font-weight-bold"
-                        // value={this.state.stok_Sampah}
-                        // onChange={(e) => this.setState({ stok_Sampah: e.target.value })}
+                        // value={this.state.stok_sembako}
+                        onChange={(e) => addForm.setValue("stok", e.target.value)}
                       />
                     </div>
                   </div>
@@ -554,16 +563,11 @@ const TableKelolaSampah = () => {
               </button>
               <button
                 type="button"
-                className="btn btn-secondary"
-                // onClick={this.clearFields}
-              >
-                Refresh
-              </button>
-              <button
-                type="button"
                 className="btn btn-primary"
                 data-dismiss="modal"
-                // onClick={this.handleTambahSampah}
+                onClick={handleTambah}
+                // onClick={form.handleSubmit(handleTambah)}
+                // onClick={this.saveChanges}
               >
                 Simpan
               </button>
