@@ -96,35 +96,34 @@ const TableKelolaSembako = () => {
     }
   };
 
-  const handleTambah = async () => {
-    const headers = { Authorization: `Bearer ${token}` };
-    const oldVals = addForm.getValues();
-    const formData = new FormData();
-
-    // Append form fields to formData object
-    formData.append("nama", oldVals.nama);
-    formData.append("hargaTukar", oldVals.hargaTukar);
-    formData.append("stok", oldVals.stok);
-    formData.append("thumbnail", oldVals.thumbnail);
-
+  const handleTambah = async (formData) => {
+    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" };
     try {
-      const response = await axios.post(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`, formData, {
-        headers: {
-          ...headers,
-          "Content-Type": "multipart/form-data", // Set correct content type
-        },
+      const formDataWithFile = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "thumbnail" && key !== "id") {
+          formDataWithFile.append(key, value);
+        }
       });
-      console.log(response.data);
-      // Optionally, you can reset the form after successful submission
-      addForm.reset();
-    } catch (error) {
-      if (error.response) {
-        console.error("Error response:", error.response.data);
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-      } else {
-        console.error("Error setting up the request:", error.message);
+      if (formData.thumbnail) {
+        formDataWithFile.append("thumbnail", formData.thumbnail);
       }
+      const response = await axios.post(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`,
+        formDataWithFile,
+        { headers }
+      );
+      if (response.status === 200) {
+        alert("Berhasil menambah barang penukaran");
+      } else {
+        alert("Gagal menambah barang penukaran");
+      }
+      console.log(response);
+      form.reset();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error program:", error);
     }
   };
 
@@ -185,9 +184,6 @@ const TableKelolaSembako = () => {
       if (formData.thumbnail) {
         formDataWithFile.append("thumbnail", formData.thumbnail);
       }
-      for (var pair of formDataWithFile.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
       const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil mengubah isi barang penukaran");
@@ -207,6 +203,11 @@ const TableKelolaSembako = () => {
     const { day, month, year } = dateObj;
     return `${day}/${month}/${year}`;
   };
+
+  const closeModal = () => {
+    setFormData({});
+    form.reset();
+  }
 
   const showTable = () => {
     try {
@@ -353,7 +354,7 @@ const TableKelolaSembako = () => {
               <h5 className="modal-title" id="staticBackdropLabel">
                 Edit Sembako
               </h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -373,7 +374,7 @@ const TableKelolaSembako = () => {
                         className="w-full input-bordered pt-2"
                         accept="image/*"
                         onChange={handleGambar}
-                        // {...form.register('banner')}
+                      // {...form.register('banner')}
                       />
                     </div>
                   </div>
@@ -474,7 +475,8 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                // onClick={this.closeModal}
+                onClick={closeModal}
+              // onClick={this.closeModal}
               >
                 Batal
               </button>
@@ -483,7 +485,7 @@ const TableKelolaSembako = () => {
                 className="btn btn-primary"
                 data-dismiss="modal"
                 onClick={form.handleSubmit(handleUpdate)}
-                // onClick={this.saveChanges}
+              // onClick={this.saveChanges}
               >
                 Simpan
               </button>
@@ -511,9 +513,17 @@ const TableKelolaSembako = () => {
                     <div className="form-group"></div>
                   </div>
                   <div className="col-md-8 pb-4">
-                    <div className="">
-                      {/* <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div> */}
-                      <input type="file" accept=".png" onChange={(e) => addForm.setValue("thumbnail", e.target.files[0])} />
+                    <div className="text-center">
+                      <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div>
+                      {/* <input type="file" accept=".png" onChange={this.handleImageUpload} /> */}
+                      <input
+                        type="file"
+                        ref={evidenceRef}
+                        className="w-full input-bordered pt-2"
+                        accept="image/*"
+                        onChange={handleGambar}
+                      // {...form.register('banner')}
+                      />
                     </div>
                   </div>
                 </div>
@@ -524,12 +534,11 @@ const TableKelolaSembako = () => {
                     </div>
                   </div>
                   <div className="col-md-8">
-                    <div className="form-group">
+                  <div className="form-group">
                       <input
                         type="text"
-                        className="form-control text-sm font-weight-bold"
-                        // value={this.state.name_sembako}
-                        onChange={(e) => addForm.setValue("nama", e.target.value)}
+                        className="form-control text-sm"
+                        {...form.register("nama")}
                       />
                     </div>
                   </div>
@@ -545,9 +554,8 @@ const TableKelolaSembako = () => {
                     <div className="form-group">
                       <input
                         type="number"
-                        className="form-control text-sm font-weight-bold "
-                        // value={this.state.poin_sembako}
-                        onChange={(e) => addForm.setValue("hargaTukar", e.target.value)}
+                        className="form-control text-sm"
+                        {...form.register("hargaTukar")}
                       />
                     </div>
                   </div>
@@ -562,9 +570,8 @@ const TableKelolaSembako = () => {
                     <div className="form-group">
                       <input
                         type="number"
-                        className="form-control text-sm font-weight-bold"
-                        // value={this.state.stok_sembako}
-                        onChange={(e) => addForm.setValue("stok", e.target.value)}
+                        className="form-control text-sm"
+                        {...form.register("stok")}
                       />
                     </div>
                   </div>
@@ -576,11 +583,11 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                // onClick={this.closeModal}
+              // onClick={this.closeModal}
               >
                 Batal
               </button>
-              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={handleTambah}>
+              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={form.handleSubmit(handleTambah)}>
                 Simpan
               </button>
             </div>

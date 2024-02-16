@@ -21,7 +21,7 @@ const Sampah = [
 const TableDataNasabah = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
-  const [dataNasabah, setDataNasabah] = useState({});
+  const [dataNasabah, setDataNasabah] = useState([]);
   const [formData, setFormData] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
   const modalRef = useRef(null);
