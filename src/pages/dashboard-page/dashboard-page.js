@@ -12,8 +12,8 @@ import Table_Permintaan_Penukaran_Sembako from "../../component/elements/Element
 import { post } from "jquery";
 
 const DashboardPage = () => {
-  const [openHour, setOpenHour] = useState("");
-  const [closeHour, setCloseHour] = useState("");
+  const [openHour, setOpenHour] = useState([]);
+  const [closeHour, setCloseHour] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const [nasabahCount, setNasabahCount] = useState(0);
@@ -227,7 +227,7 @@ const DashboardPage = () => {
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
                     <span className="align-middle">
-                      Buka • Akan tutup pada {closeHour}
+                      {isOpen ? "Buka" : "Tutup"} • Akan tutup pada {closeHour}
                     </span>
                     <button
                       className="btn-secondary border-0 ml-2"
