@@ -227,10 +227,11 @@ const DashboardPage = () => {
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
                     <span className="align-middle">
-                      {isOpen ? "Buka" : "Tutup"} • Akan tutup pada {closeHour}
+                      {isOpen ? "Buka" : "Tutup"} • Akan tutup pada{" "}
+                      <a className="text-md badge bg-secondary"> {closeHour}</a>
                     </span>
                     <button
-                      className="btn-secondary border-0 ml-2"
+                      className="btn-primary border-0 ml-2"
                       data-toggle="modal"
                       data-target="#modal_edit_waktu"
                     >
