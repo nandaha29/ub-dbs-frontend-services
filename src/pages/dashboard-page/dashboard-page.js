@@ -9,20 +9,63 @@ import { auth } from "../../config/firebase";
 
 import Table_Permintaan_Penukaran_Sampah from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran_Sampah/Table_Permintaan_Penukaran_Sampah";
 import Table_Permintaan_Penukaran_Sembako from "../../component/elements/Elements_Home/Table_Permintaan_Penukaran_Sembako/Table_Permintaan_Penukaran_Sembako";
+import { post } from "jquery";
 
 const DashboardPage = () => {
+  const [openHour, setOpenHour] = useState("");
+  const [closeHour, setCloseHour] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   const [nasabahCount, setNasabahCount] = useState(0);
   const [totalSampahCount, setTotalSampahCount] = useState(0);
-  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(0);
+  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] =
+    useState(0);
   const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(0);
 
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
 
+  const getDataJam = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
+        { headers }
+      );
+      console.log(response.data);
+      const data = response.data;
+      const bukaPada = `${data.jam_buka_sekarang.hour}:${data.jam_buka_sekarang.minute}`;
+      const tutupPada = `${data.jam_tutup_sekarang.hour}:${data.jam_tutup_sekarang.minute}`;
+      setOpenHour(bukaPada);
+      setCloseHour(tutupPada);
+      setIsOpen(data.status);
+    } catch (error) {
+      console.error("Error fetching datajam:", error);
+    }
+  };
+
+  // const setBukaTutup = async () => {
+  //   const headers = { Authorization: `Bearer ${token}` };
+  //   try {
+  //     const response = await axios.get(
+  //       "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6",
+  //       { headers }
+  //     );
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching dataBukaTutup:", error);
+  //   }
+  // };
+  // getBukaTutup();
+  //testing
+
   const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1",
+        { headers }
+      );
       setNasabahCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -33,8 +76,14 @@ const DashboardPage = () => {
   const getTotalSampahBulanIni = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
-      const totalBeratSum = response.data.reduce((sum, item) => sum + item.totalBerat, 0);
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction",
+        { headers }
+      );
+      const totalBeratSum = response.data.reduce(
+        (sum, item) => sum + item.totalBerat,
+        0
+      );
       console.log(totalBeratSum);
       setTotalSampahCount(totalBeratSum);
     } catch (error) {
@@ -45,7 +94,10 @@ const DashboardPage = () => {
   const getNasabahPerluVerifikasi = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50",
+        { headers }
+      );
       setNasabahPerluVerifikasiCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -56,7 +108,10 @@ const DashboardPage = () => {
   const getTransaksiSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/slip/penukaran",
+        { headers }
+      );
       setTransaksiSembakoCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -72,6 +127,7 @@ const DashboardPage = () => {
         // console.log(tes);
         // console.log("login berhasil");
         // console.log(user);
+        getDataJam();
         getNasabahAktif();
         getTotalSampahBulanIni();
         getNasabahPerluVerifikasi();
@@ -94,10 +150,6 @@ const DashboardPage = () => {
       .catch((error) => console.log(error));
   };
 
-  const [openHour, setOpenHour] = useState("");
-  const [closeHour, setCloseHour] = useState("");
-  const [isOpen, setIsOpen] = useState(true);
-
   const handleInputChange = (e, setValue) => {
     const value = e.target.value.replace(/\D/, "").slice(0, 4);
     if (value.length <= 2) {
@@ -108,24 +160,50 @@ const DashboardPage = () => {
   };
 
   const toggleSwitch = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prevState) => !prevState);
   };
 
-  const handleSave = () => {
-    if (window.confirm("Apakah anda yakin ingin menyimpan perubahan?")) {
-      if (openHour && closeHour) {
-        const data = {
-          openHour,
-          closeHour,
-          status: isOpen ? "Buka" : "Tutup",
-        };
-        console.log("Saved Data:", data);
-      } else {
-        console.error("Please fill in both open and close hours.");
-      }
-    } else {
+  const handleSave = async () => {
+    const newData = {
+      buka: openHour,
+      tutup: closeHour,
+      status: isOpen,
+    };
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.put(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6",
+        newData,
+        { headers }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error posting status data:", error);
     }
   };
+
+  // const handleSave = async () => {
+  //   if (window.confirm("Apakah anda yakin ingin menyimpan perubahan?")) {
+  //     if (openHour && closeHour) {
+  //       const data = {
+  //         openHour,
+  //         closeHour,
+  //         status: isOpen ? "Buka" : "Tutup",
+  //       };
+  //       console.log("Saved Data:", data);
+
+  //       // Panggil fungsi untuk mendapatkan data status lokasi penukaran
+  //       // await getStatusLokasiPenukaran();
+
+  //       // Lakukan sesuatu setelah berhasil menyimpan perubahan
+  //       // Misalnya, menampilkan pesan sukses atau melakukan operasi lainnya
+  //     } else {
+  //       console.error("Please fill in both open and close hours.");
+  //     }
+  //   } else {
+  //     // Pengguna membatalkan penyimpanan perubahan
+  //   }
+  // };
 
   return (
     <div>
@@ -148,8 +226,14 @@ const DashboardPage = () => {
                 </div>
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
-                    <span className="align-middle">Buka • Akan tutup pada 16.00</span>
-                    <button className="btn-secondary border-0 ml-2" data-toggle="modal" data-target="#modal_edit_waktu">
+                    <span className="align-middle">
+                      Buka • Akan tutup pada 16.00
+                    </span>
+                    <button
+                      className="btn-secondary border-0 ml-2"
+                      data-toggle="modal"
+                      data-target="#modal_edit_waktu"
+                    >
                       edit
                     </button>
                   </div>
@@ -236,7 +320,15 @@ const DashboardPage = () => {
           </section>
         </div>
         {/* MODAL LIHAT DATA NASABAH SECTION */}
-        <div class="modal fade" id="modal_edit_waktu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="modal_edit_waktu"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header ">
@@ -244,39 +336,69 @@ const DashboardPage = () => {
                   <i className="fas fa-chart-pie mr-1" />
                   Buka / Tutup Balai
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body justify-content-center">
+              <div className="modal-body justify-content-center">
                 <form className="m-5">
-                  <div class="form-group row">
-                    <label class="col-sm-5">Buka Pada : </label>
-                    <div class="col-sm-7">
-                      <input type="text" className="form-control text-sm font-weight-bold" value={openHour} onChange={(e) => handleInputChange(e, setOpenHour)} />
+                  <div className="form-group row">
+                    <label className="col-sm-5">Buka Pada : </label>
+                    <div className="col-sm-7">
+                      <input
+                        type="text"
+                        className="form-control text-sm font-weight-bold"
+                        value={openHour}
+                        onChange={(e) => setOpenHour(e.target.value)}
+                      />
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label class="col-sm-5">Tutup Pada : </label>
-                    <div class="col-sm-7">
-                      <input type="text" className="form-control text-sm font-weight-bold" value={closeHour} onChange={(e) => handleInputChange(e, setCloseHour)} />
+                  <div className="form-group row">
+                    <label className="col-sm-5">Tutup Pada : </label>
+                    <div className="col-sm-7">
+                      <input
+                        type="text"
+                        className="form-control text-sm font-weight-bold"
+                        value={closeHour}
+                        onChange={(e) => setCloseHour(e.target.value)}
+                      />
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label class="col-sm-5">Status saat ini : </label>
-                    <div class="col-sm-7">
-                      <button type="button" className={`btn ${isOpen ? "btn-success" : "btn-secondary"}`} onClick={toggleSwitch}>
+                  <div className="form-group row">
+                    <label className="col-sm-5">Status saat ini : </label>
+                    <div className="col-sm-7">
+                      <button
+                        type="button"
+                        className={`btn ${
+                          isOpen ? "btn-success" : "btn-secondary"
+                        }`}
+                        onClick={toggleSwitch}
+                      >
                         {isOpen ? "Buka" : "Tutup"}
                       </button>
                     </div>
                   </div>
                 </form>
               </div>
-              <div class="modal-footer">
-                <button class="btn btn-secondary float-sm-left" type="button" data-dismiss="modal">
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary float-sm-left"
+                  type="button"
+                  data-dismiss="modal"
+                >
                   Tutup
                 </button>
-                <button type="button" class="btn btn-primary " data-dismiss="modal" onClick={handleSave}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-dismiss="modal"
+                  onClick={handleSave}
+                >
                   Simpan Perubahan
                 </button>
               </div>
