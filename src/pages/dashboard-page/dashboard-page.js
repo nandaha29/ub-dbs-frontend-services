@@ -227,7 +227,7 @@ const DashboardPage = () => {
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
                     <span className="align-middle">
-                      Buka • Akan tutup pada 16.00
+                      Buka • Akan tutup pada {closeHour}
                     </span>
                     <button
                       className="btn-secondary border-0 ml-2"
