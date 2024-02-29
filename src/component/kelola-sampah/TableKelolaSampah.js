@@ -412,14 +412,6 @@ const TableKelolaSampah = () => {
                         // value={formData.nama}
                         {...form.register("nama")}
                       />
-                      {/* <div className="input-group mb-3">
-                        <input
-                          type="number"
-                          className="form-control"
-                          // aria-label={formData.nama}
-                          placeholder={formData.nama}
-                        />
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -437,14 +429,6 @@ const TableKelolaSampah = () => {
                         // value={formData.nama}
                         {...form.register("nilai_tukar")}
                       />
-                      {/* <div className="input-group mb-3">
-                        <input
-                          type="number"
-                          className="form-control"
-                          // aria-label={formData.nama}
-                          placeholder={formData.harga_tukar_poin}
-                        />
-                      </div> */}
                     </div>
                   </div>
                 </div>
