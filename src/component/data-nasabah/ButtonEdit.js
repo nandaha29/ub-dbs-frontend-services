@@ -34,6 +34,17 @@ export default function ButtonEdit(user_id) {
     stok: 0,
   });
 
+  const getDataNasabah = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+      setDataNasabah(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const getPermintaanID = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {

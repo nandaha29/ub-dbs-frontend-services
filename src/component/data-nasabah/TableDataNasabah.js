@@ -60,6 +60,9 @@ const TableDataNasabah = () => {
   };
 
   const getPermintaanID = async (ids) => {
+    console.log(ids.id); //cek isi ids
+    console.log(ids); //cek isi ids
+
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get(

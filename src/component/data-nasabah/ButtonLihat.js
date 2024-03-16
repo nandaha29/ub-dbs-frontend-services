@@ -46,6 +46,9 @@ export default function ButtonLihat(user_id) {
   };
 
   const getPermintaanID = async (ids) => {
+    console.log(ids.id); //cek isi ids
+    console.log(ids.nama); //cek isi ids
+
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get(
