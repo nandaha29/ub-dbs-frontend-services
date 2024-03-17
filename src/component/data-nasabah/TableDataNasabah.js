@@ -150,9 +150,9 @@ const TableDataNasabah = () => {
             <td className="mt-1 mx-2 text-center">{item.alamat}</td>
             <td className="d-flex justify-content-center">
               <ButtonLihat id={item.user_id} />
-              <ButtonRiwayat id={item.user_id} />
+              {/* <ButtonRiwayat id={item.user_id} /> */}
               {/* <ButtonRiwayatDua id={item.user_id} /> */}
-              <ButtonEdit id={item.user_id} />
+              {/* <ButtonEdit id={item.user_id} /> */}
             </td>
           </tr>
         );
@@ -247,7 +247,7 @@ const TableDataNasabah = () => {
           <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
             <thead>
               <tr>
-                <th className="text-uppercase  text-sm text-center">ID Nasabah</th>
+                <th className="text-uppercase  text-sm text-center col-sm-1">ID Nasabah</th>
                 <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
                 <th className="text-uppercase  text-sm text-center">No. Telepon</th>
                 <th className="text-uppercase  text-sm text-center">Alamat</th>

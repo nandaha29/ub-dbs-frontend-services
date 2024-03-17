@@ -235,7 +235,7 @@ const DashboardPage = () => {
             </div>
           </section>
         </div>
-        {/* MODAL LIHAT DATA NASABAH SECTION */}
+        {/* MODAL EDIT SECTION */}
         <div class="modal fade" id="modal_edit_waktu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">

@@ -129,9 +129,9 @@ const Table_Permintaan_Penukaran_Sembako = () => {
     <div>
       <div className="card">
         <div className="card-header border-1">
-          <h3 className="card-title">
+          <h3 className="card-title mt-1">
             <i className="fas fa-chart-pie mr-1" />
-            Table_Permintaan_Penukaran_Sembako
+            Table Permintaan Penukaran Sembako
           </h3>
           <div className="card-tools">
             <button type="button" className="btn btn-tool" data-card-widget="collapse">

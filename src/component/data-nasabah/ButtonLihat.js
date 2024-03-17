@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
 export default function ButtonLihat(item) {
-  console.log(item)
+  console.log(item);
   const [token, setToken] = useState();
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
@@ -12,10 +12,7 @@ export default function ButtonLihat(item) {
   const handleDetailClick = async (id) => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`,
-        { headers }
-      );
+      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
       setFormData(response.data.user);
       console.log(response.data.user);
       modalRef.current.open = true;
@@ -59,23 +56,23 @@ export default function ButtonLihat(item) {
               {formData && Object.keys(formData).length > 0 && (
                 <>
                   <div className="modal-image d-flex justify-content-center">
-                    {console.log(formData)}
-                    <img src={formData.avatar} width="50" height="50" alt="Avatar" />
+                    {/* {console.log(formData)} */}
+                    {/* <img src={formData.avatar} width="50" height="50" alt="Avatar" /> */}
+                    <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
                   </div>
                   <form className="m-5">
                     <div className="form-group row">
                       <label className="col-sm-5 col-form-label">ID Nasabah</label>
                       <div className="col-sm-7">
-                        <div type="text" className="mt-2  font-weight-bold">
-                          {console.log(formData.user_id)}
-                          : {formData.user_id}
+                        <div type="text" className="mt-2 font-weight-bold">
+                          {/* {console.log(formData.user_id)}: {formData.user_id} */}: {formData.user_id}
                         </div>
                       </div>
                     </div>
                     <div className="form-group row">
                       <label className="col-sm-5">Nama</label>
                       <div className="col-sm-7">
-                        <div className=" font-weight-bold">{console.log(formData.nama)}: {formData.nama}</div>
+                        <div className=" font-weight-bold"> : {formData.nama}</div>
                       </div>
                     </div>
                     <div className="form-group row">
@@ -83,7 +80,7 @@ export default function ButtonLihat(item) {
                         No HP / WA
                       </label>
                       <div className="col-sm-7">
-                        <div className="mt-2 font-weight-bold">{console.log(formData.nomor_handphone)}: {formData.nomor_handphone}</div>
+                        <div className="mt-2 font-weight-bold">: {formData.nomor_handphone}</div>
                       </div>
                     </div>
                     <div className="form-group row">
@@ -91,7 +88,7 @@ export default function ButtonLihat(item) {
                         Alamat Nasabah
                       </label>
                       <div className="col-sm-7">
-                        <div className="font-weight-bold mt-2">{console.log(formData.alamat)}: {formData.alamat}</div>
+                        <div className="font-weight-bold mt-2">: {formData.alamat}</div>
                       </div>
                     </div>
                   </form>
