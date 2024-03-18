@@ -1,68 +1,60 @@
-import React, { Component } from "react";
-
-import "jquery/dist/jquery.min.js";
+import React, { useEffect, useState } from "react";
+import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-buttons/js/dataTables.buttons.js";
-import "datatables.net-buttons/js/buttons.colVis.js";
-import "datatables.net-buttons/js/buttons.flash.js";
-import "datatables.net-buttons/js/buttons.html5.js";
-import "datatables.net-buttons/js/buttons.print.js";
-import $ from "jquery";
 import "toastr/build/toastr.css";
 import toastr from "toastr";
+import axios from "axios";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../config/firebase";
 
-const names = [
-  {
-    waktu_mendaftar: "10/11/2004",
-    name_nasabah: "Harry Bobo",
-    no_telp: "08123334902",
-    address_nasabah: "Perumahan A",
-  },
-  {
-    waktu_mendaftar: "07/10/2007",
-    name_nasabah: "Harry Styles",
-    no_telp: "082133442920",
-    address_nasabah: "Perumahan B",
-  },
-  {
-    waktu_mendaftar: "05/07/2009",
-    name_nasabah: "Harry Harra",
-    no_telp: "085155280972",
-    address_nasabah: "Perumahan C",
-  },
-];
+const TableVerifikasiNasabah = () => {
+  const [dataNasabah, setDataNasabah] = useState([]);
+  const [token, setToken] = useState([]);
+  const [authUser, setAuthUser] = useState(null);
 
-class TableVerifikasiNasabah extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data_nasabah: [],
-      waktu_mendaftar: "",
-      name_nasabah: "",
-      no_telp: 0,
-      address_nasabah: "",
-      action: "",
-    };
-  }
-
-  handleAgree = (index) => {
-    // Show confirmation dialog
-    const isConfirmed = window.confirm(
-      "Apakah anda yakin ingin memverifikasi akun ini?"
-    );
-
-    if (isConfirmed) {
-      const updatedDataNasabah = [...this.state.data_nasabah];
-      updatedDataNasabah.splice(index, 1);
-      this.setState({ data_nasabah: updatedDataNasabah });
-      toastr.success("Data telah berhasil diverifikasi", "Verifikasi Nasabah");
+  const getDataPerluVerifikasiNasabah = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
+      setDataNasabah(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
-  // component didmount
-  componentDidMount() {
-    this.setState({ data_nasabah: names });
+  const handleAgree = async (index) => {
+    const isConfirmed = window.confirm("Apakah anda yakin ingin memverifikasi akun ini?");
+    console.log(index);
+
+    if (isConfirmed) {
+      try {
+        const headers = { Authorization: `Bearer ${token}` };
+        await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${dataNasabah[index].user_id}`, { status: 1 }, { headers });
+
+        // Setelah permintaan berhasil, perbarui data dengan meminta data baru dari URL yang telah diperbarui
+        const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+        setDataNasabah(response.data);
+
+        toastr.success("Data telah berhasil diverifikasi", "Verifikasi Nasabah");
+      } catch (error) {
+        console.error("Error handling detail click:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+        setToken(user.accessToken);
+        getDataPerluVerifikasiNasabah();
+      } else {
+        setAuthUser(null);
+      }
+    });
+
     if (!$.fn.DataTable.isDataTable("#myTable")) {
       $(document).ready(function () {
         setTimeout(function () {
@@ -74,41 +66,21 @@ class TableVerifikasiNasabah extends Component {
             select: {
               style: "single",
             },
-
             buttons: [
               {
                 extend: "pageLength",
                 className: "btn btn-dark bg-dark",
               },
-              // {
-              //   extend: "copy",
-              //   className: "btn btn-secondary bg-secondary",
-              // },
               {
                 extend: "csv",
                 className: "btn btn-dark bg-dark",
               },
-              // {
-              //   extend: "print",
-              //   customize: function (win) {
-              //     $(win.document.body).css("font-size", "10pt");
-              //     $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
-              //   },
-              //   className: "btn btn-secondary bg-secondary",
-              // },
             ],
-
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
             },
-
             lengthMenu: [
               [10, 20, 30, 50, -1],
               [10, 20, 30, 50, "All"],
@@ -125,226 +97,61 @@ class TableVerifikasiNasabah extends Component {
         }, 1000);
       });
     }
-  }
+  }, []);
 
-  showTable = () => {
+  const showTable = () => {
     try {
-      return this.state.data_nasabah.map((item, index) => {
-        return (
-          <tr key={index}>
-            <td className="mt-1 text-center">{index + 1}</td>
-            <td className="mt-1 text-center">{item.waktu_mendaftar}</td>
-            <td className="mt-1 text-center">{item.name_nasabah}</td>
-            <td className="mt-1 text-center">{item.no_telp}</td>
-            <td className="mt-1 text-center">{item.address_nasabah}</td>
-            <td className="d-flex justify-content-center">
-              {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button
-                className="btn btn-primary btn-sm mt-1 mx-2"
-                onClick={this.handleAgree}
-              >
-                Setujui
-              </button>
-              {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
-            </td>
-          </tr>
-        );
+      return dataNasabah.map((item, index) => {
+        if (item.status !== 1) {
+          // Hanya menampilkan nasabah dengan status belum disetujui
+          return (
+            <tr key={index}>
+              <td className="mt-1 text-center">{index + 1}</td>
+              <td className="mt-1 text-center">{/* {item.waktu_mendaftar} */}?</td>
+              <td className="mt-1 text-center">{item.nama}</td>
+              <td className="mt-1 text-center">{item.nomor_handphone}</td>
+              <td className="mt-1 text-center">{item.alamat}</td>
+              <td className="mt-1 mx-2 text-center">{item.status}</td>
+              {/* INI YANG STATUS */}
+              <td className="d-flex justify-content-center">
+                <button className="btn btn-primary btn-sm mt-1 mx-2" onClick={() => handleAgree(index)}>
+                  Setujui
+                </button>
+              </td>
+            </tr>
+          );
+        } else {
+          return null; // Jika nasabah sudah disetujui, tidak ditampilkan di tabel
+        }
       });
     } catch (e) {
       alert(e.message);
     }
   };
 
-  render() {
-    return (
-      <>
-        <div class="container-fluid">
-          <div class="table-responsive p-0 pb-2">
-            <table
-              id="table"
-              className="table align-items-center justify-content-center mb-0 table-striped"
-            >
-              <thead>
-                <tr>
-                  <th className="text-uppercase  text-sm text-center">#</th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Waktu Mendaftar
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Nama Nasabah
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    No. Telepon
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Alamat
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Action
-                  </th>
-                </tr>
-              </thead>
+  return (
+    <>
+      <div class="container-fluid">
+        <div class="table-responsive p-0 pb-2">
+          <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
+            <thead>
+              <tr>
+                <th className="text-uppercase  text-sm text-center">#</th>
+                <th className="text-uppercase  text-sm text-center">Waktu Mendaftar</th>
+                <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
+                <th className="text-uppercase  text-sm text-center">No. Telepon</th>
+                <th className="text-uppercase  text-sm text-center">Alamat</th>
+                <th className="text-uppercase  text-sm text-center">TEMP; STATUS</th>
+                <th className="text-uppercase  text-sm text-center">Action</th>
+              </tr>
+            </thead>
 
-              <tbody>{this.showTable()}</tbody>
-            </table>
-          </div>
+            <tbody>{showTable()}</tbody>
+          </table>
         </div>
-        {/* MODAL LIHAT DATA NASABAH SECTION */}
-        <div
-          class="modal fade"
-          id="modal_liat_data_nasabah"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header ">
-                <h5 class="modal-title" id="staticBackdropLabel">
-                  <i className="fas fa-chart-pie mr-1" />
-                  Detail Nasabah
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body justify-content-center">
-                {/* <h5 className="m-3">Profil Nasabah</h5> */}
-                <div className="modal-image d-flex justify-content-center">
-                  {/* <img src={logo} alt="Logo" className="brand-image " /> */}
-                  {/* MAKE A LINGKARAN FOR IMAGE */}
-                  <h1>INI GAMBAR</h1>
-                </div>
-
-                <form className="m-5">
-                  <div class="form-group row ">
-                    <label class="col-sm-5 col-form-label">ID Nasabah</label>
-                    <div class="col-sm-7 ">
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        value={this.state.id_nasabah}
-                      ></input>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-5 col-form-label">Nama</label>
-                    <div class="col-sm-7">
-                      <input
-                        type="number"
-                        className="form-control mb-2"
-                        value={this.state.name_nasabah}
-                      />
-                      {/* <p>10-01-2023 13:14</p> */}
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
-                      No Telepon
-                    </label>
-                    <div class="col-sm-7">
-                      <input
-                        type="number"
-                        className="form-control mb-2"
-                        value={this.state.no_telp}
-                      />
-                      {/* <p>0847-242-983-191</p> */}
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Age
-                    </label>
-                    <div class="col-sm-7">
-                      <input
-                        type="number"
-                        class="form-control"
-                        className="form-control mb-2"
-                        value={this.state.age}
-                      />
-                      {/* <p>0847-242-983-191</p> */}
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-5 col-form-label">
-                      Alamat Nasabah
-                    </label>
-                    <div class="col-sm-7">
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        value={this.state.address_nasabah}
-                      />
-                      {/* <p>Jl. Raya Bukan Gg. III No. 17a. Dinoyo, Malang</p> */}
-                    </div>
-                  </div>
-                </form>
-                {/* </div> */}
-              </div>
-
-              {/* <div class="modal-footer">
-                <button type="button" class="btn btn-secondary ">
-                  Tutup
-                </button>
-              </div> */}
-            </div>
-          </div>
-        </div>
-        {/* MODAL rIWAYAT NASABAH SECTION */}
-        <div
-          class="modal fade"
-          id="modal_tiwayat_transaksi"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header ">
-                <h5 class="modal-title" id="staticBackdropLabel">
-                  Riwayat Transaksi Nasabah
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body  justify-content-center">
-                <div className="container-fluid">
-                  <div className="row ">
-                    <div className="left-content col-5">ewe</div>
-                    <div className="right-content col-7">dfdf</div>
-                  </div>
-                </div>
-
-                {/* </div> */}
-              </div>
-
-              {/* <div class="modal-footer">
-                <button type="button" class="btn btn-secondary ">
-                  Tutup
-                </button>
-              </div> */}
-            </div>
-          </div>
-        </div>
-        {/* MODAL APALAGI */}
-      </>
-    );
-  }
-}
+      </div>
+    </>
+  );
+};
 
 export default TableVerifikasiNasabah;

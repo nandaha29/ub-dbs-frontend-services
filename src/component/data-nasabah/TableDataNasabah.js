@@ -48,17 +48,6 @@ const TableDataNasabah = () => {
     stok: 0,
   });
 
-  // const getDataNasabah = async () => {
-  //   const headers = { Authorization: `Bearer ${token}` };
-  //   try {
-  //     const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
-  //     setDataNasabah(response.data);
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
   const getDataNasabah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -168,6 +157,8 @@ const TableDataNasabah = () => {
             <td className="mt-1 mx-2 text-center">{item.nama}</td>
             <td className="text-center justify-content-center flex">{item.nomor_handphone}</td>
             <td className="mt-1 mx-2 text-center">{item.alamat}</td>
+            <td className="mt-1 mx-2 text-center">{item.status}</td>
+            {/* INI YANG STATUS */}
             <td className="d-flex justify-content-center">
               <ButtonLihat id={item.user_id} />
               <ButtonRiwayat id={item.user_id} />
@@ -271,6 +262,7 @@ const TableDataNasabah = () => {
                 <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
                 <th className="text-uppercase  text-sm text-center">No. Telepon</th>
                 <th className="text-uppercase  text-sm text-center">Alamat</th>
+                <th className="text-uppercase  text-sm text-center">TEMP; STATUS</th>
                 <th className="text-uppercase  text-sm text-center">Action</th>
               </tr>
             </thead>
