@@ -78,11 +78,11 @@ const Navbar = () => {
               {/* </button>s */}
             </a>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a className="nav-link" href="/lupa-password" role="button">
               LUPA PASS UJICOBA
             </a>
-          </li>
+          </li> */}
           <li className="nav-item">
             <a className="nav-link" data-widget="fullscreen" href="#" role="button">
               <i className="fas fa-expand-arrows-alt" />

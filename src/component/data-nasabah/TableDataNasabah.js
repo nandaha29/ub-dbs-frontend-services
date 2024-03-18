@@ -48,12 +48,32 @@ const TableDataNasabah = () => {
     stok: 0,
   });
 
+  // const getDataNasabah = async () => {
+  //   const headers = { Authorization: `Bearer ${token}` };
+  //   try {
+  //     const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+  //     setDataNasabah(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
   const getDataNasabah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
-      setDataNasabah(response.data);
-      console.log(response.data);
+      // Ambil data nasabah dengan status 1
+      const responseStatus1 = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+      // Ambil data nasabah dengan status 0
+      const responseStatus0 = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
+
+      // Gabungkan data dari kedua response menjadi satu array
+      const combinedData = [...responseStatus1.data, ...responseStatus0.data];
+
+      // Set data nasabah ke state
+      setDataNasabah(combinedData);
+
+      console.log(combinedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

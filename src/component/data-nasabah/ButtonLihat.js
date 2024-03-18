@@ -7,6 +7,7 @@ export default function ButtonLihat(item) {
   console.log(item);
   const [token, setToken] = useState();
   const [formData, setFormData] = useState({});
+  const hasPhoto = formData && formData.avatar;
   const modalRef = useRef(null);
 
   const handleDetailClick = async (id) => {
@@ -55,11 +56,7 @@ export default function ButtonLihat(item) {
               {/* Conditionally render the content when formData is populated */}
               {formData && Object.keys(formData).length > 0 && (
                 <>
-                  <div className="modal-image d-flex justify-content-center">
-                    {/* {console.log(formData)} */}
-                    {/* <img src={formData.avatar} width="50" height="50" alt="Avatar" /> */}
-                    <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />
-                  </div>
+                  <div className="modal-image d-flex justify-content-center">{hasPhoto ? <img src={formData.avatar} alt="Avatar" /> : <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />}</div>
                   <form className="m-5">
                     <div className="form-group row">
                       <label className="col-sm-5 col-form-label">ID Nasabah</label>
