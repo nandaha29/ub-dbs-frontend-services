@@ -3,6 +3,8 @@ import logo from "../../component/assets/logo/Logo.png";
 import { auth } from "../../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { error } from "jquery";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -13,9 +15,13 @@ const RegisterPage = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
+        toastr.success("Login berhasil!", "Sukses");
+        window.location = "/login";
       })
       .catch((error) => {
         console.log(error);
+        toastr.error("Login gagal. Periksa kembali email dan password Anda.", "Gagal");
+        window.location = "/";
       });
   };
   return (
