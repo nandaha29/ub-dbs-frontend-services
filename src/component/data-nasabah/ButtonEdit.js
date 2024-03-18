@@ -69,7 +69,10 @@ export default function ButtonEdit(user_id) {
 
   const handleDetailClick = async (id) => {
     try {
-      await getPermintaanID(id);
+      const headers = { Authorization: `Bearer ${token}` };
+      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
+      setFormData(response.data.user);
+      console.log(response.data.user);
       modalRef.current.open = true;
     } catch (error) {
       console.error("Error handling detail click:", error);

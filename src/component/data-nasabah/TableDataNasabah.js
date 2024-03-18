@@ -60,8 +60,8 @@ const TableDataNasabah = () => {
   };
 
   const getPermintaanID = async (ids) => {
-    console.log(ids.id); //cek isi ids
-    console.log(ids); //cek isi ids
+    // console.log(ids.id); //cek isi ids
+    // console.log(ids); //cek isi ids
 
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -150,9 +150,9 @@ const TableDataNasabah = () => {
             <td className="mt-1 mx-2 text-center">{item.alamat}</td>
             <td className="d-flex justify-content-center">
               <ButtonLihat id={item.user_id} />
-              {/* <ButtonRiwayat id={item.user_id} /> */}
+              <ButtonRiwayat id={item.user_id} />
               {/* <ButtonRiwayatDua id={item.user_id} /> */}
-              {/* <ButtonEdit id={item.user_id} /> */}
+              <ButtonEdit id={item.user_id} />
             </td>
           </tr>
         );
