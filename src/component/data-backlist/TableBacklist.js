@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-
+import React, { useEffect, useState, useRef } from "react";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
@@ -11,6 +10,11 @@ import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
 import "toastr/build/toastr.css";
 import toastr from "toastr";
+
+import axios from "axios";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
+import { useForm } from "react-hook-form";
 
 const names = [
   {
@@ -33,36 +37,172 @@ const names = [
   },
 ];
 
-class TableBacklist extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data_nasabah: [],
-      waktu_mendaftar: "",
-      name_nasabah: "",
-      no_telp: "",
-      address_nasabah: "",
-      action: "",
-    };
-  }
+const TableBacklist = () => {
+  const [dataNasabah, setDataNasabah] = useState([]);
+  const [authUser, setAuthUser] = useState(null);
+  const [token, setToken] = useState([]);
+  const [formData, setFormData] = useState({});
+  const [selectedImage, setSelectedImage] = useState(null);
+  const modalRef = useRef(null);
 
-  handleDelete = (index) => {
-    // Show confirmation dialog
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
+  const form = useForm({
+    defaultValues: {
+      user_id: formData.user_id,
+      nama: formData.nama,
+      nomor_handphone: formData.nomor_handphone,
+      avatar: formData.avatar,
+      alamat: formData.alamat,
+    },
+  });
 
+  const addForm = useForm({
+    nama: "",
+    nomor_handphone: 0,
+    thumbnail: "",
+    alamat: "",
+    stok: 0,
+  });
+
+  const getDataNasabah = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=2&isPagination=false", { headers });
+      setDataNasabah(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getPermintaanID = async (ids) => {
+    console.log(ids.id); //cek isi ids
+    console.log(ids); //cek isi ids
+
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
+        {
+          user_id: ids,
+          nama: formData.nama,
+          nomor_handphone: formData.nomor_handphone,
+          // tgl_verifikasi: "?",
+          alamat: formData.alamat,
+          avatar: formData.avatar,
+        },
+        { headers }
+      );
+      setFormData(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleDetailClick = async (id) => {
+    try {
+      await getPermintaanID(id);
+      modalRef.current.open = true;
+    } catch (error) {
+      console.error("Error handling detail click:", error);
+    }
+  };
+
+  const evidenceRef = useRef(null);
+  const handleGambar = (e) => {
+    const gambarmu = e.target.files?.[0];
+    if (gambarmu) {
+      const imageUrl = URL.createObjectURL(gambarmu);
+      setSelectedImage(imageUrl);
+    }
+    form.setValue("thumbnail", gambarmu);
+  };
+
+  const handleUpdate = async (formData) => {
+    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" };
+    try {
+      const formDataWithFile = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "avatar" && key !== "user_id") {
+          formDataWithFile.append(key, value);
+        }
+      });
+      if (formData.thumbnail) {
+        formDataWithFile.append("avatar", formData.avatar);
+      }
+      for (var pair of formDataWithFile.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${formData.user_id}`, formDataWithFile, { headers });
+      if (response.status === 200) {
+        alert("Berhasil mengubah isi ");
+      } else {
+        alert("Gagal mengubah isi ");
+      }
+      console.log(response);
+      form.reset();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error program:", error);
+    }
+  };
+
+  const handleDelete = (index) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
     if (isConfirmed) {
-      const updatedDataNasabah = [...this.state.data_nasabah];
+      const updatedDataNasabah = [...dataNasabah];
       updatedDataNasabah.splice(index, 1);
-      this.setState({ data_nasabah: updatedDataNasabah });
+      setDataNasabah(updatedDataNasabah);
       toastr.success("Data berhasil dihapus!", "");
     }
   };
 
-  // component didmount
-  componentDidMount() {
-    this.setState({ data_nasabah: names });
+  // Function to format the date
+  const formatDate = (dateObj) => {
+    const { day, month, year } = dateObj;
+    return `${day}/${month}/${year}`;
+  };
+
+  const showTable = () => {
+    try {
+      return dataNasabah.map((item, index) => {
+        return (
+          <tr key={index}>
+            <td className="mt-1 text-center">{index + 1}</td>
+            <td className="mt-1 text-center">{/* {item.waktu_mendaftar} */}?</td>
+            <td className="mt-1 text-center">{item.nama}</td>
+            <td className="mt-1 text-center">{item.nomor_handphone}</td>
+            <td className="mt-1 text-center">{item.alamat}</td>
+            <td className="d-flex justify-content-center">
+              <button className="btn btn-success btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_return_whitelist">
+                Kembalikan Ke Whitelist
+              </button>
+              <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => handleDelete(index)}>
+                Hapus akun
+              </button>
+            </td>
+          </tr>
+        );
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+        setToken(user.accessToken);
+        // console.log(tes);
+        getDataNasabah();
+      } else {
+        setAuthUser(null);
+      }
+    });
+
+    // setDataNasabah(names);
     if (!$.fn.DataTable.isDataTable("#myTable")) {
       $(document).ready(function () {
         setTimeout(function () {
@@ -80,30 +220,13 @@ class TableBacklist extends Component {
                 extend: "pageLength",
                 className: "btn btn-dark bg-dark",
               },
-              // {
-              //   extend: "copy",
-              //   className: "btn btn-secondary bg-secondary",
-              // },
               {
                 extend: "csv",
                 className: "btn btn-dark bg-dark",
               },
-              // {
-              //   extend: "print",
-              //   customize: function (win) {
-              //     $(win.document.body).css("font-size", "10pt");
-              //     $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
-              //   },
-              //   className: "btn btn-secondary bg-secondary",
-              // },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -125,84 +248,29 @@ class TableBacklist extends Component {
         }, 1000);
       });
     }
-  }
+  }, []);
 
-  showTable = () => {
-    try {
-      return this.state.data_nasabah.map((item, index) => {
-        return (
-          <tr key={index}>
-            <td className="mt-1 text-center">{index + 1}</td>
-            <td className="mt-1 text-center">{item.waktu_mendaftar}</td>
-            <td className="mt-1 text-center">{item.name_nasabah}</td>
-            <td className="mt-1 text-center">{item.no_telp}</td>
-            <td className="mt-1 text-center">{item.address_nasabah}</td>
-            <td className="d-flex justify-content-center">
-              {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button
-                className="btn btn-success btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_return_whitelist"
-              >
-                Kembalikan Ke Whitelist
-              </button>
-              <button
-                className="btn btn-danger btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_hapus_akun"
-                onClick={() => this.handleDelete(index)}
-              >
-                Hapus akun
-              </button>
-              {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
-            </td>
-          </tr>
-        );
-      });
-    } catch (e) {
-      alert(e.message);
-    }
-  };
-
-  render() {
-    return (
-      <>
-        <div class="container-fluid">
-          <div class="table-responsive p-0 pb-2">
-            <table
-              id="table"
-              className="table align-items-center justify-content-center mb-0 table-striped"
-            >
-              <thead>
-                <tr>
-                  <th className="text-uppercase  text-sm text-center">#</th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Waktu Mendaftar
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Nama Nasabah
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    No. Telepon
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Alamat
-                  </th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>{this.showTable()}</tbody>
-            </table>
-          </div>
+  return (
+    <>
+      <div className="container-fluid">
+        <div className="table-responsive p-0 pb-2">
+          <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
+            <thead>
+              <tr>
+                <th className="text-uppercase  text-sm text-center">#</th>
+                <th className="text-uppercase  text-sm text-center">Waktu Mendaftar</th>
+                <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
+                <th className="text-uppercase  text-sm text-center">No. Telepon</th>
+                <th className="text-uppercase  text-sm text-center">Alamat</th>
+                <th className="text-uppercase  text-sm text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>{showTable()}</tbody>
+          </table>
         </div>
-
-        {/* MODAL APALAGI */}
-      </>
-    );
-  }
-}
+      </div>
+    </>
+  );
+};
 
 export default TableBacklist;

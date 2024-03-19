@@ -59,9 +59,6 @@ export default class VerifikasiNasabahPage extends Component {
             {/* /.content-header */}
             <section className="content">
               <TableVerifikasiNasabah />
-              <a href="/data-backlist" className="nav-link">
-                <button className="btn btn-outline-danger btn-sm">Data Backlist Nasabah</button>
-              </a>
             </section>
           </div>
         </Layout>

@@ -320,7 +320,7 @@ const DashboardPage = () => {
             </div>
           </section>
         </div>
-        {/* MODAL LIHAT DATA NASABAH SECTION */}
+        {/* MODAL EDIT SECTION */}
         <div
           class="modal fade"
           id="modal_edit_waktu"

@@ -9,23 +9,23 @@ const Navbar = () => {
     signOut(auth)
       .then(() => {
         console.log("udah keluar akun berhasil");
-        toastr.success("Anda berhasil logout")
+        toastr.success("Anda berhasil logout");
         window.location = "/";
       })
       .catch((error) => console.log(error));
   };
   // render() {
-    return (
-      <div>
-        <nav className="main-header navbar navbar-expand navbar-white navbar-light">
-          {/* Left navbar links */}
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <a className="nav-link" data-widget="pushmenu" href="#" role="button">
-                <i className="fas fa-bars" />
-              </a>
-            </li>
-            {/* <li className="nav-item d-none d-sm-inline-block">
+  return (
+    <div>
+      <nav className="main-header navbar navbar-expand navbar-white navbar-light">
+        {/* Left navbar links */}
+        <ul className="navbar-nav">
+          <li className="nav-item">
+            <a className="nav-link" data-widget="pushmenu" href="#" role="button">
+              <i className="fas fa-bars" />
+            </a>
+          </li>
+          {/* <li className="nav-item d-none d-sm-inline-block">
               <a href="index3.html" className="nav-link">
                 Home
               </a>
@@ -35,15 +35,15 @@ const Navbar = () => {
                 Contact
               </a>
             </li> */}
-          </ul>
-          {/* Right navbar links */}
-          <ul className="navbar-nav ml-auto">
-            {/* Navbar Search === delete*/}
+        </ul>
+        {/* Right navbar links */}
+        <ul className="navbar-nav ml-auto">
+          {/* Navbar Search === delete*/}
 
-            {/* Messages Dropdown Menu  === delete*/}
+          {/* Messages Dropdown Menu  === delete*/}
 
-            {/* Notifications Dropdown Menu */}
-            {/* <li className="nav-item dropdown">
+          {/* Notifications Dropdown Menu */}
+          {/* <li className="nav-item dropdown">
               <a className="nav-link" data-toggle="dropdown" href="#">
                 <i className="far fa-bell" />
                 <span className="badge badge-warning navbar-badge">15</span>
@@ -71,33 +71,33 @@ const Navbar = () => {
                 </a>
               </div>
             </li> */}
-            <li className="nav-item">
-              <a className="nav-link" onClick={userKeluarAkun} role="button">
-                {/* <button type="button" class="btn btn-info"> */}
-                Logout
-                {/* </button>s */}
-              </a>
-            </li>
-            {/* <li className="nav-item">
-              <a className="nav-link" href="/register" role="button">
-                Ujicoba Regis
-              </a>
-            </li> */}
-            <li className="nav-item">
-              <a className="nav-link" data-widget="fullscreen" href="#" role="button">
-                <i className="fas fa-expand-arrows-alt" />
-              </a>
-            </li>
-            {/* <li className="nav-item">
+          <li className="nav-item">
+            <a className="nav-link" onClick={userKeluarAkun} role="button">
+              {/* <button type="button" class="btn btn-info"> */}
+              Logout
+              {/* </button>s */}
+            </a>
+          </li>
+          {/* <li className="nav-item">
+            <a className="nav-link" href="/lupa-password" role="button">
+              LUPA PASS UJICOBA
+            </a>
+          </li> */}
+          <li className="nav-item">
+            <a className="nav-link" data-widget="fullscreen" href="#" role="button">
+              <i className="fas fa-expand-arrows-alt" />
+            </a>
+          </li>
+          {/* <li className="nav-item">
               <a className="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
                 <i className="fas fa-th-large" />
               </a>
             </li> */}
-          </ul>
-        </nav>
-      </div>
-    );
+        </ul>
+      </nav>
+    </div>
+  );
   // }
-}
+};
 
 export default Navbar;

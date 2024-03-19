@@ -276,7 +276,7 @@ const Sidebar = () => {
               <li className="nav-header ">PENGATURAN</li>
 
               <li className="nav-item">
-                <a href="/aturlokasi" className="nav-link">
+                <a href="/atur-lokasi" className="nav-link">
                   <i className="nav-icon mr-2">
                     <IoMdSettings />
                   </i>

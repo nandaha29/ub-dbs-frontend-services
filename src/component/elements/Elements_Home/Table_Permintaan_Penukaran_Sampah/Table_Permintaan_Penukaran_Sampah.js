@@ -61,7 +61,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah", { headers });
       setLohSampah(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -82,9 +82,6 @@ const Table_Permintaan_Penukaran_Sampah = () => {
       form.setValue("id_petugas", "PETUGASf5oLoRF2gPY9mrcY7UUfa");
       form.setValue("status", 1);
       form.setValue("items_sampah", response.data.list_sampah);
-
-      // console.log(response.data.no_tabungan);
-      // console.log(response.data.list_sampah);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -111,9 +108,6 @@ const Table_Permintaan_Penukaran_Sampah = () => {
       }
     });
 
-    // Set nilai-nilai form berdasarkan data formData
-    // form.setValue("id", formData.id);
-    // form.setValue("berat", formData.berat);
     return () => {
       listen();
     };
@@ -176,32 +170,32 @@ const Table_Permintaan_Penukaran_Sampah = () => {
         total_poin: totalPoin,
       };
 
-      console.log(requestData)
-  
+      console.log(requestData);
+
       const response = await axios.put("https://devel4-filkom.ub.ac.id/slip/menabung?status=1", requestData, { headers });
-  
+
       console.log(response.data);
-  
+
       if (response.status === 200) {
-        alert("Berhasil mengubah isi barang penukaran");
+        alert("Berhasil menyimpan berat barang penukaran");
       } else {
-        alert("Gagal mengubah isi barang penukaran");
+        alert("Gagal menyimpan berat barang penukaran");
       }
-  
+
       form.reset();
       window.location.reload();
     } catch (error) {
       console.error("Error program:", error);
     }
   };
-  
+
   return (
     <div>
       <div className="card">
         <div className="card-header border-1">
-          <h3 className="card-title">
+          <h3 className="card-title mt-1">
             <i className="fas fa-chart-pie mr-1" />
-            Table_Permintaan_Penukaran_Sampah
+            Table Permintaan Penukaran Sampah
           </h3>
           <div className="card-tools">
             <button type="button" className="btn btn-tool" data-card-widget="collapse">
@@ -303,9 +297,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                             <td>
                               <label>{item.nama_sampah}</label>
                             </td>
-                            <td>
-                              {lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)?.nilai_tukar}
-                            </td>
+                            <td>{lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)?.nilai_tukar}</td>
                             <td>
                               <div className="input-group mb-3">
                                 {/* <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} /> */}
@@ -315,14 +307,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                                 // value={formData.nama}
                                 {...form.register(item.berat)}
                               /> */}
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  name={`berat_barang_${index}`}
-                                  id={`berat_barang_${index}`}
-                                  defaultValue={item.berat}
-                                  {...form.register(`items_sampah.${index}.berat`)}
-                                />
+                                <input type="number" className="form-control" name={`berat_barang_${index}`} id={`berat_barang_${index}`} defaultValue={item.berat} {...form.register(`items_sampah.${index}.berat`)} />
                                 <div className="input-group-append">
                                   <span className="input-group-text">kg</span>
                                 </div>
@@ -356,7 +341,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                   className="btn btn-success"
                   data-dismiss="modal"
                   onClick={form.handleSubmit(handleUpdate)}
-                // onClick={this.saveChanges}
+                  // onClick={this.saveChanges}
                 >
                   Setujui
                 </button>
