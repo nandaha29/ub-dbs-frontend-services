@@ -42,8 +42,19 @@ class JadwalBukaTutup extends Component {
       "Apakah anda yakin ingin merubah data ini?"
     );
     if (isConfirmed) {
-      console.log("Saved data:", this.state.data);
-      toastr.success("Data telah dirubah", "Berhasil!");
+      // Cek format input jam sebelum menyimpan data
+      const isValidFormat = this.state.data.every((item) => {
+        const regex =
+          /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] \| (0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+        return regex.test(item.jam);
+      });
+
+      if (isValidFormat) {
+        console.log("Saved data:", this.state.data);
+        toastr.success("Data telah dirubah", "Berhasil!");
+      } else {
+        toastr.error("Format jam tidak sesuai", "Error");
+      }
     }
   };
 
@@ -96,7 +107,7 @@ class JadwalBukaTutup extends Component {
             <thead>
               <tr>
                 <th scope="col">Hari</th>
-                <th scope="col">Jam</th>
+                <th scope="col">Jam Buka | Tutup</th>
               </tr>
             </thead>
             <tbody>

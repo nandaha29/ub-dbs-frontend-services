@@ -165,7 +165,7 @@ const TableDataNasabah = () => {
     try {
       return dataNasabah.map((item, index) => {
         return (
-          <tr key={index}>
+          <tr key={item.user_id}>
             <td className="mt-1 mx-2 text-center">{item.user_id}</td>
             <td className="mt-1 mx-2 text-center">{item.nama}</td>
             <td className="text-center justify-content-center flex">
@@ -173,11 +173,9 @@ const TableDataNasabah = () => {
             </td>
             <td className="mt-1 mx-2 text-center">{item.alamat}</td>
             <td className="mt-1 mx-2 text-center">{item.status}</td>
-            {/* INI YANG STATUS */}
             <td className="d-flex justify-content-center">
               <ButtonLihat id={item.user_id} />
               <ButtonRiwayat id={item.user_id} />
-              {/* <ButtonRiwayatDua id={item.user_id} /> */}
               <ButtonEdit id={item.user_id} />
             </td>
           </tr>
@@ -311,3 +309,13 @@ const TableDataNasabah = () => {
 };
 
 export default TableDataNasabah;
+
+{
+  /* <p>Senin 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Selasa 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Rabu 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Kamis 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Jumat 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Sabtu 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Minggu 09:00 - 10:00 | 12:00 - 14:00</p> */
+}

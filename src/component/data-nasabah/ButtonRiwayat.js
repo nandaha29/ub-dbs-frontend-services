@@ -5,26 +5,35 @@ export default function ButtonRiwayat({ user_id }) {
   const [activeButton, setActiveButton] = useState("Semua");
   const [sampah, setSampah] = useState([]);
   const [sembako, setSembako] = useState([]);
+  const [token, setToken] = useState([]);
+  const [formData, setFormData] = useState({});
 
-  const getData = async () => {
+  const getData = async (ids) => {
+    const headers = { Authorization: `Bearer ${token}` };
     try {
       const responseSampah = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history`
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
+        { headers }
       );
       setSampah(responseSampah.data);
 
       const responseSembako = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history`
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
+        { headers }
       );
       setSembako(responseSembako.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  console.log("Data Sampah:", sampah);
+  console.log("Data Sembako:", sembako);
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (user_id) {
+      getData(user_id);
+    }
+  }, [user_id]);
 
   const handleButtonClick = (category) => {
     setActiveButton(category);

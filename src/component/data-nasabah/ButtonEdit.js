@@ -58,7 +58,6 @@ export default function ButtonEdit(user_id) {
           user_id: ids,
           nama: formData.nama,
           nomor_handphone: formData.nomor_handphone,
-          // tgl_verifikasi: "?",
           alamat: formData.alamat,
           avatar: formData.avatar,
         },
