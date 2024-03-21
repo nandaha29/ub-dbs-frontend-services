@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function ButtonRiwayat({ user_id }) {
@@ -9,18 +9,22 @@ export default function ButtonRiwayat({ user_id }) {
   const getData = async () => {
     try {
       const responseSampah = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history?type=sampah`
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history`
       );
       setSampah(responseSampah.data);
 
       const responseSembako = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history?type=sembako`
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history`
       );
       setSembako(responseSembako.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleButtonClick = (category) => {
     setActiveButton(category);
@@ -32,7 +36,6 @@ export default function ButtonRiwayat({ user_id }) {
         className="btn btn-success btn-sm mt-1 mx-2"
         data-toggle="modal"
         data-target="#modal_riwayat_nasabah"
-        onClick={getData}
       >
         Riwayat
       </button>
