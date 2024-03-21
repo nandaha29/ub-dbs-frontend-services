@@ -10,8 +10,8 @@ export default function ButtonRiwayat(item) {
   const [token, setToken] = useState();
   const modalRef = useRef(null);
 
-  console.log(item);
-  console.log(sampah);
+  // console.log(item);
+  // console.log(sampah);
   const handleDetailClick = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -25,6 +25,8 @@ export default function ButtonRiwayat(item) {
       console.error("Error fetching data:", error);
     }
   };
+  console.log("Data Sampah:", sampah);
+  console.log("Data Sembako:", sembako);
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
