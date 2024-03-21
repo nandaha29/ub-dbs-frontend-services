@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import toastr from "toastr";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
@@ -9,36 +9,30 @@ import "datatables.net-buttons/js/buttons.flash.js";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
-import "toastr/build/toastr.css";
-import toastr from "toastr";
 
 const data = [
-  { hari: "Senin", jamBuka: "08:00", jamTutup: "17:00" },
-  { hari: "Selasa", jamBuka: "08:00", jamTutup: "17:00" },
-  { hari: "Rabu", jamBuka: "08:00", jamTutup: "17:00" },
-  { hari: "Kamis", jamBuka: "08:00", jamTutup: "17:00" },
-  { hari: "Jumat", jamBuka: "08:00", jamTutup: "17:00" },
-  { hari: "Sabtu", jamBuka: "08:00", jamTutup: "17:00" },
-  { hari: "Minggu", jamBuka: "08:00", jamTutup: "17:00" },
+  { hari: "Senin", jam: "08:00 | 17:00" },
+  { hari: "Selasa", jam: "08:00 | 17:00" },
+  { hari: "Rabu", jam: "08:00 | 17:00" },
+  { hari: "Kamis", jam: "08:00 | 17:00" },
+  { hari: "Jumat", jam: "08:00 | 17:00" },
+  { hari: "Sabtu", jam: "08:00 | 17:00" },
+  { hari: "Minggu", jam: "08:00 | 17:00" },
 ];
+
 class JadwalBukaTutup extends Component {
   constructor() {
     super();
     this.state = {
       data: [...data],
-      hari: "",
-      jamBuka: "",
-      jamTutup: "",
-      isEditing: false,
-      editedData: {},
     };
   }
 
-  handleInputChange = (index, field, value) => {
+  handleInputChange = (index, value) => {
     // Update the state when the input changes
     this.setState((prevState) => {
       const newData = [...prevState.data];
-      newData[index][field] = value;
+      newData[index].jam = value;
       return { data: newData };
     });
   };
@@ -53,7 +47,6 @@ class JadwalBukaTutup extends Component {
     }
   };
 
-  // component didmount
   componentDidMount() {
     if (!$.fn.DataTable.isDataTable("#myTable")) {
       $(document).ready(function () {
@@ -66,30 +59,7 @@ class JadwalBukaTutup extends Component {
             select: {
               style: "single",
             },
-
-            buttons: [
-              // {
-              //   extend: "pageLength",
-              //   className: "btn btn-dark bg-dark",
-              // },
-              // {
-              //   extend: "copy",
-              //   className: "btn btn-secondary bg-secondary",
-              // },
-              // {
-              //   extend: "csv",
-              //   className: "btn btn-dark bg-dark",
-              // },
-              // {
-              //   extend: "print",
-              //   customize: function (win) {
-              //     $(win.document.body).css("font-size", "10pt");
-              //     $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
-              //   },
-              //   className: "btn btn-secondary bg-secondary",
-              // },
-            ],
-
+            buttons: [],
             fnRowCallback: function (
               nRow,
               aData,
@@ -100,7 +70,6 @@ class JadwalBukaTutup extends Component {
               $("td:first", nRow).html(index);
               return nRow;
             },
-
             lengthMenu: [
               [10, 20, 30, 50, -1],
               [10, 20, 30, 50, "All"],
@@ -127,8 +96,7 @@ class JadwalBukaTutup extends Component {
             <thead>
               <tr>
                 <th scope="col">Hari</th>
-                <th scope="col">Jam Buka</th>
-                <th scope="col">Jam Tutup</th>
+                <th scope="col">Jam</th>
               </tr>
             </thead>
             <tbody>
@@ -139,23 +107,11 @@ class JadwalBukaTutup extends Component {
                     <input
                       className="border-0"
                       type="text"
-                      value={item.jamBuka}
+                      pattern="[0-9]{2}:[0-9]{2} | [0-9]{2}:[0-9]{2}"
+                      placeholder="hh:mm - hh:mm"
+                      value={item.jam}
                       onChange={(e) =>
-                        this.handleInputChange(index, "jamBuka", e.target.value)
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className="border-0"
-                      type="text"
-                      value={item.jamTutup}
-                      onChange={(e) =>
-                        this.handleInputChange(
-                          index,
-                          "jamTutup",
-                          e.target.value
-                        )
+                        this.handleInputChange(index, e.target.value)
                       }
                     />
                   </td>
