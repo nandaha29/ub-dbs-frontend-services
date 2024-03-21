@@ -31,13 +31,24 @@ const TableVerifikasiNasabah = () => {
     if (isConfirmed) {
       try {
         const headers = { Authorization: `Bearer ${token}` };
-        await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${dataNasabah[index].user_id}`, { status: 1 }, { headers });
+        await axios.put(
+          `https://devel4-filkom.ub.ac.id/bank-sampah/user/${[index.user_id]}`,
+          {
+            status: 1,
+            nama: index.nama,
+            nomor_handphone: index.nomor_handphone,
+            alamat: index.alamat,
+            saldo: index.saldo,
+          },
+          { headers }
+        );
 
         // Setelah permintaan berhasil, perbarui data dengan meminta data baru dari URL yang telah diperbarui
-        const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
-        setDataNasabah(response.data);
+        // const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+        // setDataNasabah(response.data);
 
         toastr.success("Data telah berhasil diverifikasi", "Verifikasi Nasabah");
+        window.location.reload();
       } catch (error) {
         console.error("Error handling detail click:", error);
       }
@@ -105,7 +116,9 @@ const TableVerifikasiNasabah = () => {
         if (item.status !== 1) {
           // Hanya menampilkan nasabah dengan status belum disetujui
           return (
-            <tr key={index}>
+            <tr
+            // key={index}
+            >
               <td className="mt-1 text-center">{index + 1}</td>
               <td className="mt-1 text-center">{/* {item.waktu_mendaftar} */}?</td>
               <td className="mt-1 text-center">{item.nama}</td>
@@ -114,7 +127,7 @@ const TableVerifikasiNasabah = () => {
               <td className="mt-1 mx-2 text-center">{item.status}</td>
               {/* INI YANG STATUS */}
               <td className="d-flex justify-content-center">
-                <button className="btn btn-primary btn-sm mt-1 mx-2" onClick={() => handleAgree(index)}>
+                <button className="btn btn-primary btn-sm mt-1 mx-2" onClick={() => handleAgree(item)}>
                   Setujui
                 </button>
               </td>
