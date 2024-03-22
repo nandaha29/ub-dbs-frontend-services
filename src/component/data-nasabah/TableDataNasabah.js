@@ -163,7 +163,7 @@ const TableDataNasabah = () => {
 
   const showTable = () => {
     try {
-      return dataNasabah.map((item, index) => {
+      return dataNasabah.map((item) => {
         return (
           <tr key={item.user_id}>
             <td className="mt-1 mx-2 text-center">{item.user_id}</td>
@@ -245,8 +245,8 @@ const TableDataNasabah = () => {
               iDisplayIndex,
               iDisplayIndexFull
             ) {
-              var index = iDisplayIndexFull + 1;
-              $("td:first", nRow).html(index);
+              // var index = iDisplayIndexFull + 1;
+              // $("td:first", nRow).html(index);
               return nRow;
             },
             lengthMenu: [
