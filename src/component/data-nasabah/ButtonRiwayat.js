@@ -3,37 +3,22 @@ import axios from "axios";
 
 export default function ButtonRiwayat({ user_id }) {
   const [activeButton, setActiveButton] = useState("Semua");
-  const [sampah, setSampah] = useState([]);
-  const [sembako, setSembako] = useState([]);
-  const [token, setToken] = useState([]);
-  const [formData, setFormData] = useState({});
+  const [riwayat, setRiwayat] = useState([]);
 
-  const getData = async (ids) => {
-    const headers = { Authorization: `Bearer ${token}` };
+  const getData = async () => {
     try {
-      const responseSampah = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
-        { headers }
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history`
       );
-      setSampah(responseSampah.data);
-
-      const responseSembako = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
-        { headers }
-      );
-      setSembako(responseSembako.data);
+      setRiwayat(response.data.order_selesai);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  console.log("Data Sampah:", sampah);
-  console.log("Data Sembako:", sembako);
 
   useEffect(() => {
-    if (user_id) {
-      getData(user_id);
-    }
-  }, [user_id]);
+    // getData(user_id);
+  }, []);
 
   const handleButtonClick = (category) => {
     setActiveButton(category);
@@ -90,26 +75,7 @@ export default function ButtonRiwayat({ user_id }) {
                       >
                         Semua
                       </button>
-                      <button
-                        className={`btn ${
-                          activeButton === "Sampah"
-                            ? "btn-primary mr-2"
-                            : "btn mr-2"
-                        }`}
-                        onClick={() => handleButtonClick("Sampah")}
-                      >
-                        Sampah
-                      </button>
-                      <button
-                        className={`btn ${
-                          activeButton === "Sembako"
-                            ? "btn-primary mr-2"
-                            : "btn mr-2"
-                        }`}
-                        onClick={() => handleButtonClick("Sembako")}
-                      >
-                        Sembako
-                      </button>
+                      {/* Jika ada lebih banyak kategori, tambahkan tombol di sini */}
                     </div>
 
                     {/* START TABLE */}
@@ -122,66 +88,24 @@ export default function ButtonRiwayat({ user_id }) {
                             <th className="">Petugas</th>
                             <th className="">Tipe Transaksi</th>
                             <th className="">Poin</th>
-                            <th className="">Keterangan</th>
+                            <th className="">Status</th>
                           </tr>
                         </thead>
                         <tbody className="text-center">
-                          {(activeButton === "Sampah" ||
-                            activeButton === "Semua") &&
-                            sampah
-                              .filter(
-                                (item) => item.transaksi === "Tukar Sampah"
-                              )
-                              .map((item) => (
-                                <tr key={item.id_sembako}>
-                                  <td>{item.id_sembako}</td>
-                                  <td>{item.tanggal_sembako}</td>
-                                  <td>{item.Petugas}</td>
-                                  <td>
-                                    <button className="btn btn-warning">
-                                      {item.transaksi}
-                                    </button>
-                                  </td>
-                                  <td>{item.poin}</td>
-                                  <td>
-                                    <button
-                                      className="btn btn-primary"
-                                      data-toggle="modal"
-                                      data-target="#modal_detail_nasabah"
-                                    >
-                                      Detail
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
-                          {(activeButton === "Sembako" ||
-                            activeButton === "Semua") &&
-                            sembako
-                              .filter(
-                                (item) => item.transaksi === "Tukar Sembako"
-                              )
-                              .map((item) => (
-                                <tr key={item.id_sembako}>
-                                  <td>{item.id_sembako}</td>
-                                  <td>{item.tanggal_sembako}</td>
-                                  <td>{item.Petugas}</td>
-                                  <td>
-                                    <button className="btn btn-success">
-                                      {item.transaksi}
-                                    </button>
-                                  </td>
-                                  <td>{item.poin}</td>
-                                  <td>
-                                    <button
-                                      className="btn btn-primary"
-                                      data-toggle="modal"
-                                      data-target="#modal_detail_nasabah"
-                                    >
-                                      Detail
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
+                          {riwayat.map((item) => (
+                            <tr key={item.id_slip}>
+                              <td>{item.id_slip}</td>
+                              <td>{`${item.tanggal.date.day}-${item.tanggal.date.month}-${item.tanggal.date.year} ${item.tanggal.time.hour}:${item.tanggal.time.minute}:${item.tanggal.time.second}`}</td>
+                              <td>{item.petugas.nama}</td>
+                              <td>
+                                <button className="btn btn-warning">
+                                  {item.slip_type}
+                                </button>
+                              </td>
+                              <td>{item.total_poin}</td>
+                              <td>{item.status}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
