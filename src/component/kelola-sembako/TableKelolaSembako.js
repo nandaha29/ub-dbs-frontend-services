@@ -109,11 +109,7 @@ const TableKelolaSembako = () => {
       if (formData.thumbnail) {
         formDataWithFile.append("thumbnail", formData.thumbnail);
       }
-      const response = await axios.post(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`,
-        formDataWithFile,
-        { headers }
-      );
+      const response = await axios.post(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil menambah barang penukaran");
       } else {
@@ -207,7 +203,7 @@ const TableKelolaSembako = () => {
   const closeModal = () => {
     setFormData({});
     form.reset();
-  }
+  };
 
   const showTable = () => {
     try {
@@ -374,7 +370,7 @@ const TableKelolaSembako = () => {
                         className="w-full input-bordered pt-2"
                         accept="image/*"
                         onChange={handleGambar}
-                      // {...form.register('banner')}
+                        // {...form.register('banner')}
                       />
                     </div>
                   </div>
@@ -476,7 +472,7 @@ const TableKelolaSembako = () => {
                 className="btn btn-secondary"
                 data-dismiss="modal"
                 onClick={closeModal}
-              // onClick={this.closeModal}
+                // onClick={this.closeModal}
               >
                 Batal
               </button>
@@ -485,7 +481,7 @@ const TableKelolaSembako = () => {
                 className="btn btn-primary"
                 data-dismiss="modal"
                 onClick={form.handleSubmit(handleUpdate)}
-              // onClick={this.saveChanges}
+                // onClick={this.saveChanges}
               >
                 Simpan
               </button>
@@ -522,7 +518,7 @@ const TableKelolaSembako = () => {
                         className="w-full input-bordered pt-2"
                         accept="image/*"
                         onChange={handleGambar}
-                      // {...form.register('banner')}
+                        // {...form.register('banner')}
                       />
                     </div>
                   </div>
@@ -534,12 +530,8 @@ const TableKelolaSembako = () => {
                     </div>
                   </div>
                   <div className="col-md-8">
-                  <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control text-sm"
-                        {...form.register("nama")}
-                      />
+                    <div className="form-group">
+                      <input type="text" className="form-control text-sm" {...form.register("nama")} />
                     </div>
                   </div>
                 </div>
@@ -552,11 +544,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      <input
-                        type="number"
-                        className="form-control text-sm"
-                        {...form.register("hargaTukar")}
-                      />
+                      <input type="number" className="form-control text-sm" {...form.register("hargaTukar")} />
                     </div>
                   </div>
                 </div>
@@ -568,11 +556,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      <input
-                        type="number"
-                        className="form-control text-sm"
-                        {...form.register("stok")}
-                      />
+                      <input type="number" className="form-control text-sm" {...form.register("stok")} />
                     </div>
                   </div>
                 </div>
@@ -583,7 +567,7 @@ const TableKelolaSembako = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-              // onClick={this.closeModal}
+                // onClick={this.closeModal}
               >
                 Batal
               </button>

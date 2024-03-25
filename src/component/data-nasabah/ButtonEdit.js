@@ -14,6 +14,7 @@ export default function ButtonEdit(user_id) {
   const [dataNasabah, setDataNasabah] = useState([]);
   const [formData, setFormData] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
+  const [activeModal, setActiveModal] = useState("infoNasabah"); // State untuk mengontrol modal yang aktif
   const modalRef = useRef(null);
 
   const form = useForm({
@@ -37,7 +38,10 @@ export default function ButtonEdit(user_id) {
   const getDataNasabah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false",
+        { headers }
+      );
       setDataNasabah(response.data);
       console.log(response.data);
     } catch (error) {
@@ -70,7 +74,10 @@ export default function ButtonEdit(user_id) {
   const handleDetailClick = async (id) => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`,
+        { headers }
+      );
       setFormData(response.data.user);
       console.log(response.data.user);
       modalRef.current.open = true;
@@ -90,7 +97,10 @@ export default function ButtonEdit(user_id) {
   };
 
   const handleUpdate = async (formData) => {
-    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    };
     try {
       const formDataWithFile = new FormData();
 
@@ -105,7 +115,11 @@ export default function ButtonEdit(user_id) {
       for (var pair of formDataWithFile.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${formData.user_id}`, formDataWithFile, { headers });
+      const response = await axios.put(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${formData.user_id}`,
+        formDataWithFile,
+        { headers }
+      );
       if (response.status === 200) {
         alert("Berhasil mengubah isi ");
       } else {
@@ -124,6 +138,12 @@ export default function ButtonEdit(user_id) {
     const { day, month, year } = dateObj;
     return `${day}/${month}/${year}`;
   };
+
+  // Function to handle modal switch
+  const handleModalSwitch = (modal) => {
+    setActiveModal(modal);
+  };
+
   return (
     <>
       <button
@@ -137,7 +157,16 @@ export default function ButtonEdit(user_id) {
       </button>
 
       {/* MODAL EDIT */}
-      <div className="modal fade" ref={modalRef} id="modal_edit_nasabah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        ref={modalRef}
+        id="modal_edit_nasabah"
+        data-backdrop="static"
+        data-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
@@ -145,7 +174,12 @@ export default function ButtonEdit(user_id) {
                 <i className="fas fa-chart-pie mr-1" />
                 Edit Data Nasabah
               </h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -155,7 +189,9 @@ export default function ButtonEdit(user_id) {
                   {/* PROFIL */}
                   <div className="col-md-5" id="">
                     <div className="text-center">
-                      <div className="">{/* {selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />} */}</div>
+                      <div className="">
+                        {/* {selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />} */}
+                      </div>
                       <input
                         type="file"
                         ref={evidenceRef}
@@ -166,7 +202,9 @@ export default function ButtonEdit(user_id) {
                     </div>
                     <form className="m-5">
                       <div className="form-group row ">
-                        <label className="col-sm-5 col-form-label">ID Nasabah</label>
+                        <label className="col-sm-5 col-form-label">
+                          ID Nasabah
+                        </label>
                         <div className="col-sm-7 ">
                           <div type="text" className="mt-2  font-weight-bold">
                             : {formData.user_id}
@@ -176,11 +214,16 @@ export default function ButtonEdit(user_id) {
                       <div className="form-group row">
                         <label className="col-sm-5">Nama</label>
                         <div className="col-sm-7">
-                          <div className=" font-weight-bold">: {formData.nama}</div>
+                          <div className=" font-weight-bold">
+                            : {formData.nama}
+                          </div>
                         </div>
                       </div>
                       <div className="form-group row">
-                        <label htmlFor="inputPassword" className="col-sm-5 col-form-label">
+                        <label
+                          htmlFor="inputPassword"
+                          className="col-sm-5 col-form-label"
+                        >
                           No HP / WA
                         </label>
                         <div className="col-sm-7">
@@ -188,7 +231,10 @@ export default function ButtonEdit(user_id) {
                         </div>
                       </div>
                       <div className="form-group row">
-                        <label htmlFor="inputPassword" className="col-sm-5 col-form-label">
+                        <label
+                          htmlFor="inputPassword"
+                          className="col-sm-5 col-form-label"
+                        >
                           Alamat Nasabah
                         </label>
                         <div className="col-sm-7">
@@ -199,55 +245,156 @@ export default function ButtonEdit(user_id) {
                   </div>
                   {/* info dkk */}
                   <div className="col-md-7 custom-border">
-                    <div className="btn-group ml-3">
+                    <div className="btn-group ml-3 gap-2">
                       <button
-                        className="btn-primary"
-                        // onClick={() => handleButtonClickonEdit("Info Nasabah")}
+                        className={`btn ${
+                          activeModal === "infoNasabah"
+                            ? "btn-primary active"
+                            : "btn-light"
+                        }ml-2`}
+                        onClick={() => handleModalSwitch("infoNasabah")}
                       >
                         Info Nasabah
                       </button>
                       <button
-                        className="btn-primary"
-                        // onClick={() => handleButtonClickonEdit("Ubah Password")}
+                        className={`btn ${
+                          activeModal === "ubahPassword"
+                            ? "btn-primary active"
+                            : "btn-light"
+                        }ml-2`}
+                        onClick={() => handleModalSwitch("ubahPassword")}
                       >
                         Ubah Password
                       </button>
                       <button
-                        className="btn-primary"
-                        // onClick={() => handleButtonClickonEdit("Hapus Akun")}
+                        className={`btn ${
+                          activeModal === "hapusAkun"
+                            ? "btn-primary active"
+                            : "btn-light"
+                        }`}
+                        onClick={() => handleModalSwitch("hapusAkun")}
                       >
                         Hapus Akun
                       </button>
                     </div>
-                    <div className="col-md-12 mt-4 full-width">
-                      <div className="">
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="namaNasabah">Nama Nasabah</label>
-                              <input type="text" className="form-control" id="namaNasabah" placeholder="Nama" />
+                    {activeModal === "infoNasabah" && (
+                      <div className="col-md-12 mt-4 full-width">
+                        <div className="">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="namaNasabah">
+                                  Nama Nasabah
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="namaNasabah"
+                                  placeholder="Nama"
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="noHpWa">No HP/WA</label>
-                              <input type="text" className="form-control" id="noHpWa" placeholder="Nomor HP" />
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="noHpWa">No HP/WA</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="noHpWa"
+                                  placeholder="Nomor HP"
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-md-12">
-                            <div className="form-group">
-                              <label htmlFor="alamat">Alamat</label>
-                              <input type="text" className="form-control" id="alamat" placeholder="Alamat" />
+                            <div className="col-md-12">
+                              <div className="form-group">
+                                <label htmlFor="alamat">Alamat</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  id="alamat"
+                                  placeholder="Alamat"
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div className="modal-footer float-sm-right">
-                            <button type="button" className="btn btn-primary " data-dismiss="modal">
-                              Simpan
-                            </button>
+                            <div className="modal-footer float-sm-right">
+                              <button
+                                type="button"
+                                className="btn btn-primary "
+                                data-dismiss="modal"
+                              >
+                                Simpan
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
+                    {activeModal === "ubahPassword" && (
+                      // Tampilkan komponen untuk mengubah password
+                      <div className="col-md-12 mt-4 full-width">
+                        <div className="form-group col-md-6">
+                          <label htmlFor="passwordBaru">Password Baru</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="password_baru"
+                            placeholder="Password Baru"
+                          />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <label htmlFor="passwordBaru">
+                            Konfirmasi Password Baru
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="konfirmasi_password"
+                            placeholder="Konfirmasi Password"
+                          />
+                        </div>
+                        {/* Tempatkan form untuk mengubah password */}
+                        <div className="modal-footer float-sm-right">
+                          <button
+                            type="button"
+                            className="btn btn-primary "
+                            data-dismiss="modal"
+                          >
+                            Ubah Password
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    {activeModal === "hapusAkun" && (
+                      // Tampilkan komponen untuk menghapus akun
+                      <div className="col-md-8 mt-4 full-width ">
+                        <div className="form-group">
+                          <div className="bg-red font-weight-bold pl-3 text-white text-lg">
+                            Perhatian!
+                          </div>
+                          <div className="bg-grey text-black text-md py-3">
+                            <div className="font-weight-semibold text-justify">
+                              Dengan menekan tombol “Hapus Akun” dibawah, akun
+                              nasabah beserta data yang telah ada akan terhapus
+                              secara permanen dan tidak dapat dipulihkan lagi.
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            className="text-left btn bg-red text-white text-md my-3"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span
+                              className=" px-2 py-2 font-weight-semibold"
+                              aria-hidden="true"
+                            >
+                              Hapus Akun
+                            </span>
+                          </button>
+                        </div>
+                        {/* Tempatkan form atau tombol untuk menghapus akun */}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

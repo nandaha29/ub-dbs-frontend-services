@@ -67,12 +67,7 @@ class FormPengaturan extends Component {
               // },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -102,9 +97,7 @@ class FormPengaturan extends Component {
   };
 
   handleSimpan = () => {
-    const isConfirmed = window.confirm(
-      "Apakah anda ingin menyimpan perubahan ini?"
-    );
+    const isConfirmed = window.confirm("Apakah anda ingin menyimpan perubahan ini?");
     if (isConfirmed) {
       const newData = {
         namaLokasi: this.state.namaLokasi,
@@ -139,41 +132,15 @@ class FormPengaturan extends Component {
             <div className="card-body">
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Nama Lokasi</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  placeholder="RW 5"
-                  value={this.state.namaLokasi}
-                  onChange={(e) =>
-                    this.handleInputChange("namaLokasi", e.target.value)
-                  }
-                />
+                <input type="text" className="form-control" id="exampleInputEmail1" placeholder="RW 5" value={this.state.namaLokasi} onChange={(e) => this.handleInputChange("namaLokasi", e.target.value)} />
               </div>
               <div className="form-group">
                 <label htmlFor="exampleInputPassword1">Link Google Maps</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                  placeholder="isi Link Google Maps"
-                  value={this.state.linkGoogleMaps}
-                  onChange={(e) =>
-                    this.handleInputChange("linkGoogleMaps", e.target.value)
-                  }
-                />
+                <input type="text" className="form-control" id="exampleInputPassword1" placeholder="isi Link Google Maps" value={this.state.linkGoogleMaps} onChange={(e) => this.handleInputChange("linkGoogleMaps", e.target.value)} />
               </div>
               <div className="form-group">
                 <label htmlFor="exampleInputPassword1">Alamat</label>
-                <textarea
-                  class="form-control"
-                  rows="3"
-                  placeholder="Enter ..."
-                  value={this.state.alamat}
-                  onChange={(e) =>
-                    this.handleInputChange("alamat", e.target.value)
-                  }
-                ></textarea>
+                <textarea class="form-control" rows="3" placeholder="Enter ..." value={this.state.alamat} onChange={(e) => this.handleInputChange("alamat", e.target.value)}></textarea>
               </div>
             </div>
             <div className="form-group">

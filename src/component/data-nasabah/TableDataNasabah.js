@@ -52,9 +52,15 @@ const TableDataNasabah = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       // Ambil data nasabah dengan status 1
-      const responseStatus1 = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+      const responseStatus1 = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false",
+        { headers }
+      );
       // Ambil data nasabah dengan status 0
-      const responseStatus0 = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
+      const responseStatus0 = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&isPagination=false",
+        { headers }
+      );
 
       // Gabungkan data dari kedua response menjadi satu array
       const combinedData = [...responseStatus1.data, ...responseStatus0.data];
@@ -113,7 +119,10 @@ const TableDataNasabah = () => {
   };
 
   const handleUpdate = async (formData) => {
-    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    };
     try {
       const formDataWithFile = new FormData();
 
@@ -128,7 +137,11 @@ const TableDataNasabah = () => {
       for (var pair of formDataWithFile.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${formData.user_id}`, formDataWithFile, { headers });
+      const response = await axios.put(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${formData.user_id}`,
+        formDataWithFile,
+        { headers }
+      );
       if (response.status === 200) {
         alert("Berhasil mengubah isi ");
       } else {
@@ -150,19 +163,19 @@ const TableDataNasabah = () => {
 
   const showTable = () => {
     try {
-      return dataNasabah.map((item, index) => {
+      return dataNasabah.map((item) => {
         return (
-          <tr key={index}>
+          <tr key={item.user_id}>
             <td className="mt-1 mx-2 text-center">{item.user_id}</td>
             <td className="mt-1 mx-2 text-center">{item.nama}</td>
-            <td className="text-center justify-content-center flex">{item.nomor_handphone}</td>
+            <td className="text-center justify-content-center flex">
+              {item.nomor_handphone}
+            </td>
             <td className="mt-1 mx-2 text-center">{item.alamat}</td>
             <td className="mt-1 mx-2 text-center">{item.status}</td>
-            {/* INI YANG STATUS */}
             <td className="d-flex justify-content-center">
               <ButtonLihat id={item.user_id} />
               <ButtonRiwayat id={item.user_id} />
-              {/* <ButtonRiwayatDua id={item.user_id} /> */}
               <ButtonEdit id={item.user_id} />
             </td>
           </tr>
@@ -218,14 +231,22 @@ const TableDataNasabah = () => {
                 extend: "print",
                 customize: function (win) {
                   $(win.document.body).css("font-size", "10pt");
-                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                  $(win.document.body)
+                    .find("table")
+                    .addClass("compact")
+                    .css("font-size", "inherit");
                 },
                 className: "btn btn-secondary bg-secondary",
               },
             ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-              var index = iDisplayIndexFull + 1;
-              $("td:first", nRow).html(index);
+            fnRowCallback: function (
+              nRow,
+              aData,
+              iDisplayIndex,
+              iDisplayIndexFull
+            ) {
+              // var index = iDisplayIndexFull + 1;
+              // $("td:first", nRow).html(index);
               return nRow;
             },
             lengthMenu: [
@@ -255,14 +276,25 @@ const TableDataNasabah = () => {
     <>
       <div className="container-fluid">
         <div className="table-responsive p-0 pb-2">
-          <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
+          <table
+            id="table"
+            className="table align-items-center justify-content-center mb-0 table-striped"
+          >
             <thead>
               <tr>
-                <th className="text-uppercase  text-sm text-center col-sm-1">ID Nasabah</th>
-                <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
-                <th className="text-uppercase  text-sm text-center">No. Telepon</th>
+                <th className="text-uppercase  text-sm text-center col-sm-1">
+                  ID Nasabah
+                </th>
+                <th className="text-uppercase  text-sm text-center">
+                  Nama Nasabah
+                </th>
+                <th className="text-uppercase  text-sm text-center">
+                  No. Telepon
+                </th>
                 <th className="text-uppercase  text-sm text-center">Alamat</th>
-                <th className="text-uppercase  text-sm text-center">TEMP; STATUS</th>
+                <th className="text-uppercase  text-sm text-center">
+                  TEMP; STATUS
+                </th>
                 <th className="text-uppercase  text-sm text-center">Action</th>
               </tr>
             </thead>
@@ -277,3 +309,13 @@ const TableDataNasabah = () => {
 };
 
 export default TableDataNasabah;
+
+{
+  /* <p>Senin 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Selasa 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Rabu 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Kamis 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Jumat 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Sabtu 09:00 - 10:00 | 12:00 - 14:00</p>
+<p>Minggu 09:00 - 10:00 | 12:00 - 14:00</p> */
+}
