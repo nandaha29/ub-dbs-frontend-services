@@ -14,7 +14,7 @@ import PengaturanLokasi from "./pages/pengaturan-lokasi/pengaturan-lokasi";
 import DataBacklist from "./pages/data-backlist";
 import LoginPage from "./pages/login";
 import LupaPasswordPage from "./pages/lupa-password";
-import RegisterPage from "./pages/register/register";
+// import RegisterPage from "./pages/register/register";
 import SemuaOrderPage from "./pages/semua-order/semua-order";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="*" element={<LoginPage />} />
         <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        {/* <Route path="/register" element={<RegisterPage />} /> */}
         <Route path="/lupa-password" element={<LupaPasswordPage />} />
         <Route path="/home" element={<DashboardPage />} />
         <Route path="/data-nasabah" element={<DataNasabahPage />} />

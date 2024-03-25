@@ -14,12 +14,14 @@ const JadwalBukaTutup = () => {
   const [token, setToken] = useState([]);
   const [formData, setFormData] = useState({});
 
+
   let Jadwal = [];
   const [dataJadwal, setDataJadwal] = useState();
 
   const getDataJadwal = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
+// <<<<<<< Dymi
       const response = await axios.get(
         "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
         { headers }
@@ -27,11 +29,13 @@ const JadwalBukaTutup = () => {
       setDataNasabah(response.data);
       setDataJadwal(response.data.jadwal);
       dataJadwal(response.data.jadwal);
+
       console.log(response.data);
       console.log(response.data.jadwal);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+// <<<<<<< Dymi
   };
 
   const tempDiv = document.createElement("div");
@@ -68,9 +72,26 @@ const JadwalBukaTutup = () => {
         .map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`)
         .join("");
       console.log("Saved data:", formattedData);
+// =======
+  };
+
+  const handleInputChange = (index, field, value) => {
+    setDataState((prevState) => {
+      const newData = [...prevState];
+      newData[index][field] = value;
+      return newData;
+    });
+  };
+
+  const handleSave = () => {
+    const isConfirmed = window.confirm("Apakah anda yakin ingin merubah data ini?");
+    if (isConfirmed) {
+      console.log("Saved data:", dataState);
+// >>>>>>> master
       toastr.success("Data telah dirubah", "Berhasil!");
     }
   };
+
 
   // const parseData = (htmlData) => {
   //   const regex = /<p>(.*?)<\/p>/g;
@@ -84,6 +105,7 @@ const JadwalBukaTutup = () => {
   //   });
   //   setDataState(newData);
   // };
+
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -117,21 +139,28 @@ const JadwalBukaTutup = () => {
               {
                 extend: "print",
                 customize: function (win) {
-                  $(win.document.body).css("font-size", "10pt");
+
                   $(win.document.body)
                     .find("table")
                     .addClass("compact")
                     .css("font-size", "inherit");
+// =======
+//                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+// >>>>>>> master
                 },
                 className: "btn btn-secondary bg-secondary",
               },
             ],
+
             fnRowCallback: function (
               nRow,
               aData,
               iDisplayIndex,
               iDisplayIndexFull
             ) {
+// =======
+//             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+// >>>>>>> master
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -157,6 +186,7 @@ const JadwalBukaTutup = () => {
       listen();
     };
   }, [formData]);
+
 
   return (
     <div className="col-12">
@@ -187,6 +217,47 @@ const JadwalBukaTutup = () => {
         Simpan
       </button>
     </div>
+
+
+  return (
+    <>
+      <div className="col-12">
+        <table className="table table-striped border-0">
+          <thead>
+            <tr>
+              <th scope="col">Hari</th>
+              <th scope="col">Jam Buka</th>
+              <th scope="col">Jam Tutup</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataState.map((item, index) => (
+              <>
+                {/* {const fulljadwal = item.jadwal} */}
+
+                {(Jadwal = dataJadwal.split("</p>"))}
+                {/* INI MASIH ERROR DI SPLIT = CARI SLICING TIAP TAG P */}
+
+                {console.log(Jadwal)}
+                <tr key={index}>
+                  <td>{item.hari}</td>
+                  <td>
+                    <input className="border-0" type="text" value={item.jamBuka} onChange={(e) => handleInputChange(index, "jamBuka", e.target.value)} />
+                  </td>
+                  <td>
+                    <input className="border-0" type="text" value={item.jamTutup} onChange={(e) => handleInputChange(index, "jamTutup", e.target.value)} />
+                  </td>
+                </tr>
+              </>
+            ))}
+          </tbody>
+        </table>
+        <button className="btn btn-primary float-right" onClick={handleSave}>
+          Simpan
+        </button>
+      </div>
+    </>
+
   );
 };
 
