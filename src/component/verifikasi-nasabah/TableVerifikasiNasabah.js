@@ -124,8 +124,7 @@ const TableVerifikasiNasabah = () => {
               <td className="mt-1 text-center">{item.nama}</td>
               <td className="mt-1 text-center">{item.nomor_handphone}</td>
               <td className="mt-1 text-center">{item.alamat}</td>
-              <td className="mt-1 mx-2 text-center">{item.status}</td>
-              {/* INI YANG STATUS */}
+              {/* <td className="mt-1 mx-2 text-center">{item.status}</td> */}
               <td className="d-flex justify-content-center">
                 <button className="btn btn-primary btn-sm mt-1 mx-2" onClick={() => handleAgree(item)}>
                   Setujui
@@ -154,7 +153,7 @@ const TableVerifikasiNasabah = () => {
                 <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
                 <th className="text-uppercase  text-sm text-center">No. Telepon</th>
                 <th className="text-uppercase  text-sm text-center">Alamat</th>
-                <th className="text-uppercase  text-sm text-center">TEMP; STATUS</th>
+                {/* <th className="text-uppercase  text-sm text-center">TEMP; STATUS</th> */}
                 <th className="text-uppercase  text-sm text-center">Action</th>
               </tr>
             </thead>

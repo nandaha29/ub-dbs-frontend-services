@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
 export default function ButtonLihat(item) {
-  console.log(item);
+  // console.log(item);
   const [token, setToken] = useState();
   const [formData, setFormData] = useState({});
   const hasPhoto = formData && formData.avatar;
@@ -15,7 +15,7 @@ export default function ButtonLihat(item) {
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
       setFormData(response.data.user);
-      console.log(response.data.user);
+      // console.log(response.data.user);
       modalRef.current.open = true;
     } catch (error) {
       console.error("Error handling detail click:", error);

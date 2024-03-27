@@ -160,6 +160,7 @@ const TableKelolaSembako = () => {
 
   const handleDetailClick = async (id) => {
     try {
+      console.log(id);
       await getPermintaanID(id);
       modalRef.current.open = true;
     } catch (error) {
