@@ -10,32 +10,64 @@ import { auth } from "../../config/firebase";
 import $ from "jquery";
 
 const JadwalBukaTutup = () => {
-  const [dataNasabah, setDataNasabah] = useState([]);
   const [dataState, setDataState] = useState([]);
   const [token, setToken] = useState([]);
-  const [formData, setFormData] = useState({});
+  const [lokasiData, setLokasiData] = useState({
+    nama: "",
+    alamat: "",
+    url_map: "",
+  });
 
   let Jadwal = [];
   const [dataJadwal, setDataJadwal] = useState();
 
   const getDataJadwal = async () => {
     const headers = { Authorization: `Bearer ${token}` };
+
     try {
-      // <<<<<<< Dymi
       const response = await axios.get(
         "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
         { headers }
       );
-      setDataNasabah(response.data);
-      setDataJadwal(response.data.jadwal);
-      dataJadwal(response.data.jadwal);
 
-      console.log(response.data);
-      console.log(response.data.jadwal);
+      const { nama, alamat, url_map } = response.data;
+      // console.log("Nama:", nama);
+      // console.log("Alamat:", alamat);
+      setLokasiData({ nama, alamat, url_map: url_map });
+      setDataJadwal(response.data.jadwal);
+
+      // console.log("URL Map from state:", lokasiData.url_map);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
     // <<<<<<< Dymi
+  };
+
+  const setnewDataJadwal = async (formattedData) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    const mergedData = { ...lokasiData, jadwal: formattedData };
+    console.log(
+      lokasiData.nama,
+      lokasiData.alamat,
+      lokasiData.url_map,
+      formattedData
+    );
+    try {
+      const response = await axios.put(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6?jadwal",
+        mergedData,
+        { headers }
+      );
+      console.log("Data jadwal berhasil diset:", response.data);
+      toastr.success("Data jadwal berhasil disimpan!", "Sukses");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.error("Error saat menyimpan data jadwal:", error);
+      console.log(formattedData);
+      toastr.error("Terjadi kesalahan saat menyimpan data jadwal", "Error");
+    }
   };
 
   const tempDiv = document.createElement("div");
@@ -54,7 +86,7 @@ const JadwalBukaTutup = () => {
     // Tambahkan data yang sudah diparsing ke dalam array
     parsedData.push({ hari, jamBuka: jadwal });
   });
-  console.log(parsedData);
+  // console.log("PPP", parsedData);
 
   const handleSave = () => {
     const isConfirmed = window.confirm(
@@ -62,44 +94,25 @@ const JadwalBukaTutup = () => {
     );
     if (isConfirmed) {
       const newData = parsedData.map((item, index) => {
-        // const inputValue = document.getElementById(`jamBuka-${index}`).value;
         const inputElement = document.getElementById(`jamBuka-${index}`);
-        const inputValue = inputElement.value.trim(); // Trim whitespace
-
-        // Jika input kosong, gunakan nilai lama
+        const inputValue = inputElement.value.trim();
         const jamBuka = inputValue ? inputValue : item.jamBuka;
-
-        // Update input value with the processed value (useful for consistency)
         inputElement.value = jamBuka;
-
         return { ...item, jamBuka };
       });
 
       const formattedData = newData
         .map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`)
-        .join("");
+        .join(""); // Menggunakan newline sebagai pemisah
 
-      console.log("Saved data:", formattedData);
-      toastr.success("Data berhasil disimpan!", "Sukses");
+      console.log(formattedData);
+      setnewDataJadwal(formattedData);
 
-      parsedData.forEach((item, index) => {
+      newData.forEach((item, index) => {
         document.getElementById(`jamBuka-${index}`).value = "";
       });
     }
   };
-
-  // const handleSave = () => {
-  //   const isConfirmed = window.confirm(
-  //     "Apakah anda yakin ingin merubah data ini?"
-  //   );
-  //   if (isConfirmed) {
-  //     const formattedData = parsedData
-  //       .map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`)
-  //       .join("");
-  //     console.log("Saved data:", formattedData);
-  //     // =======
-  //   }
-  // };
 
   const handleInputChange = (index, field, value) => {
     setDataState((prevState) => {
@@ -186,7 +199,7 @@ const JadwalBukaTutup = () => {
     return () => {
       listen();
     };
-  }, [formData]);
+  });
 
   return (
     <div className="col-12">
@@ -195,32 +208,32 @@ const JadwalBukaTutup = () => {
           <tr>
             <th scope="col">Hari</th>
             <th scope="col">Jam Buka | Jam Tutup Baru</th>
-            <th scope="col">Jam Buka | Jam Tutup Lama</th>
+            {/* <th scope="col">Jam Buka | Jam Tutup Lama</th> */}
           </tr>
         </thead>
         <tbody>
           {parsedData.map((item, index) => (
             <tr key={index}>
               <td>{item.hari}</td>
-              <td>
+              {/* <td>
                 <input
                   id={`jamBuka-${index}`} // Add id attribute
                   className="border-1"
                   type="text"
                   placeholder="hh:mm-hh.mm"
                 />
-              </td>
-              {/* <td>
+              </td> */}
+              <td>
                 <input
                   id={`jamBuka-${index}`} // Add id attribute
                   className="border-1"
                   type="text"
                   placeholder={`${item.jamBuka}`}
                 />
-              </td> */}
-              <td>
-                <div className="border-0" type="text">{`${item.jamBuka}`}</div>
               </td>
+              {/* <td>
+                <div className="border-0" type="text">{`${item.jamBuka}`}</div>
+              </td> */}
             </tr>
           ))}
         </tbody>
