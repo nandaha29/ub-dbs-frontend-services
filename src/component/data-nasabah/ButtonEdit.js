@@ -200,7 +200,7 @@ export default function ButtonEdit(item) {
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label htmlFor="namaNasabah">Nama Nasabah</label>
-                                <input type="text" className="form-control" id="namaNasabah" placeholder="nama" value={formData.nama} {...form.register("nama")} />
+                                <input type="text" className="form-control" id="namaNasabah" placeholder="Nama" value={formData.nama} {...form.register("nama")} />
                               </div>
                             </div>
                             <div className="col-md-6">
@@ -229,11 +229,11 @@ export default function ButtonEdit(item) {
                       <div className="col-md-12 mt-4 full-width">
                         <div className="form-group col-md-6">
                           <label htmlFor="passwordBaru">Password Baru</label>
-                          <input type="text" className="form-control" id="password_baru" placeholder="Password Baru" />
+                          <input type="password" className="form-control" id="password_baru" placeholder="Password Baru" />
                         </div>
                         <div className="form-group col-md-6">
                           <label htmlFor="passwordBaru">Konfirmasi Password Baru</label>
-                          <input type="text" className="form-control" id="konfirmasi_password" placeholder="Konfirmasi Password" />
+                          <input type="password" className="form-control" id="konfirmasi_password" placeholder="Konfirmasi Password" />
                         </div>
                         {/* Tempatkan form untuk mengubah password */}
                         <div className="modal-footer float-sm-right">
