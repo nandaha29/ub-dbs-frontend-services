@@ -39,7 +39,10 @@ const TableRiwayatSampah = () => {
   const getRiwayatSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?status=berhasil&size=50&isPagination=true", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/slip/menabung?status=berhasil&size=50&isPagination=true",
+        { headers }
+      );
 
       if (Array.isArray(response.data.data)) {
         setRiwayatSampah(response.data.data);
@@ -95,11 +98,20 @@ const TableRiwayatSampah = () => {
           <tr key={index}>
             <td className="mt-1 mx-2 text-center">{item.id_user}</td>
             <td className="mt-1 mx-2 text-center">{item.nama_user}</td>
-            <td className="text-center justify-content-center flex">{item.status}</td>
+            <td className="text-center justify-content-center flex">
+              {item.status}
+            </td>
             <td className="mt-1 mx-2 text-center">{item.total_poin}</td>
-            <td className="mt-1 mx-2 text-center">{formatDate(item.tanggal.date)}</td>
+            <td className="mt-1 mx-2 text-center">
+              {formatDate(item.tanggal.date)}
+            </td>
             <td className="d-flex justify-content-center">
-              <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sampah" onClick={() => handleDetailClick(item.id_slip)}>
+              <button
+                className="btn btn-primary btn-sm mt-1 mx-2"
+                data-toggle="modal"
+                data-target="#modal_detail_sampah"
+                onClick={() => handleDetailClick(item.id_slip)}
+              >
                 Lihat Detail
               </button>
             </td>
@@ -148,14 +160,22 @@ const TableRiwayatSampah = () => {
                 extend: "print",
                 customize: function (win) {
                   $(win.document.body).css("font-size", "10pt");
-                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                  $(win.document.body)
+                    .find("table")
+                    .addClass("compact")
+                    .css("font-size", "inherit");
                 },
                 className: "btn btn-secondary bg-secondary",
               },
             ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-              var index = iDisplayIndexFull + 1;
-              $("td:first", nRow).html(index);
+            fnRowCallback: function (
+              nRow,
+              aData,
+              iDisplayIndex,
+              iDisplayIndexFull
+            ) {
+              // var index = iDisplayIndexFull + 1;
+              // $("td:first", nRow).html(index);
               return nRow;
             },
             lengthMenu: [
@@ -185,14 +205,23 @@ const TableRiwayatSampah = () => {
     <>
       <div className="container-fluid">
         <div className="table-responsive p-0 pb-2">
-          <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
+          <table
+            id="table"
+            className="table align-items-center justify-content-center mb-0 table-striped"
+          >
             <thead>
               <tr>
-                <th className="text-uppercase  text-sm text-center">ID Transaksi</th>
-                <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
+                <th className="text-uppercase  text-sm text-center">
+                  ID Transaksi
+                </th>
+                <th className="text-uppercase  text-sm text-center">
+                  Nama Nasabah
+                </th>
                 <th className="text-uppercase  text-sm text-center ">Status</th>
                 <th className="text-uppercase  text-sm text-center">Poin</th>
-                <th className="text-uppercase  text-sm text-center">Waktu Transaksi</th>
+                <th className="text-uppercase  text-sm text-center">
+                  Waktu Transaksi
+                </th>
                 <th className="text-uppercase  text-sm text-center ">Action</th>
               </tr>
             </thead>
@@ -200,15 +229,30 @@ const TableRiwayatSampah = () => {
           </table>
         </div>
         {/* modal detail  */}
-        <div className="modal fade" ref={modalRef} id="modal_detail_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div
+          className="modal fade"
+          ref={modalRef}
+          id="modal_detail_sampah"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabIndex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header border-0">
                 <h5 className="modal-title" id="staticBackdropLabel">
                   <i className="fas fa-chart-pie mr-1" />
-                  ID Riwayat Penukaran <p className="text-secondary">{formData.no_tabungan}</p>
+                  ID Riwayat Penukaran{" "}
+                  <p className="text-secondary">{formData.no_tabungan}</p>
                 </h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -223,7 +267,11 @@ const TableRiwayatSampah = () => {
                     </tr>
                     <tr>
                       <td>{formData.nasabah}</td>
-                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                      <td>
+                        {formData.tanggal != null
+                          ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}`
+                          : null}
+                      </td>
                       <td>?</td>
                     </tr>
                     <tr className="thead-light">
@@ -232,7 +280,11 @@ const TableRiwayatSampah = () => {
                     </tr>
                     <tr>
                       <td>{formData.id_user}</td>
-                      <td>{formData.petugas != null ? formData.petugas.nama : null}</td>
+                      <td>
+                        {formData.petugas != null
+                          ? formData.petugas.nama
+                          : null}
+                      </td>
                     </tr>
                   </table>
                 </div>
@@ -255,7 +307,10 @@ const TableRiwayatSampah = () => {
                             <td>{item.nama_sampah}</td>
                             <td>{item.berat} Kg</td>
                             <td>{item.jumlah_poin}</td>
-                            <td>{/* {item.total_harga_poin} - {formData.debet} */} -</td>
+                            <td>
+                              {/* {item.total_harga_poin} - {formData.debet} */}{" "}
+                              -
+                            </td>
                           </tr>
                         ))}
                       <tr>
@@ -268,7 +323,11 @@ const TableRiwayatSampah = () => {
               </div>
               <div className="modal-footer">
                 <div className="float-sm-left">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
                     Tutup
                   </button>
                 </div>

@@ -1,259 +1,248 @@
-// import React, { useState, useEffect } from "react";
-// import "jquery/dist/jquery.min.js";
-// import "datatables.net-dt/js/dataTables.dataTables";
-// import "datatables.net-dt/css/jquery.dataTables.min.css";
-// import "toastr/build/toastr.css";
-// import toastr from "toastr";
-// import axios from "axios";
-// import { onAuthStateChanged, signOut } from "firebase/auth";
-// import { auth } from "../../config/firebase";
-// import $ from "jquery";
+import React, { useState, useEffect } from "react";
+import "jquery/dist/jquery.min.js";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "toastr/build/toastr.css";
+import toastr from "toastr";
+import axios from "axios";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
+import $ from "jquery";
 
-// const JadwalBukaTutup = () => {
-//   const [dataNasabah, setDataNasabah] = useState([]);
-//   const [token, setToken] = useState([]);
-//   const [formData, setFormData] = useState({});
+const JadwalBukaTutup = () => {
+  const [dataState, setDataState] = useState([]);
+  const [token, setToken] = useState([]);
+  const [lokasiData, setLokasiData] = useState({
+    nama: "",
+    alamat: "",
+    url_map: "",
+  });
 
-//   let Jadwal = [];
-//   const [dataJadwal, setDataJadwal] = useState();
+  let Jadwal = [];
+  const [dataJadwal, setDataJadwal] = useState();
 
-//   const getDataJadwal = async () => {
-//     const headers = { Authorization: `Bearer ${token}` };
-//     try {
-// // <<<<<<< Dymi
-//       const response = await axios.get(
-//         "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
-//         { headers }
-//       );
-//       setDataNasabah(response.data);
-//       setDataJadwal(response.data.jadwal);
-//       dataJadwal(response.data.jadwal);
+  const getDataJadwal = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
 
-//       console.log(response.data);
-//       console.log(response.data.jadwal);
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//     }
-// // <<<<<<< Dymi
-//   };
+    try {
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
+        { headers }
+      );
 
-//   const tempDiv = document.createElement("div");
-//   tempDiv.innerHTML = dataJadwal;
-//   const paragraphs = tempDiv.querySelectorAll("p");
-//   const parsedData = [];
+      const { nama, alamat, url_map } = response.data;
+      // console.log("Nama:", nama);
+      // console.log("Alamat:", alamat);
+      setLokasiData({ nama, alamat, url_map: url_map });
+      setDataJadwal(response.data.jadwal);
 
-//   // Loop melalui setiap elemen paragraf dan lakukan parsing
-//   paragraphs.forEach((paragraph) => {
-//     // Ambil teks dari paragraf
-//     const text = paragraph.textContent;
+      // console.log("URL Map from state:", lokasiData.url_map);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    // <<<<<<< Dymi
+  };
 
-//     // Ekstrak hari dan jadwal menggunakan regex
-//     const [, hari, jadwal] = text.match(/(\w+)\s(.+)/);
+  const setnewDataJadwal = async (formattedData) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    const mergedData = { ...lokasiData, jadwal: formattedData };
+    console.log(
+      lokasiData.nama,
+      lokasiData.alamat,
+      lokasiData.url_map,
+      formattedData
+    );
+    try {
+      const response = await axios.put(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6?jadwal",
+        mergedData,
+        { headers }
+      );
+      console.log("Data jadwal berhasil diset:", response.data);
+      toastr.success("Data jadwal berhasil disimpan!", "Sukses");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.error("Error saat menyimpan data jadwal:", error);
+      console.log(formattedData);
+      toastr.error("Terjadi kesalahan saat menyimpan data jadwal", "Error");
+    }
+  };
 
-//     // Tambahkan data yang sudah diparsing ke dalam array
-//     parsedData.push({ hari, jamBuka: jadwal });
-//   });
-//   console.log(parsedData);
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = dataJadwal;
+  const paragraphs = tempDiv.querySelectorAll("p");
+  const parsedData = [];
 
-//   // const handleInputChange = (index, value) => {
-//   //   setDataState((prevState) => {
-//   //     const newData = [...prevState];
-//   //     newData[index].jamBuka = value;
-//   //     return newData;
-//   //   });
-//   // };
-//   const handleSave = () => {
-//     const isConfirmed = window.confirm(
-//       "Apakah anda yakin ingin merubah data ini?"
-//     );
-//     if (isConfirmed) {
-//       const formattedData = parsedData
-//         .map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`)
-//         .join("");
-//       console.log("Saved data:", formattedData);
-// // =======
-//   };
+  // Loop melalui setiap elemen paragraf dan lakukan parsing
+  paragraphs.forEach((paragraph) => {
+    // Ambil teks dari paragraf
+    const text = paragraph.textContent;
 
-//   const handleInputChange = (index, field, value) => {
-//     setDataState((prevState) => {
-//       const newData = [...prevState];
-//       newData[index][field] = value;
-//       return newData;
-//     });
-//   };
+    // Ekstrak hari dan jadwal menggunakan regex
+    const [, hari, jadwal] = text.match(/(\w+)\s(.+)/);
 
-//   const handleSave = () => {
-//     const isConfirmed = window.confirm("Apakah anda yakin ingin merubah data ini?");
-//     if (isConfirmed) {
-//       console.log("Saved data:", dataState);
-// // >>>>>>> master
-//       toastr.success("Data telah dirubah", "Berhasil!");
-//     }
-//   };
+    // Tambahkan data yang sudah diparsing ke dalam array
+    parsedData.push({ hari, jamBuka: jadwal });
+  });
+  // console.log("PPP", parsedData);
 
-//   // const parseData = (htmlData) => {
-//   //   const regex = /<p>(.*?)<\/p>/g;
-//   //   const matches = htmlData.matchAll(regex);
-//   //   const newData = Array.from(matches, (match) => {
-//   //     const [hari, jadwal] = match[1].split(" ");
-//   //     const [jamBuka, jamTutup] = jadwal
-//   //       .split(" | ")
-//   //       .map((time) => time.trim());
-//   //     return { hari, jamBuka, jamTutup };
-//   //   });
-//   //   setDataState(newData);
-//   // };
+  const handleSave = () => {
+    const isConfirmed = window.confirm(
+      "Apakah anda yakin ingin merubah data ini?"
+    );
+    if (isConfirmed) {
+      const newData = parsedData.map((item, index) => {
+        const inputElement = document.getElementById(`jamBuka-${index}`);
+        const inputValue = inputElement.value.trim();
+        const jamBuka = inputValue ? inputValue : item.jamBuka;
+        inputElement.value = jamBuka;
+        return { ...item, jamBuka };
+      });
 
-//   useEffect(() => {
-//     const listen = onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         setToken(user.accessToken);
-//         getDataJadwal();
-//       }
-//     });
+      const formattedData = newData
+        .map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`)
+        .join(""); // Menggunakan newline sebagai pemisah
 
-//     // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
-//     if (!$.fn.DataTable.isDataTable("#table")) {
-//       $(document).ready(function () {
-//         setTimeout(function () {
-//           $("#table").DataTable({
-//             pagingType: "full_numbers",
-//             pageLength: 20,
-//             processing: true,
-//             dom: "Bfrtip",
-//             select: {
-//               style: "single",
-//             },
-//             buttons: [
-//               {
-//                 extend: "pageLength",
-//                 className: "btn btn-dark bg-dark",
-//               },
-//               {
-//                 extend: "csv",
-//                 className: "btn btn-dark bg-dark",
-//               },
-//               {
-//                 extend: "print",
-//                 customize: function (win) {
+      console.log(formattedData);
+      setnewDataJadwal(formattedData);
 
-//                   $(win.document.body)
-//                     .find("table")
-//                     .addClass("compact")
-//                     .css("font-size", "inherit");
-// // =======
-// //                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
-// // >>>>>>> master
-//                 },
-//                 className: "btn btn-secondary bg-secondary",
-//               },
-//             ],
+      newData.forEach((item, index) => {
+        document.getElementById(`jamBuka-${index}`).value = "";
+      });
+    }
+  };
 
-//             fnRowCallback: function (
-//               nRow,
-//               aData,
-//               iDisplayIndex,
-//               iDisplayIndexFull
-//             ) {
-// // =======
-// //             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-// // >>>>>>> master
-//               var index = iDisplayIndexFull + 1;
-//               $("td:first", nRow).html(index);
-//               return nRow;
-//             },
-//             lengthMenu: [
-//               [10, 20, 30, 50, -1],
-//               [10, 20, 30, 50, "All"],
-//             ],
-//             columnDefs: [
-//               {
-//                 targets: 0,
-//                 render: function (data, type, row, meta) {
-//                   return type === "export" ? meta.row + 1 : data;
-//                 },
-//               },
-//             ],
-//           });
-//         }, 1000);
-//       });
-//     }
-//     // Membersihkan listener saat komponen dibongkar
-//     return () => {
-//       listen();
-//     };
-//   }, [formData]);
+  const handleInputChange = (index, field, value) => {
+    setDataState((prevState) => {
+      const newData = [...prevState];
+      newData[index][field] = value;
+      return newData;
+    });
+  };
 
-//   return (
-//     <div className="col-12">
-//       <table className="table table-striped border-0">
-//         <thead>
-//           <tr>
-//             <th scope="col">Hari</th>
-//             <th scope="col">Jam Buka | Jam Tutup</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {parsedData.map((item, index) => (
-//             <tr key={index}>
-//               <td>{item.hari}</td>
-//               <td>
-//                 <input
-//                   className="border-0"
-//                   type="text"
-//                   value={`${item.jamBuka}`}
-//                   // onChange={(e) => handleInputChange(index, e.target.value)}
-//                 />
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//       <button className="btn btn-primary float-right" onClick={handleSave}>
-//         Simpan
-//       </button>
-//     </div>
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setToken(user.accessToken);
+        getDataJadwal();
+      }
+    });
 
-//   return (
-//     <>
-//       <div className="col-12">
-//         <table className="table table-striped border-0">
-//           <thead>
-//             <tr>
-//               <th scope="col">Hari</th>
-//               <th scope="col">Jam Buka</th>
-//               <th scope="col">Jam Tutup</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {dataState.map((item, index) => (
-//               <>
-//                 {/* {const fulljadwal = item.jadwal} */}
+    // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
+    if (!$.fn.DataTable.isDataTable("#table")) {
+      $(document).ready(function () {
+        setTimeout(function () {
+          $("#table").DataTable({
+            pagingType: "full_numbers",
+            pageLength: 20,
+            processing: true,
+            dom: "Bfrtip",
+            select: {
+              style: "single",
+            },
+            buttons: [
+              {
+                extend: "pageLength",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "csv",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "print",
+                customize: function (win) {
+                  $(win.document.body)
+                    .find("table")
+                    .addClass("compact")
+                    .css("font-size", "inherit");
+                  // =======
+                  //                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                  // >>>>>>> master
+                },
+                className: "btn btn-secondary bg-secondary",
+              },
+            ],
 
-//                 {(Jadwal = dataJadwal.split("</p>"))}
-//                 {/* INI MASIH ERROR DI SPLIT = CARI SLICING TIAP TAG P */}
+            fnRowCallback: function (
+              nRow,
+              aData,
+              iDisplayIndex,
+              iDisplayIndexFull
+            ) {
+              // =======
+              //             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+              // >>>>>>> master
+              var index = iDisplayIndexFull + 1;
+              $("td:first", nRow).html(index);
+              return nRow;
+            },
+            lengthMenu: [
+              [10, 20, 30, 50, -1],
+              [10, 20, 30, 50, "All"],
+            ],
+            columnDefs: [
+              {
+                targets: 0,
+                render: function (data, type, row, meta) {
+                  return type === "export" ? meta.row + 1 : data;
+                },
+              },
+            ],
+          });
+        }, 1000);
+      });
+    }
+    // Membersihkan listener saat komponen dibongkar
+    return () => {
+      listen();
+    };
+  });
 
-//                 {console.log(Jadwal)}
-//                 <tr key={index}>
-//                   <td>{item.hari}</td>
-//                   <td>
-//                     <input className="border-0" type="text" value={item.jamBuka} onChange={(e) => handleInputChange(index, "jamBuka", e.target.value)} />
-//                   </td>
-//                   <td>
-//                     <input className="border-0" type="text" value={item.jamTutup} onChange={(e) => handleInputChange(index, "jamTutup", e.target.value)} />
-//                   </td>
-//                 </tr>
-//               </>
-//             ))}
-//           </tbody>
-//         </table>
-//         <button className="btn btn-primary float-right" onClick={handleSave}>
-//           Simpan
-//         </button>
-//       </div>
-//     </>
+  return (
+    <div className="col-12">
+      <table className="table table-striped border-0">
+        <thead>
+          <tr>
+            <th scope="col">Hari</th>
+            <th scope="col">Jam Buka | Jam Tutup Baru</th>
+            {/* <th scope="col">Jam Buka | Jam Tutup Lama</th> */}
+          </tr>
+        </thead>
+        <tbody>
+          {parsedData.map((item, index) => (
+            <tr key={index}>
+              <td>{item.hari}</td>
+              {/* <td>
+                <input
+                  id={`jamBuka-${index}`} // Add id attribute
+                  className="border-1"
+                  type="text"
+                  placeholder="hh:mm-hh.mm"
+                />
+              </td> */}
+              <td>
+                <input
+                  id={`jamBuka-${index}`} // Add id attribute
+                  className="border-1"
+                  type="text"
+                  placeholder={`${item.jamBuka}`}
+                />
+              </td>
+              {/* <td>
+                <div className="border-0" type="text">{`${item.jamBuka}`}</div>
+              </td> */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button className="btn btn-primary float-right" onClick={handleSave}>
+        Simpan
+      </button>
+    </div>
+  );
+};
 
-//   );
-// };
-
-// export default JadwalBukaTutup;
+export default JadwalBukaTutup;

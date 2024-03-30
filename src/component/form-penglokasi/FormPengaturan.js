@@ -1,41 +1,92 @@
-import React, { Component } from "react";
-
+import React, { useState, useEffect } from "react";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-buttons/js/dataTables.buttons.js";
-import "datatables.net-buttons/js/buttons.colVis.js";
-import "datatables.net-buttons/js/buttons.flash.js";
-import "datatables.net-buttons/js/buttons.html5.js";
-import "datatables.net-buttons/js/buttons.print.js";
-import $ from "jquery";
 import "toastr/build/toastr.css";
 import toastr from "toastr";
+import axios from "axios";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
+import $ from "jquery";
 
-const datainit = [
-  {
-    namaLokasi: "BankSampahA",
-    linkGoogleMaps: "yoi.com",
-    alamat: "disitu daerah malang deketnya ngalam",
-  },
-];
+const FormPengaturan = () => {
+  const [dataState, setDataState] = useState([]);
+  const [token, setToken] = useState([]);
+  const [dataJadwal, setDataJadwal] = useState();
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [formData, setFormData] = useState({});
+  const [lokasiData, setLokasiData] = useState({
+    nama: "",
+    alamat: "",
+    url_map: "",
+    jadwal: "",
+  });
 
-class FormPengaturan extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: [...datainit],
-      namaLokasi: "",
-      linkGoogleMaps: "",
-      alamat: "",
-    };
-  }
+  const getLokasiPenukaran = async () => {
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
+        { headers }
+      );
+      console.log(response.data);
+      const { nama, alamat, url_map, jadwal } = response.data;
+      setLokasiData({ nama, alamat, url_map: url_map, jadwal: jadwal });
+      console.log(lokasiData.jadwal);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleInputChange = (key, value) => {
+    setLokasiData({ ...lokasiData, [key]: value });
+  };
+
+  const handleSimpan = async () => {
+    const isConfirmed = window.confirm(
+      "Apakah anda yakin ingin merubah data ini?"
+    );
+    if (isConfirmed) {
+      const headers = { Authorization: `Bearer ${token}` };
+      try {
+        const response = await axios.put(
+          "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
+          lokasiData,
+          { headers }
+        );
+        console.log("Data berhasil disimpan:", response.data);
+        toastr.success("Data berhasil disimpan!", "Sukses");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (error) {
+        console.error("Error menyimpan data:", error);
+        toastr.error("Terjadi kesalahan saat menyimpan data", "Error");
+      }
+    }
+  };
+
+  const handlenumberlimit = (event) => {
+    let inputValue = event.target.value;
+    // Memastikan panjang input tidak melebihi 15 karakter
+    if (inputValue.length <= 15) {
+      setWhatsappNumber(inputValue);
+    }
+  };
   // component didmount
-  componentDidMount() {
-    if (!$.fn.DataTable.isDataTable("#myTable")) {
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setToken(user.accessToken);
+        getLokasiPenukaran();
+      }
+    });
+
+    // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
+    if (!$.fn.DataTable.isDataTable("#table")) {
       $(document).ready(function () {
         setTimeout(function () {
-          $("#tableartikel").DataTable({
+          $("#table").DataTable({
             pagingType: "full_numbers",
             pageLength: 20,
             processing: true,
@@ -43,36 +94,43 @@ class FormPengaturan extends Component {
             select: {
               style: "single",
             },
-
             buttons: [
-              // {
-              //   extend: "pageLength",
-              //   className: "btn btn-dark bg-dark",
-              // },
-              // {
-              //   extend: "copy",
-              //   className: "btn btn-secondary bg-secondary",
-              // },
-              // {
-              //   extend: "csv",
-              //   className: "btn btn-dark bg-dark",
-              // },
-              // {
-              //   extend: "print",
-              //   customize: function (win) {
-              //     $(win.document.body).css("font-size", "10pt");
-              //     $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
-              //   },
-              //   className: "btn btn-secondary bg-secondary",
-              // },
+              {
+                extend: "pageLength",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "csv",
+                className: "btn btn-dark bg-dark",
+              },
+              {
+                extend: "print",
+                customize: function (win) {
+                  $(win.document.body)
+                    .find("table")
+                    .addClass("compact")
+                    .css("font-size", "inherit");
+                  // =======
+                  //                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                  // >>>>>>> master
+                },
+                className: "btn btn-secondary bg-secondary",
+              },
             ],
 
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (
+              nRow,
+              aData,
+              iDisplayIndex,
+              iDisplayIndexFull
+            ) {
+              // =======
+              //             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+              // >>>>>>> master
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
             },
-
             lengthMenu: [
               [10, 20, 30, 50, -1],
               [10, 20, 30, 50, "All"],
@@ -89,74 +147,72 @@ class FormPengaturan extends Component {
         }, 1000);
       });
     }
-  }
+    // Membersihkan listener saat komponen dibongkar
+    return () => {
+      listen();
+    };
+  }, [formData]);
 
-  handleInputChange = (field, value) => {
-    // Update the state when the input changes
-    this.setState({ [field]: value });
-  };
-
-  handleSimpan = () => {
-    const isConfirmed = window.confirm("Apakah anda ingin menyimpan perubahan ini?");
-    if (isConfirmed) {
-      const newData = {
-        namaLokasi: this.state.namaLokasi,
-        linkGoogleMaps: this.state.linkGoogleMaps,
-        alamat: this.state.alamat,
-      };
-
-      // Update the state using a callback function to ensure the correct order of operations
-      this.setState((prevState) => {
-        const updatedData = [...prevState.data, newData];
-
-        // Log the updated data to the console
-        console.log("Updated Data:", updatedData);
-        toastr.success("Data telah dirubah", "Berhasil!");
-        // Return the updated state
-        return {
-          data: updatedData,
-          namaLokasi: "",
-          linkGoogleMaps: "",
-          alamat: "",
-        };
-      });
-    }
-    // Handle saving the updated data (you can send it to the server or perform any other action)
-  };
-
-  render() {
-    return (
-      <>
-        <div class="col-12">
-          <form>
-            <div className="card-body">
-              <div className="form-group">
-                <label htmlFor="exampleInputEmail1">Nama Lokasi</label>
-                <input type="text" className="form-control" id="exampleInputEmail1" placeholder="RW 5" value={this.state.namaLokasi} onChange={(e) => this.handleInputChange("namaLokasi", e.target.value)} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Link Google Maps</label>
-                <input type="text" className="form-control" id="exampleInputPassword1" placeholder="isi Link Google Maps" value={this.state.linkGoogleMaps} onChange={(e) => this.handleInputChange("linkGoogleMaps", e.target.value)} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Alamat</label>
-                <textarea class="form-control" rows="3" placeholder="Enter ..." value={this.state.alamat} onChange={(e) => this.handleInputChange("alamat", e.target.value)}></textarea>
-              </div>
-            </div>
-            <div className="form-group">
-              <button
-                type="button" // Use type="button" to prevent form submission
-                className="btn btn-primary float-right"
-                onClick={this.handleSimpan}
-              >
-                Simpan
-              </button>
-            </div>
-          </form>
+  return (
+    <div class="col-12">
+      <form>
+        <div className="card-body">
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">Nama Lokasi</label>
+            <input
+              type="text"
+              className="form-control"
+              id="exampleInputEmail1"
+              placeholder="RW 5"
+              value={lokasiData.nama}
+              onChange={(e) => handleInputChange("nama", e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Link Google Maps</label>
+            <input
+              type="text"
+              className="form-control"
+              id="exampleInputPassword1"
+              placeholder="isi Link Google Maps"
+              value={lokasiData.url_map}
+              onChange={(e) => handleInputChange("url_map", e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Alamat</label>
+            <textarea
+              class="form-control"
+              rows="3"
+              placeholder="Enter ..."
+              value={lokasiData.alamat}
+              onChange={(e) => handleInputChange("alamat", e.target.value)}
+            ></textarea>
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">No. WhatsApp Admin</label>
+            <input
+              type="number"
+              className="form-control"
+              id="exampleInputPassword1"
+              placeholder="No. WhatsApp Admin"
+              value={whatsappNumber}
+              onChange={handlenumberlimit}
+            />
+          </div>
         </div>
-      </>
-    );
-  }
-}
+        <div className="form-group">
+          <button
+            type="button"
+            className="btn btn-primary float-right"
+            onClick={handleSimpan}
+          >
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default FormPengaturan;
