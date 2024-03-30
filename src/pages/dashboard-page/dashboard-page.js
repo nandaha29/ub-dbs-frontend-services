@@ -12,8 +12,8 @@ import Table_Permintaan_Penukaran_Sembako from "../../component/elements/Element
 import { post } from "jquery";
 
 const DashboardPage = () => {
-  const [openHour, setOpenHour] = useState([]);
-  const [closeHour, setCloseHour] = useState([]);
+  const [openHour, setOpenHour] = useState();
+  const [closeHour, setCloseHour] = useState();
   const [isOpen, setIsOpen] = useState(false);
 
   const [nasabahCount, setNasabahCount] = useState(0);
@@ -34,30 +34,25 @@ const DashboardPage = () => {
       );
       console.log(response.data);
       const data = response.data;
-      const bukaPada = `${data.jam_buka_sekarang.hour}:${data.jam_buka_sekarang.minute}`;
-      const tutupPada = `${data.jam_tutup_sekarang.hour}:${data.jam_tutup_sekarang.minute}`;
+      console.log("earl", response.data.jam_buka_sekarang);
+
+      const padZero = (value) => String(value).padStart(2, "0");
+      const bukaPada = `${padZero(data.jam_buka_sekarang.hour)}:${padZero(
+        data.jam_buka_sekarang.minute
+      )}`;
+      const tutupPada = `${padZero(data.jam_tutup_sekarang.hour)}:${padZero(
+        data.jam_tutup_sekarang.minute
+      )}`;
+
       setOpenHour(bukaPada);
+      console.log("JAM BRO", openHour, tutupPada);
       setCloseHour(tutupPada);
       setIsOpen(data.status);
+      console.log(isOpen);
     } catch (error) {
       console.error("Error fetching datajam:", error);
     }
   };
-
-  // const setBukaTutup = async () => {
-  //   const headers = { Authorization: `Bearer ${token}` };
-  //   try {
-  //     const response = await axios.get(
-  //       "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6",
-  //       { headers }
-  //     );
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching dataBukaTutup:", error);
-  //   }
-  // };
-  // getBukaTutup();
-  //testing
 
   const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${token}` };
@@ -170,6 +165,10 @@ const DashboardPage = () => {
       status: isOpen,
     };
     const headers = { Authorization: `Bearer ${token}` };
+    console.log("TES");
+    console.log(openHour);
+    console.log(closeHour);
+    console.log(isOpen);
     try {
       const response = await axios.put(
         "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6",
@@ -181,29 +180,6 @@ const DashboardPage = () => {
       console.error("Error posting status data:", error);
     }
   };
-
-  // const handleSave = async () => {
-  //   if (window.confirm("Apakah anda yakin ingin menyimpan perubahan?")) {
-  //     if (openHour && closeHour) {
-  //       const data = {
-  //         openHour,
-  //         closeHour,
-  //         status: isOpen ? "Buka" : "Tutup",
-  //       };
-  //       console.log("Saved Data:", data);
-
-  //       // Panggil fungsi untuk mendapatkan data status lokasi penukaran
-  //       // await getStatusLokasiPenukaran();
-
-  //       // Lakukan sesuatu setelah berhasil menyimpan perubahan
-  //       // Misalnya, menampilkan pesan sukses atau melakukan operasi lainnya
-  //     } else {
-  //       console.error("Please fill in both open and close hours.");
-  //     }
-  //   } else {
-  //     // Pengguna membatalkan penyimpanan perubahan
-  //   }
-  // };
 
   return (
     <div>
@@ -355,6 +331,7 @@ const DashboardPage = () => {
                         type="text"
                         className="form-control text-sm font-weight-bold"
                         value={openHour}
+                        // Ketika nilai input berubah, perbarui state openHour
                         onChange={(e) => setOpenHour(e.target.value)}
                       />
                     </div>
@@ -362,10 +339,12 @@ const DashboardPage = () => {
                   <div className="form-group row">
                     <label className="col-sm-5">Tutup Pada : </label>
                     <div className="col-sm-7">
+                      {/* Inisialisasi nilai input dengan closeHour */}
                       <input
                         type="text"
                         className="form-control text-sm font-weight-bold"
                         value={closeHour}
+                        // Ketika nilai input berubah, perbarui state closeHour
                         onChange={(e) => setCloseHour(e.target.value)}
                       />
                     </div>

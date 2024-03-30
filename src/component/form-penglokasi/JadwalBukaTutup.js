@@ -16,6 +16,7 @@ const JadwalBukaTutup = () => {
     nama: "",
     alamat: "",
     url_map: "",
+    no_handphone: "",
   });
 
   let Jadwal = [];
@@ -30,10 +31,8 @@ const JadwalBukaTutup = () => {
         { headers }
       );
 
-      const { nama, alamat, url_map } = response.data;
-      // console.log("Nama:", nama);
-      // console.log("Alamat:", alamat);
-      setLokasiData({ nama, alamat, url_map: url_map });
+      const { nama, alamat, url_map, no_handphone } = response.data;
+      setLokasiData({ nama, alamat, url_map: url_map, no_handphone });
       setDataJadwal(response.data.jadwal);
 
       // console.log("URL Map from state:", lokasiData.url_map);
