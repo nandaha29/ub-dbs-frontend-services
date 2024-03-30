@@ -351,8 +351,8 @@ const TableKelolaSampah = () => {
               iDisplayIndex,
               iDisplayIndexFull
             ) {
-              var index = iDisplayIndexFull + 1;
-              $("td:first", nRow).html(index);
+              // var index = iDisplayIndexFull + 1;
+              // $("td:first", nRow).html(index);
               return nRow;
             },
             lengthMenu: [

@@ -13,6 +13,7 @@ const FormPengaturan = () => {
   const [dataState, setDataState] = useState([]);
   const [token, setToken] = useState([]);
   const [dataJadwal, setDataJadwal] = useState();
+  const [whatsappNumber, setWhatsappNumber] = useState("");
   const [formData, setFormData] = useState({});
   const [lokasiData, setLokasiData] = useState({
     nama: "",
@@ -62,6 +63,14 @@ const FormPengaturan = () => {
         console.error("Error menyimpan data:", error);
         toastr.error("Terjadi kesalahan saat menyimpan data", "Error");
       }
+    }
+  };
+
+  const handlenumberlimit = (event) => {
+    let inputValue = event.target.value;
+    // Memastikan panjang input tidak melebihi 15 karakter
+    if (inputValue.length <= 15) {
+      setWhatsappNumber(inputValue);
     }
   };
   // component didmount
@@ -179,6 +188,17 @@ const FormPengaturan = () => {
               value={lokasiData.alamat}
               onChange={(e) => handleInputChange("alamat", e.target.value)}
             ></textarea>
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">No. WhatsApp Admin</label>
+            <input
+              type="number"
+              className="form-control"
+              id="exampleInputPassword1"
+              placeholder="No. WhatsApp Admin"
+              value={whatsappNumber}
+              onChange={handlenumberlimit}
+            />
           </div>
         </div>
         <div className="form-group">
