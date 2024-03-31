@@ -20,6 +20,7 @@ const FormPengaturan = () => {
     alamat: "",
     url_map: "",
     jadwal: "",
+    no_handphone: "",
   });
 
   const getLokasiPenukaran = async () => {
@@ -30,8 +31,14 @@ const FormPengaturan = () => {
         { headers }
       );
       console.log(response.data);
-      const { nama, alamat, url_map, jadwal } = response.data;
-      setLokasiData({ nama, alamat, url_map: url_map, jadwal: jadwal });
+      const { nama, alamat, url_map, jadwal, no_handphone } = response.data;
+      setLokasiData({
+        nama,
+        alamat,
+        url_map: url_map,
+        jadwal: jadwal,
+        no_handphone: no_handphone,
+      });
       console.log(lokasiData.jadwal);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -66,13 +73,14 @@ const FormPengaturan = () => {
     }
   };
 
-  const handlenumberlimit = (event) => {
-    let inputValue = event.target.value;
-    // Memastikan panjang input tidak melebihi 15 karakter
-    if (inputValue.length <= 15) {
-      setWhatsappNumber(inputValue);
-    }
-  };
+  // const handlenumberlimit = (event) => {
+  //   let inputValue = event.target.value;
+  //   // Memastikan panjang input tidak melebihi 15 karakter
+  //   if (inputValue.length <= 15) {
+  //     setWhatsappNumber(inputValue);
+  //   }
+  // };
+
   // component didmount
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -192,12 +200,14 @@ const FormPengaturan = () => {
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">No. WhatsApp Admin</label>
             <input
-              type="number"
+              type="text"
               className="form-control"
               id="exampleInputPassword1"
               placeholder="No. WhatsApp Admin"
-              value={whatsappNumber}
-              onChange={handlenumberlimit}
+              value={lokasiData.no_handphone}
+              onChange={(e) =>
+                handleInputChange("no_handphone", e.target.value)
+              }
             />
           </div>
         </div>
