@@ -39,7 +39,7 @@ const FormPengaturan = () => {
         jadwal: jadwal,
         no_handphone: no_handphone,
       });
-      console.log(lokasiData.jadwal);
+      // console.log(lokasiData.jadwal);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
