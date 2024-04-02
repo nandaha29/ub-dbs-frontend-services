@@ -26,7 +26,7 @@ const TableVerifikasiNasabah = () => {
 
   const handleAgree = async (index) => {
     const isConfirmed = window.confirm("Apakah anda yakin ingin memverifikasi akun ini?");
-    console.log(index);
+    // console.log(index);
 
     if (isConfirmed) {
       try {
@@ -36,7 +36,7 @@ const TableVerifikasiNasabah = () => {
           {
             status: 1,
             nama: index.nama,
-            nomor_handphone: index.nomor_handphone,
+            // nomor_handphone: index.nomor_handphone,
             alamat: index.alamat,
             saldo: index.saldo,
           },
@@ -116,9 +116,7 @@ const TableVerifikasiNasabah = () => {
         if (item.status !== 1) {
           // Hanya menampilkan nasabah dengan status belum disetujui
           return (
-            <tr
-            // key={index}
-            >
+            <tr key={index}>
               <td className="mt-1 text-center">{index + 1}</td>
               <td className="mt-1 text-center">{/* {item.waktu_mendaftar} */}?</td>
               <td className="mt-1 text-center">{item.nama}</td>
