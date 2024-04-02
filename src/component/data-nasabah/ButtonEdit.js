@@ -31,7 +31,7 @@ export default function ButtonEdit(item) {
       status: "",
     },
   });
-  console.log(form.watch());
+  // console.log(form.watch());
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -61,9 +61,8 @@ export default function ButtonEdit(item) {
 
   const evidenceRef = useRef(null);
 
-  const handleUpdate = async (id) => {
+  const handleUpdate = async () => {
     // Mengirimkan data yang diperbarui ke API
-    console.log(token);
     const { nama, nomor_handphone, alamat, status } = formData;
     let updatedStatus = status;
     if (status === "VERIFIED") {
@@ -72,15 +71,21 @@ export default function ButtonEdit(item) {
       updatedStatus = 0;
     }
 
+    // console.log("Updated form data:", formData);
+
     const updatedFormData = { nama, nomor_handphone, alamat, status: updatedStatus };
 
     try {
-      const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
-      console.log(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id.user_id}`);
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id.user_id}`, updatedFormData, { headers });
-      console.log("Update successful:", response.data);
-      // setIsModalOpen(false); // Menutup modal setelah pembaruan berhasil
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      };
+
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${item.id}`, updatedFormData, { headers });
+      // console.log("Update successful:", response.data);
       toastr.success("Update success", "Success");
+      handleDetailClick(item.id);
+      window.location.reload();
     } catch (error) {
       console.error("Error updating data:", error);
       toastr.error("Update failed!", "Failed");
@@ -95,6 +100,10 @@ export default function ButtonEdit(item) {
   const closeModal = () => {
     setFormData({});
     form.reset();
+  };
+
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const hapus = async (ids) => {
@@ -221,6 +230,7 @@ export default function ButtonEdit(item) {
                                   placeholder="Nama"
                                   // value={formData.nama}
                                   {...form.register("nama")}
+                                  onChange={handleChange}
                                 />
                               </div>
                             </div>
@@ -234,6 +244,7 @@ export default function ButtonEdit(item) {
                                   placeholder="Nomor HP"
                                   // value={formData.nomor_handphone}
                                   {...form.register("nomor_handphone")}
+                                  onChange={handleChange}
                                 />
                               </div>
                             </div>
@@ -247,6 +258,7 @@ export default function ButtonEdit(item) {
                                   placeholder="Alamat"
                                   // value={formData.alamat}
                                   {...form.register("alamat")}
+                                  onChange={handleChange}
                                 />
                               </div>
                             </div>

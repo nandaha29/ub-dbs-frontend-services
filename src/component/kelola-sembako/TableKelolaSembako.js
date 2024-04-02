@@ -67,10 +67,7 @@ const TableKelolaSembako = () => {
   const getKelolaSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran", { headers });
       setKelolaSembako(response.data);
       // console.log(response.data);
     } catch (error) {
@@ -91,10 +88,7 @@ const TableKelolaSembako = () => {
   const getPermintaanID = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`,
-        { headers }
-      );
+      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       setFormData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -118,11 +112,7 @@ const TableKelolaSembako = () => {
       if (formData.thumbnail) {
         formDataWithFile.append("thumbnail", formData.thumbnail);
       }
-      const response = await axios.post(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`,
-        formDataWithFile,
-        { headers }
-      );
+      const response = await axios.post(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil menambah barang penukaran");
       } else {
@@ -141,16 +131,8 @@ const TableKelolaSembako = () => {
     try {
       let response;
       response = await (stat === "AKTIF"
-        ? axios.put(
-            `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=false`,
-            {},
-            { headers }
-          )
-        : axios.put(
-            `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`,
-            {},
-            { headers }
-          ));
+        ? axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=false`, {}, { headers })
+        : axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`, {}, { headers }));
       console.log(response);
       if (response.status === 200) {
         alert("Berhasil mengubah status barang penukaran");
@@ -166,10 +148,7 @@ const TableKelolaSembako = () => {
   const hapus = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.delete(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`,
-        { headers }
-      );
+      const response = await axios.delete(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       console.log(response.data);
       if (response.status === 200) {
         alert("Berhasil menghapus barang penukaran");
@@ -208,11 +187,7 @@ const TableKelolaSembako = () => {
       if (formData.thumbnail) {
         formDataWithFile.append("thumbnail", formData.thumbnail);
       }
-      const response = await axios.put(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`,
-        formDataWithFile,
-        { headers }
-      );
+      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil mengubah isi barang penukaran");
       } else {
@@ -250,28 +225,13 @@ const TableKelolaSembako = () => {
           <td>{item.stok}</td>
           <td className="">{item.status}</td>
           <td className="d-flex ">
-            <button
-              className="btn btn-primary btn-sm mt-1 mx-2"
-              data-toggle="modal"
-              data-target="#modal_edit"
-              onClick={() => handleDetailClick(item.id)}
-            >
+            <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => handleDetailClick(item.id)}>
               Edit
             </button>
-            <button
-              className="btn btn-warning btn-sm mt-1 mx-2"
-              data-toggle="modal"
-              data-target="#modal_hapus_akun"
-              onClick={() => arsip(item.id, item.status)}
-            >
+            <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => arsip(item.id, item.status)}>
               {item.status === "AKTIF" ? "Arsipkan" : "Aktifkan"}
             </button>
-            <button
-              className="btn btn-danger btn-sm mt-1 mx-2"
-              data-toggle="modal"
-              data-target="#modal_hapus_akun"
-              onClick={() => hapus(item.id)}
-            >
+            <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_hapus_akun" onClick={() => hapus(item.id)}>
               Hapus
             </button>
           </td>
@@ -328,20 +288,12 @@ const TableKelolaSembako = () => {
                 extend: "print",
                 customize: function (win) {
                   $(win.document.body).css("font-size", "10pt");
-                  $(win.document.body)
-                    .find("table")
-                    .addClass("compact")
-                    .css("font-size", "inherit");
+                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
                 className: "btn btn-secondary bg-secondary",
               },
             ],
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               // var index = iDisplayIndexFull + 1;
               // $("td:first", nRow).html(index);
               return nRow;
@@ -372,11 +324,7 @@ const TableKelolaSembako = () => {
   return (
     <>
       <div className="mr-4 float-sm-right">
-        <button
-          className="btn-primary btn"
-          data-toggle="modal"
-          data-target="#modal_tambah"
-        >
+        <button className="btn-primary btn" data-toggle="modal" data-target="#modal_tambah">
           + Tambah Sembako
         </button>
       </div>
@@ -402,29 +350,14 @@ const TableKelolaSembako = () => {
 
       {/* Batas SECTION MODAL */}
       {/* MODAL EDIT */}
-      <div
-        className="modal fade"
-        ref={modalRef}
-        id="modal_edit"
-        data-backdrop="static"
-        data-keyboard="false"
-        tabIndex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
+      <div className="modal fade" ref={modalRef} id="modal_edit" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
                 Edit Sembako
               </h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={closeModal}
-              >
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -436,15 +369,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8 pb-4">
                     <div className="text-center">
-                      <div className="">
-                        {selectedImage && (
-                          <img
-                            src={selectedImage}
-                            alt="Preview"
-                            style={{ width: "50%" }}
-                          />
-                        )}
-                      </div>
+                      <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div>
                       {/* <input type="file" accept=".png" onChange={this.handleImageUpload} /> */}
                       <input
                         type="file"
@@ -465,10 +390,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      <div
-                        type="text"
-                        className="form-control text-left text-sm font-weight-bold"
-                      >
+                      <div type="text" className="form-control text-left text-sm font-weight-bold">
                         {formData.id}
                       </div>
                     </div>
@@ -502,9 +424,7 @@ const TableKelolaSembako = () => {
                 <div className="row px-5 text-md">
                   <div className="col-md-4">
                     <div className="form-group ">
-                      <label className="text-sm">
-                        Harga per poin 0.5 kg (poin):
-                      </label>
+                      <label className="text-sm">Harga per poin 0.5 kg (poin):</label>
                     </div>
                   </div>
                   <div className="col-md-8">
@@ -578,28 +498,14 @@ const TableKelolaSembako = () => {
       </div>
       {/* END OF MODALS EDIT */}
       {/* ADD MODALS */}
-      <div
-        className="modal fade"
-        ref={modalRef}
-        id="modal_tambah"
-        data-backdrop="static"
-        data-keyboard="false"
-        tabIndex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
+      <div className="modal fade" ref={modalRef} id="modal_tambah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
                 Tambah Sembako
               </h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -611,15 +517,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8 pb-4">
                     <div className="text-center">
-                      <div className="">
-                        {selectedImage && (
-                          <img
-                            src={selectedImage}
-                            alt="Preview"
-                            style={{ width: "50%" }}
-                          />
-                        )}
-                      </div>
+                      <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div>
                       {/* <input type="file" accept=".png" onChange={this.handleImageUpload} /> */}
                       <input
                         type="file"
@@ -640,11 +538,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control text-sm"
-                        {...form.register("nama")}
-                      />
+                      <input type="text" className="form-control text-sm" {...form.register("nama")} />
                     </div>
                   </div>
                 </div>
@@ -652,18 +546,12 @@ const TableKelolaSembako = () => {
                 <div className="row px-5 text-md">
                   <div className="col-md-4">
                     <div className="form-group ">
-                      <label className="text-sm">
-                        Harga per poin 0.5 kg (poin):
-                      </label>
+                      <label className="text-sm">Harga per poin 0.5 kg (poin):</label>
                     </div>
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      <input
-                        type="number"
-                        className="form-control text-sm"
-                        {...form.register("hargaTukar")}
-                      />
+                      <input type="number" className="form-control text-sm" {...form.register("hargaTukar")} />
                     </div>
                   </div>
                 </div>
@@ -675,11 +563,7 @@ const TableKelolaSembako = () => {
                   </div>
                   <div className="col-md-8">
                     <div className="form-group">
-                      <input
-                        type="number"
-                        className="form-control text-sm"
-                        {...form.register("stok")}
-                      />
+                      <input type="number" className="form-control text-sm" {...form.register("stok")} />
                     </div>
                   </div>
                 </div>
@@ -694,12 +578,7 @@ const TableKelolaSembako = () => {
               >
                 Batal
               </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-dismiss="modal"
-                onClick={form.handleSubmit(handleTambah)}
-              >
+              <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={form.handleSubmit(handleTambah)}>
                 Simpan
               </button>
             </div>
