@@ -61,8 +61,9 @@ const DashboardPage = () => {
         "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1",
         { headers }
       );
+      console.log("PPP :", response.data);
       setNasabahCount(response.data.data.length);
-      console.log(response.data.data.length);
+      console.log("nasabah aktif : ", response.data.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -164,6 +165,11 @@ const DashboardPage = () => {
       tutup: closeHour,
       status: isOpen,
     };
+    const regex = /^\d{2}:\d{2}$/;
+    if (!regex.test(openHour) || !regex.test(closeHour)) {
+      alert("Format jam tidak sesuai. Format yang diharapkan adalah HH:MM");
+      return;
+    }
     const headers = { Authorization: `Bearer ${token}` };
     console.log("TES");
     console.log(openHour);
@@ -189,11 +195,11 @@ const DashboardPage = () => {
             <div className="container-fluid">
               <div className="row mb-2">
                 <div className="col-sm-9 d-flex">
-                  <h1 className="m-0">Welcome,</h1>
+                  <h1 className="m-0">Welcome, </h1>
 
                   {authUser ? (
                     <>
-                      <h1 className="text-gray">{` ${authUser.email}`}</h1>
+                      <h1 className="text-gray">{`  ${authUser.email}`}</h1>
                       {/* <button onClick={userKeluarAkun}>Keluar akun</button> */}
                     </>
                   ) : (
