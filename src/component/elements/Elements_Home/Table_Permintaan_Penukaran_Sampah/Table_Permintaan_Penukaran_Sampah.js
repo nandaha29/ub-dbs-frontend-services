@@ -31,7 +31,9 @@ const sampah = [
 const Table_Permintaan_Penukaran_Sampah = () => {
   const [authUser, setAuthUser] = useState(null);
   const [token, setToken] = useState([]);
-  const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState([]);
+  const [permintaanPenukaranSampah, setPermintaanPenukaranSampah] = useState(
+    []
+  );
   const [lohSampah, setLohSampah] = useState([]);
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
@@ -48,7 +50,10 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim",
+        { headers }
+      );
       setPermintaanPenukaranSampah(response.data.data);
       console.log(response.data.data);
     } catch (error) {
@@ -59,7 +64,10 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const getIsiSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/bank-sampah/sampah",
+        { headers }
+      );
       setLohSampah(response.data);
       console.log(response.data);
     } catch (error) {
@@ -70,12 +78,18 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const getPermintaanID = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`, { headers });
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`,
+        { headers }
+      );
       setFormData(response.data);
       console.log(response.data);
       const updatedListSampah = response.data.list_sampah.map((item) => ({
         ...item,
-        jumlah_poin: item.berat * lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)?.nilai_tukar || 0,
+        jumlah_poin:
+          item.berat *
+            lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)
+              ?.nilai_tukar || 0,
       }));
       setFormData({ ...response.data, list_sampah: updatedListSampah });
       form.setValue("no_tabungan", response.data.no_tabungan);
@@ -133,7 +147,9 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   };
 
   const tolakPermintaan = (ids) => {
-    const isConfirmed = window.confirm("Apakah Anda yakin ingin menolak permintaan ini?");
+    const isConfirmed = window.confirm(
+      "Apakah Anda yakin ingin menolak permintaan ini?"
+    );
     if (isConfirmed) {
       getParam(ids, 2);
       toastr.error("Permintaan telah ditolak!", "Berhasil!");
@@ -141,7 +157,9 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   };
 
   const setujuiPermintaan = (ids) => {
-    const isConfirmed = window.confirm("Apakah Anda yakin ingin menyetujui permintaan ini?");
+    const isConfirmed = window.confirm(
+      "Apakah Anda yakin ingin menyetujui permintaan ini?"
+    );
     if (isConfirmed) {
       getParam(ids, 1);
       toastr.success("Permintaan telah disetujui!", "Berhasil!");
@@ -155,13 +173,22 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   };
 
   const handleUpdate = async (formData) => {
-    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
     try {
       const updatedListSampah = formData.items_sampah.map((item) => ({
         ...item,
-        jumlah_poin: item.berat * lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)?.nilai_tukar || 0,
+        jumlah_poin:
+          item.berat *
+            lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)
+              ?.nilai_tukar || 0,
       }));
-      const totalPoin = updatedListSampah.reduce((sum, item) => sum + item.jumlah_poin, 0);
+      const totalPoin = updatedListSampah.reduce(
+        (sum, item) => sum + item.jumlah_poin,
+        0
+      );
       const requestData = {
         no_tabungan: formData.no_tabungan,
         id_petugas: "PETUGASf5oLoRF2gPY9mrcY7UUfa",
@@ -172,7 +199,11 @@ const Table_Permintaan_Penukaran_Sampah = () => {
 
       console.log(requestData);
 
-      const response = await axios.put("https://devel4-filkom.ub.ac.id/slip/menabung?status=1", requestData, { headers });
+      const response = await axios.put(
+        "https://devel4-filkom.ub.ac.id/slip/menabung?status=1",
+        requestData,
+        { headers }
+      );
 
       console.log(response.data);
 
@@ -198,16 +229,29 @@ const Table_Permintaan_Penukaran_Sampah = () => {
             Table Permintaan Penukaran Sampah
           </h3>
           <div className="card-tools">
-            <button type="button" className="btn btn-tool" data-card-widget="collapse">
+            <button
+              type="button"
+              className="btn btn-tool"
+              data-card-widget="collapse"
+            >
               <i className="fas fa-minus" />
             </button>
-            <button type="button" className="btn btn-tool" data-card-widget="remove">
+            <button
+              type="button"
+              className="btn btn-tool"
+              data-card-widget="remove"
+            >
               <i className="fas fa-times" />
             </button>
           </div>
         </div>
         <div className="tab-content" id="nav-tabContent">
-          <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div
+            className="tab-pane fade show active"
+            id="nav-home"
+            role="tabpanel"
+            aria-labelledby="nav-home-tab"
+          >
             <div className="card-body table-responsive p-0">
               <table className="table table-striped table-valign-middle ">
                 <thead>
@@ -225,7 +269,13 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                       <td>{item.nama_user}</td>
                       <td>{formatDate(item.tanggal.date)}</td>
                       <td className="d-flex">
-                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah" onClick={() => handleDetailClick(item.id_slip)}>
+                        <button
+                          type="button"
+                          className="btn-primary border-0 mr-2"
+                          data-toggle="modal"
+                          data-target="#modal_proses_sampah"
+                          onClick={() => handleDetailClick(item.id_slip)}
+                        >
                           Detail
                         </button>
                         {/* <button className="btn-danger border-0">Tolak</button> */}
@@ -239,16 +289,32 @@ const Table_Permintaan_Penukaran_Sampah = () => {
         </div>
       </div>
 
-      <div className="modal fade" ref={modalRef} id="modal_proses_sampah" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        data-dismiss="modal"
+        ref={modalRef}
+        id="modal_proses_sampah"
+        // data-backdrop="static"
+        data-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <form>
               <div className="modal-header border-0">
                 <h5 className="modal-title" id="staticBackdropLabel">
                   <i className="fas fa-chart-pie mr-1" />
-                  ID Penukaran <p className="text-secondary">{formData.no_tabungan}</p>
+                  ID Penukaran{" "}
+                  <p className="text-secondary">{formData.no_tabungan}</p>
                 </h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -267,7 +333,11 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                     <tbody>
                       <tr key={formData.no_tabungan}>
                         <td>{formData.nasabah}</td>
-                        <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                        <td>
+                          {formData.tanggal != null
+                            ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}`
+                            : null}
+                        </td>
                         <td>{formData.id_user}</td>
                       </tr>
                     </tbody>
@@ -297,7 +367,14 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                             <td>
                               <label>{item.nama_sampah}</label>
                             </td>
-                            <td>{lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)?.nilai_tukar}</td>
+                            <td>
+                              {
+                                lohSampah.find(
+                                  (sampahItem) =>
+                                    sampahItem.id === item.id_sampah
+                                )?.nilai_tukar
+                              }
+                            </td>
                             <td>
                               <div className="input-group mb-3">
                                 {/* <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} /> */}
@@ -307,7 +384,16 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                                 // value={formData.nama}
                                 {...form.register(item.berat)}
                               /> */}
-                                <input type="number" className="form-control" name={`berat_barang_${index}`} id={`berat_barang_${index}`} defaultValue={item.berat} {...form.register(`items_sampah.${index}.berat`)} />
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  name={`berat_barang_${index}`}
+                                  id={`berat_barang_${index}`}
+                                  defaultValue={item.berat}
+                                  {...form.register(
+                                    `items_sampah.${index}.berat`
+                                  )}
+                                />
                                 <div className="input-group-append">
                                   <span className="input-group-text">kg</span>
                                 </div>
@@ -330,7 +416,12 @@ const Table_Permintaan_Penukaran_Sampah = () => {
               </div>
 
               <div className="modal-footer text-center justify-content-center">
-                <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={() => tolakPermintaan(formData.no_tabungan)}>
+                <button
+                  type="button"
+                  className="btn btn-danger px-5 py-2 "
+                  data-dismiss="modal"
+                  onClick={() => tolakPermintaan(formData.no_tabungan)}
+                >
                   Tolak
                 </button>
                 {/* <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={() => setujuiPermintaan(formData.no_tabungan)}>

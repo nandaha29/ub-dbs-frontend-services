@@ -415,9 +415,10 @@ const TableKelolaSampah = () => {
       {/* MODAL EDIT */}
       <div
         className="modal fade"
+        data-dismiss="modal"
         ref={modalRef}
         id="modal_edit"
-        data-backdrop="static"
+        // data-backdrop="static"
         data-keyboard="false"
         tabIndex="-1"
         aria-labelledby="staticBackdropLabel"
@@ -548,9 +549,10 @@ const TableKelolaSampah = () => {
       {/* ADD MODALS */}
       <div
         className="modal fade"
+        data-dismiss="modal"
         ref={modalRef}
         id="modal_tambah"
-        data-backdrop="static"
+        // data-backdrop="static"
         data-keyboard="false"
         tabIndex="-1"
         aria-labelledby="staticBackdropLabel"

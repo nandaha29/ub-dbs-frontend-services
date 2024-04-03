@@ -103,16 +103,50 @@ const DashboardPage = () => {
 
   const getTransaksiSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
+    const currentMonth = new Date().getMonth() + 1;
+    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    let totalSuccessfulTransactions = 0;
     try {
       const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/slip/penukaran",
+        `https://devel4-filkom.ub.ac.id/slip/penukaran?filterMonth=${currentMonth}`,
         { headers }
       );
-      setTransaksiSembakoCount(response.data.data.length);
-      console.log(response.data.data.length);
+      const response2 = await axios.get(
+        `https://devel4-filkom.ub.ac.id/slip/penukaran?filterMonth=${previousMonth}`,
+        { headers }
+      );
+      console.log("BULAN INI : ", response.data.data.length);
+      console.log("BULAN LALU : ", response2.data.data.length);
+      const successfulTransactions1 = response.data.data.filter(
+        (transaction) => transaction.status === "BERHASIL"
+      );
+      const successfulTransactions2 = response2.data.data.filter(
+        (transaction) => transaction.status === "BERHASIL"
+      );
+
+      if (successfulTransactions2.length === 0) {
+        totalSuccessfulTransactions = 0;
+      } else {
+        totalSuccessfulTransactions =
+          ((successfulTransactions1.length - successfulTransactions2.length) /
+            successfulTransactions2.length) *
+          100;
+      }
+      console.log("OUTPUT : ", totalSuccessfulTransactions);
+      const formattedPercentage = totalSuccessfulTransactions.toFixed(1);
+      setTransaksiSembakoCount(formattedPercentage);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+  const countSuccessfulTransactions = (data) => {
+    return data.reduce((count, transaction) => {
+      if (transaction.status === "BERHASIL") {
+        return count + 1;
+      }
+      return count;
+    }, 0);
   };
 
   useEffect(() => {
@@ -214,6 +248,7 @@ const DashboardPage = () => {
                     </span>
                     <button
                       className="btn-primary border-0 ml-2"
+                      data-dismiss="modal"
                       data-toggle="modal"
                       data-target="#modal_edit_waktu"
                     >
@@ -305,6 +340,7 @@ const DashboardPage = () => {
         {/* MODAL EDIT SECTION */}
         <div
           class="modal fade"
+          data-dismiss="modal"
           id="modal_edit_waktu"
           data-backdrop="static"
           data-keyboard="false"

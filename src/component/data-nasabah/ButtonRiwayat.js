@@ -58,9 +58,10 @@ export default function ButtonRiwayat(item) {
       {/* MODAL RIWAYAT */}
       <div
         className="modal fade"
+        data-dismiss="modal"
         ref={modalRef}
         id={`modal_riwayat_data_nasabah_${item.id}`}
-        data-backdrop="static"
+        // data-backdrop="static"
         data-keyboard="false"
         tabIndex="-1"
         aria-labelledby={`#modal_riwayat_data_nasabah_${item.id}`}

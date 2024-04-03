@@ -231,9 +231,10 @@ const TableRiwayatSampah = () => {
         {/* modal detail  */}
         <div
           className="modal fade"
+          data-dismiss="modal"
           ref={modalRef}
           id="modal_detail_sampah"
-          data-backdrop="static"
+          // data-backdrop="static"
           data-keyboard="false"
           tabIndex="-1"
           aria-labelledby="staticBackdropLabel"

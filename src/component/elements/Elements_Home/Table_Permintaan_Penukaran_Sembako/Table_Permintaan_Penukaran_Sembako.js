@@ -38,12 +38,17 @@ const Table_Permintaan_Penukaran_Sembako = () => {
   const [token, setToken] = useState([]);
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
-  const [permintaanPenukaranSembako, setPermintaanPenukaranSembako] = useState([]);
+  const [permintaanPenukaranSembako, setPermintaanPenukaranSembako] = useState(
+    []
+  );
 
   const getPermintaanPenukaranSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true", { headers });
+      const response = await axios.get(
+        "https://devel4-filkom.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true",
+        { headers }
+      );
       setPermintaanPenukaranSembako(response.data.data);
       console.log(response.data.data);
     } catch (error) {
@@ -97,14 +102,18 @@ const Table_Permintaan_Penukaran_Sembako = () => {
   };
 
   const tolakPermintaan = () => {
-    const isConfirmed = window.confirm("Apakah Anda yakin ingin menolak permintaan ini?");
+    const isConfirmed = window.confirm(
+      "Apakah Anda yakin ingin menolak permintaan ini?"
+    );
     if (isConfirmed) {
       toastr.error("Permintaan telah ditolak!", "Berhasil!");
     }
   };
 
   const setujuiPermintaan = () => {
-    const isConfirmed = window.confirm("Apakah Anda yakin ingin menyetujui permintaan ini?");
+    const isConfirmed = window.confirm(
+      "Apakah Anda yakin ingin menyetujui permintaan ini?"
+    );
     if (isConfirmed) {
       toastr.success("Perimntaan telah disetujui!", "Berhasil!");
     }
@@ -134,16 +143,29 @@ const Table_Permintaan_Penukaran_Sembako = () => {
             Table Permintaan Penukaran Sembako
           </h3>
           <div className="card-tools">
-            <button type="button" className="btn btn-tool" data-card-widget="collapse">
+            <button
+              type="button"
+              className="btn btn-tool"
+              data-card-widget="collapse"
+            >
               <i className="fas fa-minus" />
             </button>
-            <button type="button" className="btn btn-tool" data-card-widget="remove">
+            <button
+              type="button"
+              className="btn btn-tool"
+              data-card-widget="remove"
+            >
               <i className="fas fa-times" />
             </button>
           </div>
         </div>
         <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div
+            class="tab-pane fade show active"
+            id="nav-home"
+            role="tabpanel"
+            aria-labelledby="nav-home-tab"
+          >
             <div className="card-body table-responsive p-0">
               <table className="table table-striped table-valign-middle ">
                 <thead>
@@ -161,7 +183,13 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                       <td>{item.nama_user}</td>
                       <td>{formatDate(item.tanggal.date)}</td>
                       <td className="d-flex">
-                        <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sembako" onClick={() => handleDetailClick(item.id_slip)}>
+                        <button
+                          type="button"
+                          className="btn-primary border-0 mr-2"
+                          data-toggle="modal"
+                          data-target="#modal_proses_sembako"
+                          onClick={() => handleDetailClick(item.id_slip)}
+                        >
                           Detail
                         </button>
                         {/* <button className="btn-danger border-0">Tolak</button> */}
@@ -175,7 +203,17 @@ const Table_Permintaan_Penukaran_Sembako = () => {
         </div>
       </div>
 
-      <div className="modal fade" ref={modalRef} id="modal_proses_sembako" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        data-dismiss="modal"
+        ref={modalRef}
+        id="modal_proses_sembako"
+        // data-backdrop="static"
+        data-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header border-0">
@@ -183,7 +221,12 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                 <i className="fas fa-chart-pie mr-1" />
                 ID Penukaran <p className="text-secondary">{formData.id}</p>
               </h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -202,7 +245,11 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                   <tbody>
                     <tr key={formData.no_tabungan}>
                       <td>{formData.nasabah}</td>
-                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                      <td>
+                        {formData.tanggal != null
+                          ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}`
+                          : null}
+                      </td>
                       {/* <td>{formatDate(formData.tanggal.date)}</td> */}
                       <td>{formData.id_user}</td>
                     </tr>
@@ -234,11 +281,19 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                             <label>{item.nama_barang}</label>
                           </td>
                           <td>
-                            <label className="text-sm">{item.total_harga_poin}</label>
+                            <label className="text-sm">
+                              {item.total_harga_poin}
+                            </label>
                           </td>
                           <td>
                             <div className="input-group mb-3">
-                              <input type="number" className="form-control" aria-label={`berat_barang_${index}`} placeholder={item.berat} readOnly />
+                              <input
+                                type="number"
+                                className="form-control"
+                                aria-label={`berat_barang_${index}`}
+                                placeholder={item.berat}
+                                readOnly
+                              />
                               <div className="input-group-append">
                                 <span className="input-group-text">kg</span>
                               </div>
@@ -258,10 +313,20 @@ const Table_Permintaan_Penukaran_Sembako = () => {
             </div>
 
             <div className="modal-footer text-center justify-content-center">
-              <button type="button" className="btn btn-danger px-5 py-2 " data-dismiss="modal" onClick={tolakPermintaan}>
+              <button
+                type="button"
+                className="btn btn-danger px-5 py-2 "
+                data-dismiss="modal"
+                onClick={tolakPermintaan}
+              >
                 Tolak
               </button>
-              <button type="button" className="btn btn-success px-5 py-2" data-dismiss="modal" onClick={setujuiPermintaan}>
+              <button
+                type="button"
+                className="btn btn-success px-5 py-2"
+                data-dismiss="modal"
+                onClick={setujuiPermintaan}
+              >
                 Setujui
               </button>
             </div>

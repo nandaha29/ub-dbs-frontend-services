@@ -13,7 +13,10 @@ export default function ButtonLihat(item) {
   const handleDetailClick = async (id) => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
+      const response = await axios.get(
+        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`,
+        { headers }
+      );
       setFormData(response.data.user);
       // console.log(response.data.user);
       modalRef.current.open = true;
@@ -35,12 +38,27 @@ export default function ButtonLihat(item) {
 
   return (
     <>
-      <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target={`#modal_liat_data_nasabah_${item.id}`} onClick={() => handleDetailClick(item.id)}>
+      <button
+        className="btn btn-primary btn-sm mt-1 mx-2"
+        data-toggle="modal"
+        data-target={`#modal_liat_data_nasabah_${item.id}`}
+        onClick={() => handleDetailClick(item.id)}
+      >
         Lihat
       </button>
 
       {/* MODAL LIHAT */}
-      <div className="modal fade" ref={modalRef} id={`modal_liat_data_nasabah_${item.id}`} data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby={`staticBackdropLabel_${item.id}`} aria-hidden="true">
+      <div
+        className="modal fade"
+        data-dismiss="modal"
+        ref={modalRef}
+        id={`modal_liat_data_nasabah_${item.id}`}
+        // data-backdrop="static"
+        data-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby={`staticBackdropLabel_${item.id}`}
+        aria-hidden="true"
+      >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header ">
@@ -48,7 +66,12 @@ export default function ButtonLihat(item) {
                 <i className="fas fa-chart-pie mr-1" />
                 Detail Nasabah
               </h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -56,36 +79,62 @@ export default function ButtonLihat(item) {
               {/* Conditionally render the content when formData is populated */}
               {formData && Object.keys(formData).length > 0 && (
                 <>
-                  <div className="modal-image d-flex justify-content-center">{hasPhoto ? <img src={formData.avatar} alt="Avatar" /> : <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image" />}</div>
+                  <div className="modal-image d-flex justify-content-center">
+                    {hasPhoto ? (
+                      <img src={formData.avatar} alt="Avatar" />
+                    ) : (
+                      <img
+                        src="dist/img/user2-160x160.jpg"
+                        className="img-circle elevation-2"
+                        alt="User Image"
+                      />
+                    )}
+                  </div>
                   <form className="m-5">
                     <div className="form-group row">
-                      <label className="col-sm-5 col-form-label">ID Nasabah</label>
+                      <label className="col-sm-5 col-form-label">
+                        ID Nasabah
+                      </label>
                       <div className="col-sm-7">
                         <div type="text" className="mt-2 font-weight-bold">
-                          {/* {console.log(formData.user_id)}: {formData.user_id} */}: {formData.user_id}
+                          {/* {console.log(formData.user_id)}: {formData.user_id} */}
+                          : {formData.user_id}
                         </div>
                       </div>
                     </div>
                     <div className="form-group row">
                       <label className="col-sm-5">Nama</label>
                       <div className="col-sm-7">
-                        <div className=" font-weight-bold"> : {formData.nama}</div>
+                        <div className=" font-weight-bold">
+                          {" "}
+                          : {formData.nama}
+                        </div>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="inputPassword" className="col-sm-5 col-form-label">
+                      <label
+                        htmlFor="inputPassword"
+                        className="col-sm-5 col-form-label"
+                      >
                         No HP / WA
                       </label>
                       <div className="col-sm-7">
-                        <div className="mt-2 font-weight-bold">: {formData.nomor_handphone}</div>
+                        <div className="mt-2 font-weight-bold">
+                          : {formData.nomor_handphone}
+                        </div>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="inputPassword" className="col-sm-5 col-form-label">
+                      <label
+                        htmlFor="inputPassword"
+                        className="col-sm-5 col-form-label"
+                      >
                         Alamat Nasabah
                       </label>
                       <div className="col-sm-7">
-                        <div className="font-weight-bold mt-2">: {formData.alamat}</div>
+                        <div className="font-weight-bold mt-2">
+                          : {formData.alamat}
+                        </div>
                       </div>
                     </div>
                   </form>
