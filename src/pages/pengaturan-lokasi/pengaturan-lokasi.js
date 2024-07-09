@@ -1,80 +1,95 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
 import FormPengaturan from "../../component/form-penglokasi/FormPengaturan";
-import JadwalBukaTutup from "../../component/form-penglokasi/JadwalBukaTutup";
+// import JadwalBukaTutup dari "../../component/form-penglokasi/JadwalBukaTutup";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
 
-export default class aturlokasi extends Component {
-  constructor() {
-    super();
-    this.state = {
-      adminName: "Ferdi",
-      nasabahCount: 852,
-      totalSampahCount: 852,
-      nasabahPerluVerifikasiCount: 852,
-      transaksiSembakoCount: 29,
-    };
-  }
+const AturLokasi = () => {
+  const [adminName] = useState("Ferdi");
+  const [nasabahCount] = useState(852);
+  const [totalSampahCount] = useState(852);
+  const [nasabahPerluVerifikasiCount] = useState(852);
+  const [transaksiSembakoCount] = useState(29);
 
-  // dummyData = [
-  //   {
-  //     adminName: "Pak Ferdi",
-  //     nasabahCount: "18 Feb 2023",
-  //     totalSampahCount: "Diagnosis and Procedure Coded",
-  //     nasabahPerluVerifikasiCount: "OPA2121200001",
-  //     transaksiSembakoCount: "18 Feb 2023",
-  //   },
-  // ];
+  const [authUser, setAuthUser] = useState(null);
+  const [token, setToken] = useState([]);
 
-  render() {
-    return (
-      <div>
-        <Layout>
-          <div className="content-wrapper">
-            {/* Content Header (Page header) */}
-            <div className="content-header">
-              <div className="container-fluid">
-                <div className="row mb-2">
-                  <div className="col-sm-6">
-                    <h1 className="m-0">Pengaturan Lokasi</h1>
-                  </div>
-                  {/* /.col */}
-                  <div className="col-sm-6">
-                    <ol className="breadcrumb float-sm-right">
-                      <li className="breadcrumb-item">
-                        <a href="/home">Home</a>
-                      </li>
-                      <li className="breadcrumb-item active">
-                        Artikel & Banner
-                      </li>
-                    </ol>
-                  </div>
-                  {/* /.col */}
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+        setToken(user.accessToken);
+        getDataNasabah();
+      } else {
+        window.location = "/login";
+        setAuthUser(null);
+      }
+    });
+
+    // Return a cleanup function to unsubscribe from the listener
+    return () => listen();
+  }, []);
+
+  const getDataNasabah = async () => {
+    // Fetch data from an API or perform other actions
+    try {
+      const response = await axios.get("/api/nasabah", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      // Handle the response
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
+
+  return (
+    <div>
+      <Layout>
+        <div className="content-wrapper">
+          {/* Content Header (Page header) */}
+          <div className="content-header">
+            <div className="container-fluid">
+              <div className="row mb-2">
+                <div className="col-sm-6">
+                  <h1 className="m-0">Pengaturan Lokasi</h1>
                 </div>
-                {/* /.row */}
+                {/* /.col */}
+                <div className="col-sm-6">
+                  <ol className="breadcrumb float-sm-right">
+                    <li className="breadcrumb-item">
+                      <a href="/home">Home</a>
+                    </li>
+                    <li className="breadcrumb-item active">Artikel & Banner</li>
+                  </ol>
+                </div>
+                {/* /.col */}
               </div>
-              {/* /.container-fluid */}
+              {/* /.row */}
             </div>
-            {/* /.content-header */}
-            <section className="content d-flex justify-content-center gap-4 col-11 ml-4">
-              <div class="card col-5 ">
-                <h2 class="p-3 pl-5 modal-header font-weight-bold">Lokasi</h2>
-                <div class="card-body">
-                  <FormPengaturan />
-                </div>
-              </div>
-              <div class="card ml-5">
-                <h2 class="p-3 pl-5 modal-header font-weight-bold">
-                  Jadwal Buka-Tutup
-                </h2>
-                <div class="card-body">
-                  <JadwalBukaTutup />
-                </div>
-              </div>
-            </section>
+            {/* /.container-fluid */}
           </div>
-        </Layout>
-      </div>
-    );
-  }
-}
+          {/* /.content-header */}
+          <section className="content d-flex justify-content-center gap-4 col-11 ml-4">
+            <div className="card col-5">
+              <h2 className="p-3 pl-5 modal-header font-weight-bold">Lokasi</h2>
+              <div className="card-body">
+                <FormPengaturan />
+              </div>
+            </div>
+            <div className="card ml-5">
+              <h2 className="p-3 pl-5 modal-header font-weight-bold">Jadwal Buka-Tutup</h2>
+              <div className="card-body">
+                <JadwalBukaTutup />
+              </div>
+            </div>
+          </section>
+        </div>
+      </Layout>
+    </div>
+  );
+};
+
+export default AturLokasi;
