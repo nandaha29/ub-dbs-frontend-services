@@ -29,6 +29,7 @@ const SemuaOrderTabel = () => {
         // console.log(tes);
         getPermintaanPenukaranSampah();
       } else {
+        window.location = "/login";
         setAuthUser(null);
       }
     });

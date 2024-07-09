@@ -251,6 +251,7 @@ const TableKelolaSembako = () => {
         // console.log(tes);
         getKelolaSembako();
       } else {
+        window.location = "/login";
         setAuthUser(null);
       }
     });

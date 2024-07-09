@@ -18,8 +18,7 @@ const DashboardPage = () => {
 
   const [nasabahCount, setNasabahCount] = useState(0);
   const [totalSampahCount, setTotalSampahCount] = useState(0);
-  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] =
-    useState(0);
+  const [nasabahPerluVerifikasiCount, setNasabahPerluVerifikasiCount] = useState(0);
   const [transaksiSembakoCount, setTransaksiSembakoCount] = useState(0);
 
   const [authUser, setAuthUser] = useState(null);
@@ -28,27 +27,20 @@ const DashboardPage = () => {
   const getDataJam = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
-        { headers }
-      );
-      console.log(response.data);
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
+      // console.log(response.data);
       const data = response.data;
       console.log("earl", response.data.jam_buka_sekarang);
 
       const padZero = (value) => String(value).padStart(2, "0");
-      const bukaPada = `${padZero(data.jam_buka_sekarang.hour)}:${padZero(
-        data.jam_buka_sekarang.minute
-      )}`;
-      const tutupPada = `${padZero(data.jam_tutup_sekarang.hour)}:${padZero(
-        data.jam_tutup_sekarang.minute
-      )}`;
+      const bukaPada = `${padZero(data.jam_buka_sekarang.hour)}:${padZero(data.jam_buka_sekarang.minute)}`;
+      const tutupPada = `${padZero(data.jam_tutup_sekarang.hour)}:${padZero(data.jam_tutup_sekarang.minute)}`;
 
       setOpenHour(bukaPada);
-      console.log("JAM BRO", openHour, tutupPada);
+      // console.log("JAM BRO", openHour, tutupPada);
       setCloseHour(tutupPada);
       setIsOpen(data.status);
-      console.log(isOpen);
+      // console.log(isOpen);
     } catch (error) {
       console.error("Error fetching datajam:", error);
     }
@@ -57,11 +49,8 @@ const DashboardPage = () => {
   const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1",
-        { headers }
-      );
-      console.log("PPP :", response.data);
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
+      // console.log("PPP :", response.data);
       setNasabahCount(response.data.data.length);
       console.log("nasabah aktif : ", response.data.data.length);
     } catch (error) {
@@ -72,14 +61,8 @@ const DashboardPage = () => {
   const getTotalSampahBulanIni = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction",
-        { headers }
-      );
-      const totalBeratSum = response.data.reduce(
-        (sum, item) => sum + item.totalBerat,
-        0
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
+      const totalBeratSum = response.data.reduce((sum, item) => sum + item.totalBerat, 0);
       console.log(totalBeratSum);
       setTotalSampahCount(totalBeratSum);
     } catch (error) {
@@ -90,10 +73,7 @@ const DashboardPage = () => {
   const getNasabahPerluVerifikasi = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50", { headers });
       setNasabahPerluVerifikasiCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -104,10 +84,7 @@ const DashboardPage = () => {
   const getTransaksiSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/slip/penukaran",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
       setTransaksiSembakoCount(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {
@@ -129,8 +106,8 @@ const DashboardPage = () => {
         getNasabahPerluVerifikasi();
         getTransaksiSembako();
       } else {
-        setAuthUser(null);
         window.location = "/login";
+        setAuthUser(null);
       }
     });
     return () => {
@@ -176,11 +153,7 @@ const DashboardPage = () => {
     console.log(closeHour);
     console.log(isOpen);
     try {
-      const response = await axios.put(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6",
-        newData,
-        { headers }
-      );
+      const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6", newData, { headers });
       console.log(response.data);
     } catch (error) {
       console.error("Error posting status data:", error);
@@ -209,14 +182,9 @@ const DashboardPage = () => {
                 <div className="col-sm-3">
                   <div className="float-sm-right d-flex justify-content-center">
                     <span className="align-middle">
-                      {isOpen ? "Buka" : "Tutup"} • Akan tutup pada{" "}
-                      <a className="text-md badge bg-secondary"> {closeHour}</a>
+                      {isOpen ? "Buka" : "Tutup"} • Akan tutup pada <a className="text-md badge bg-secondary"> {closeHour}</a>
                     </span>
-                    <button
-                      className="btn-primary border-0 ml-2"
-                      data-toggle="modal"
-                      data-target="#modal_edit_waktu"
-                    >
+                    <button className="btn-primary border-0 ml-2" data-toggle="modal" data-target="#modal_edit_waktu">
                       edit
                     </button>
                   </div>
@@ -303,15 +271,7 @@ const DashboardPage = () => {
           </section>
         </div>
         {/* MODAL EDIT SECTION */}
-        <div
-          class="modal fade"
-          id="modal_edit_waktu"
-          data-backdrop="static"
-          data-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="modal_edit_waktu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header ">
@@ -319,12 +279,7 @@ const DashboardPage = () => {
                   <i className="fas fa-chart-pie mr-1" />
                   Buka / Tutup Balai
                 </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -358,13 +313,7 @@ const DashboardPage = () => {
                   <div className="form-group row">
                     <label className="col-sm-5">Status saat ini : </label>
                     <div className="col-sm-7">
-                      <button
-                        type="button"
-                        className={`btn ${
-                          isOpen ? "btn-success" : "btn-secondary"
-                        }`}
-                        onClick={toggleSwitch}
-                      >
+                      <button type="button" className={`btn ${isOpen ? "btn-success" : "btn-secondary"}`} onClick={toggleSwitch}>
                         {isOpen ? "Buka" : "Tutup"}
                       </button>
                     </div>
@@ -372,19 +321,10 @@ const DashboardPage = () => {
                 </form>
               </div>
               <div className="modal-footer">
-                <button
-                  className="btn btn-secondary float-sm-left"
-                  type="button"
-                  data-dismiss="modal"
-                >
+                <button className="btn btn-secondary float-sm-left" type="button" data-dismiss="modal">
                   Tutup
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-dismiss="modal"
-                  onClick={handleSave}
-                >
+                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={handleSave}>
                   Simpan Perubahan
                 </button>
               </div>

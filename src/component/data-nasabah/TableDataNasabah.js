@@ -181,6 +181,7 @@ const TableDataNasabah = () => {
         // console.log(tes);
         getDataNasabah();
       } else {
+        window.location = "/login";
         setAuthUser(null);
       }
     });

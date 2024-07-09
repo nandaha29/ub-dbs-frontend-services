@@ -62,6 +62,7 @@ const TableVerifikasiNasabah = () => {
         setToken(user.accessToken);
         getDataPerluVerifikasiNasabah();
       } else {
+        window.location = "/login";
         setAuthUser(null);
       }
     });
@@ -141,12 +142,12 @@ const TableVerifikasiNasabah = () => {
 
   return (
     <>
-      <div class="container-fluid">
-        <div class="table-responsive p-0 pb-2">
+      <div className="container-fluid">
+        <div className="table-responsive p-0 pb-2">
           <table id="table" className="table align-items-center justify-content-center mb-0 table-striped">
             <thead>
               <tr>
-                <th className="text-uppercase  text-sm text-center">#</th>
+                +<th className="text-uppercase  text-sm text-center">#</th>
                 <th className="text-uppercase  text-sm text-center">Waktu Mendaftar</th>
                 <th className="text-uppercase  text-sm text-center">Nama Nasabah</th>
                 <th className="text-uppercase  text-sm text-center">No. Telepon</th>
