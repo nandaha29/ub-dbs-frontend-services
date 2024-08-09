@@ -284,6 +284,9 @@ const TableKelolaSembako = () => {
               {
                 extend: "csv",
                 className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
               },
               {
                 extend: "print",
@@ -292,6 +295,9 @@ const TableKelolaSembako = () => {
                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
                 className: "btn btn-secondary bg-secondary",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
               },
             ],
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {

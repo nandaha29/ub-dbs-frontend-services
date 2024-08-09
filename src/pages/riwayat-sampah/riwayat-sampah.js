@@ -18,16 +18,6 @@ export default class RiwayatSampahPage extends Component {
     };
   }
 
-  // dummyData = [
-  //   {
-  //     adminName: "Pak Ferdi",
-  //     nasabahCount: "18 Feb 2023",
-  //     totalSampahCount: "Diagnosis and Procedure Coded",
-  //     nasabahPerluVerifikasiCount: "OPA2121200001",
-  //     transaksiSembakoCount: "18 Feb 2023",
-  //   },
-  // ];
-
   render() {
     return (
       <div>
@@ -62,18 +52,6 @@ export default class RiwayatSampahPage extends Component {
             </div>
             {/* /.content-header */}
             <section className="content">
-              {/* <div className="row">
-                Left col
-                <section className="col-lg-5 connectedSortable">
-                  <GrafikArea />
-                </section>
-
-                /.Left col
-                <section className="col-lg-7 connectedSortable">
-                  <GrafikArea />
-                </section>
-                right col
-              </div> */}
               <TableRiwayatSampah />
             </section>
           </div>

@@ -45,7 +45,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true", { headers });
       setPermintaanPenukaranSembako(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -66,7 +66,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
         { headers }
       );
       setFormData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -142,8 +142,8 @@ const Table_Permintaan_Penukaran_Sembako = () => {
             </button>
           </div>
         </div>
-        <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div className="tab-content" id="nav-tabContent">
+          <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div className="card-body table-responsive p-0">
               <table className="table table-striped table-valign-middle ">
                 <thead>
@@ -159,7 +159,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                     <tr key={item.id_slip}>
                       <td>{item.id_slip}</td>
                       <td>{item.nama_user}</td>
-                      <td>{formatDate(item.tanggal.date)}</td>
+                      <td>{item.tanggal}</td>
                       <td className="d-flex">
                         <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sembako" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail
@@ -202,8 +202,8 @@ const Table_Permintaan_Penukaran_Sembako = () => {
                   <tbody>
                     <tr key={formData.no_tabungan}>
                       <td>{formData.nasabah}</td>
-                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
-                      {/* <td>{formatDate(formData.tanggal.date)}</td> */}
+                      {/* <td>{formData.tanggal != null ? `${formData.tanggal.day}/${formData.tanggal.month}/${formData.tanggal.year}` : null}</td> */}
+                      <td>{formData.tanggal}</td>
                       <td>{formData.id_user}</td>
                     </tr>
                   </tbody>

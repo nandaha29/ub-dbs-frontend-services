@@ -3,7 +3,7 @@ import axios from "axios";
 // inisiasi component
 import Layout from "../../component/Layout/Layout";
 import FormPengaturan from "../../component/form-penglokasi/FormPengaturan";
-// import JadwalBukaTutup dari "../../component/form-penglokasi/JadwalBukaTutup";
+import JadwalBukaTutup from "../../component/form-penglokasi/JadwalBukaTutup";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 

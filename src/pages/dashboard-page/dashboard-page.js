@@ -52,7 +52,7 @@ const DashboardPage = () => {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
       // console.log("PPP :", response.data);
       setNasabahCount(response.data.data.length);
-      console.log("nasabah aktif : ", response.data.data.length);
+      // console.log("nasabah aktif : ", response.data.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -63,7 +63,7 @@ const DashboardPage = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
       const totalBeratSum = response.data.reduce((sum, item) => sum + item.totalBerat, 0);
-      console.log(totalBeratSum);
+      // console.log(totalBeratSum);
       setTotalSampahCount(totalBeratSum);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -75,7 +75,7 @@ const DashboardPage = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50", { headers });
       setNasabahPerluVerifikasiCount(response.data.data.length);
-      console.log(response.data.data.length);
+      // console.log(response.data.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -86,7 +86,7 @@ const DashboardPage = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
       setTransaksiSembakoCount(response.data.data.length);
-      console.log(response.data.data.length);
+      // console.log(response.data.data.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -148,13 +148,13 @@ const DashboardPage = () => {
       return;
     }
     const headers = { Authorization: `Bearer ${token}` };
-    console.log("TES");
-    console.log(openHour);
-    console.log(closeHour);
-    console.log(isOpen);
+    // console.log("TES");
+    // console.log(openHour);
+    // console.log(closeHour);
+    // console.log(isOpen);
     try {
       const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6", newData, { headers });
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error posting status data:", error);
     }
@@ -259,10 +259,8 @@ const DashboardPage = () => {
               </div>
               <div className="row">
                 <section className="col-lg-6 connectedSortable">
-                  {/* Custom tabs (Charts with tabs)*/}
                   <Table_Permintaan_Penukaran_Sampah />
                 </section>
-                {/* /.Left col */}
                 <section className="col-lg-6 connectedSortable">
                   <Table_Permintaan_Penukaran_Sembako />
                 </section>
@@ -271,15 +269,15 @@ const DashboardPage = () => {
           </section>
         </div>
         {/* MODAL EDIT SECTION */}
-        <div class="modal fade" id="modal_edit_waktu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header ">
-                <h5 class="modal-title" id="staticBackdropLabel">
+        <div className="modal fade" id="modal_edit_waktu" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header ">
+                <h5 className="modal-title" id="staticBackdropLabel">
                   <i className="fas fa-chart-pie mr-1" />
                   Buka / Tutup Balai
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>

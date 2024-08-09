@@ -50,7 +50,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim", { headers });
       setPermintaanPenukaranSampah(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -61,7 +61,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     try {
       const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah", { headers });
       setLohSampah(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -72,7 +72,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     try {
       const response = await axios.get(`https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`, { headers });
       setFormData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
       const updatedListSampah = response.data.list_sampah.map((item) => ({
         ...item,
         jumlah_poin: item.berat * lohSampah.find((sampahItem) => sampahItem.id === item.id_sampah)?.nilai_tukar || 0,
@@ -126,7 +126,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
         },
         { headers }
       );
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -170,7 +170,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
         total_poin: totalPoin,
       };
 
-      console.log(requestData);
+      // console.log(requestData);
 
       const response = await axios.put("https://devel4-filkom.ub.ac.id/slip/menabung?status=1", requestData, { headers });
 
@@ -223,7 +223,8 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                     <tr key={item.id_slip}>
                       <td>{item.id_slip}</td>
                       <td>{item.nama_user}</td>
-                      <td>{formatDate(item.tanggal.date)}</td>
+                      {/* <td>{formatDate(item.tanggal)}</td> */}
+                      <td>{item.tanggal}</td>
                       <td className="d-flex">
                         <button type="button" className="btn-primary border-0 mr-2" data-toggle="modal" data-target="#modal_proses_sampah" onClick={() => handleDetailClick(item.id_slip)}>
                           Detail
@@ -267,7 +268,8 @@ const Table_Permintaan_Penukaran_Sampah = () => {
                     <tbody>
                       <tr key={formData.no_tabungan}>
                         <td>{formData.nasabah}</td>
-                        <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                        {/* <td>{formData.tanggal != null ? `${formData.tanggal.day}/${formData.tanggal.month}/${formData.tanggal.year}` : null}</td> */}
+                        <td>{formData.tanggal}</td>
                         <td>{formData.id_user}</td>
                       </tr>
                     </tbody>
