@@ -7,6 +7,13 @@ import { useForm } from "react-hook-form";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "jszip/dist/jszip.min.js";
+
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+import "datatables.net-buttons/js/buttons.flash.min.js";
+import "datatables.net-buttons/js/buttons.html5.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
 
 import $, { noConflict } from "jquery";
 import "toastr/build/toastr.css";
@@ -289,6 +296,13 @@ const TableKelolaSampah = () => {
                 className: "btn btn-dark bg-dark",
               },
               {
+                extend: "copy",
+                className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
+              },
+              {
                 extend: "csv",
                 className: "btn btn-dark bg-dark",
                 exportOptions: {
@@ -296,12 +310,26 @@ const TableKelolaSampah = () => {
                 },
               },
               {
+                extend: "excel",
+                className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
+              },
+              {
+                extend: "pdf",
+                className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
+              },
+              {
                 extend: "print",
+                className: "btn btn-dark bg-dark",
                 customize: function (win) {
                   $(win.document.body).css("font-size", "10pt");
                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
-                className: "btn btn-secondary bg-secondary",
                 exportOptions: {
                   columns: ":not(:last-child)",
                 },

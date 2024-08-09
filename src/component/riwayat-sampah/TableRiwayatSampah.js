@@ -97,7 +97,7 @@ const TableRiwayatSampah = () => {
             <td className="mt-1 mx-2 text-center">{item.nama_user}</td>
             <td className="text-center justify-content-center flex">{item.status}</td>
             <td className="mt-1 mx-2 text-center">{item.total_poin}</td>
-            <td className="mt-1 mx-2 text-center">{formatDate(item.tanggal.date)}</td>
+            <td className="mt-1 mx-2 text-center">{item.tanggal}</td>
             <td className="d-flex justify-content-center">
               <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_detail_sampah" onClick={() => handleDetailClick(item.id_slip)}>
                 Lihat Detail
@@ -142,16 +142,43 @@ const TableRiwayatSampah = () => {
                 className: "btn btn-dark bg-dark",
               },
               {
+                extend: "copy",
+                className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
+              },
+              {
                 extend: "csv",
                 className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
+              },
+              {
+                extend: "excel",
+                className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
+              },
+              {
+                extend: "pdf",
+                className: "btn btn-dark bg-dark",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
               },
               {
                 extend: "print",
+                className: "btn btn-dark bg-dark",
                 customize: function (win) {
                   $(win.document.body).css("font-size", "10pt");
                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
-                className: "btn btn-secondary bg-secondary",
+                exportOptions: {
+                  columns: ":not(:last-child)",
+                },
               },
             ],
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -224,7 +251,9 @@ const TableRiwayatSampah = () => {
                     </tr>
                     <tr>
                       <td>{formData.nasabah}</td>
-                      <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td>
+                      {/* <td>{formData.tanggal != null ? `${formData.tanggal.date.day}/${formData.tanggal.date.month}/${formData.tanggal.date.year}` : null}</td> */}
+                      <td>{formData.tanggal}</td>
+
                       <td>?</td>
                     </tr>
                     <tr className="thead-light">

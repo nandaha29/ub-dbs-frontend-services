@@ -7,6 +7,21 @@ import { useForm } from "react-hook-form";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "jszip/dist/jszip.min.js";
+// import pdfMake from "pdfmake/build/pdfmake";
+// import pdfFonts from "pdfmake/build/vfs_fonts";
+// import jsZip from "jszip";
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// window.pdfMake = pdfMake;
+// window.JSZip = jsZip;
+
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+import "datatables.net-buttons/js/buttons.flash.min.js";
+import "datatables.net-buttons/js/buttons.html5.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
+// import "datatables.net-buttons/js/buttons.bootstrap4.min.js";
+// import "datatables.net-buttons-dt/css/buttons.dataTables.min.css";
 
 import $, { noConflict } from "jquery";
 import "toastr/build/toastr.css";
@@ -264,69 +279,84 @@ const TableKelolaSembako = () => {
     form.setValue("stok", formData.stok);
     setSelectedImage(formData.img_url);
 
-    // Hanya inisialisasi DataTable jika belum diinisialisasi sebelumnya
-    if (!$.fn.DataTable.isDataTable("#table")) {
-      $(document).ready(function () {
-        setTimeout(function () {
-          $("#table").DataTable({
-            pagingType: "full_numbers",
-            pageLength: 20,
-            processing: true,
-            dom: "Bfrtip",
-            select: {
-              style: "single",
-            },
-            buttons: [
-              {
-                extend: "pageLength",
-                className: "btn btn-dark bg-dark",
-              },
-              {
-                extend: "csv",
-                className: "btn btn-dark bg-dark",
-                exportOptions: {
-                  columns: ":not(:last-child)",
-                },
-              },
-              {
-                extend: "print",
-                customize: function (win) {
-                  $(win.document.body).css("font-size", "10pt");
-                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
-                },
-                className: "btn btn-secondary bg-secondary",
-                exportOptions: {
-                  columns: ":not(:last-child)",
-                },
-              },
-            ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-              // var index = iDisplayIndexFull + 1;
-              // $("td:first", nRow).html(index);
-              return nRow;
-            },
-            lengthMenu: [
-              [10, 20, 30, 50, -1],
-              [10, 20, 30, 50, "All"],
-            ],
-            columnDefs: [
-              {
-                targets: 0,
-                render: function (data, type, row, meta) {
-                  return type === "export" ? meta.row + 1 : data;
-                },
-              },
-            ],
-          });
-        }, 1000);
-      });
-    }
-
     // Membersihkan listener saat komponen dibongkar
     return () => {
       listen();
     };
-  }, [formData]);
+  }, []);
+
+  useEffect(() => {
+    if (kelolaSembako.length > 0 && !$.fn.DataTable.isDataTable("#table")) {
+      $(document).ready(function () {
+        $("#table").DataTable({
+          pagingType: "full_numbers",
+          pageLength: 20,
+          processing: true,
+          dom: "Bfrtip",
+          responsive: true,
+          lengthChange: false,
+          autoWidth: false,
+          buttons: [
+            {
+              extend: "pageLength",
+              className: "btn btn-dark bg-dark",
+            },
+            {
+              extend: "copy",
+              className: "btn btn-dark bg-dark",
+              exportOptions: {
+                columns: ":not(:last-child)",
+              },
+            },
+            {
+              extend: "csv",
+              className: "btn btn-dark bg-dark",
+              exportOptions: {
+                columns: ":not(:last-child)",
+              },
+            },
+            {
+              extend: "excel",
+              className: "btn btn-dark bg-dark",
+              exportOptions: {
+                columns: ":not(:last-child)",
+              },
+            },
+            {
+              extend: "pdf",
+              className: "btn btn-dark bg-dark",
+              exportOptions: {
+                columns: ":not(:last-child)",
+              },
+            },
+            {
+              extend: "print",
+              className: "btn btn-dark bg-dark",
+              customize: function (win) {
+                $(win.document.body).css("font-size", "10pt");
+                $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+              },
+              exportOptions: {
+                columns: ":not(:last-child)",
+              },
+            },
+          ],
+          lengthMenu: [
+            [10, 20, 30, 50, -1],
+            [10, 20, 30, 50, "All"],
+          ],
+          columnDefs: [
+            {
+              targets: 0,
+              render: function (data, type, row, meta) {
+                return type === "export" ? meta.row + 1 : data;
+              },
+            },
+          ],
+        });
+      });
+    }
+  }, [kelolaSembako]);
 
   return (
     <>
