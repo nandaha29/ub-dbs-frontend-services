@@ -4,28 +4,34 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { useForm } from "react-hook-form";
 
-import "jquery/dist/jquery.min.js";
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "jszip/dist/jszip.min.js";
-// import pdfMake from "pdfmake/build/pdfmake";
-// import pdfFonts from "pdfmake/build/vfs_fonts";
-// import jsZip from "jszip";
-// pdfMake.vfs = pdfFonts.pdfMake.vfs;
-// window.pdfMake = pdfMake;
-// window.JSZip = jsZip;
-
-import "datatables.net-buttons/js/dataTables.buttons.min.js";
-import "datatables.net-buttons/js/buttons.flash.min.js";
-import "datatables.net-buttons/js/buttons.html5.min.js";
-import "datatables.net-buttons/js/buttons.print.min.js";
-import "datatables.net-buttons/js/buttons.colVis.min.js";
-// import "datatables.net-buttons/js/buttons.bootstrap4.min.js";
-// import "datatables.net-buttons-dt/css/buttons.dataTables.min.css";
-
 import $, { noConflict } from "jquery";
 import "toastr/build/toastr.css";
 import toastr from "toastr";
+import "jquery/dist/jquery.min.js";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+import "datatables.net-buttons/js/buttons.html5.min.js";
+// import "datatables.net-buttons/js/buttons.flash.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
+import "datatables.net-buttons-dt/css/buttons.dataTables.min.css";
+
+import jsZip from "jszip";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+window.JSZip = jsZip;
+
+pdfMake.fonts = {
+  Roboto: {
+    normal: "Roboto-Regular.ttf",
+    bold: "Roboto-Medium.ttf",
+    italics: "Roboto-Italic.ttf",
+    bolditalics: "Roboto-MediumItalic.ttf",
+  },
+};
 
 const dataprofil = [
   {
@@ -100,12 +106,24 @@ const TableKelolaSembako = () => {
     form.setValue("thumbnail", gambarmu);
   };
 
+  // const handleGambar = (e) => {
+  //   const gambarmu = e.target.files?.[0];
+  //   if (gambarmu) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setFormData((prevData) => ({ ...prevData, img_url: reader.result }));
+  //     };
+  //     reader.readAsDataURL(gambarmu);
+  //   }
+  //   form.setValue("thumbnail", gambarmu);
+  // };
+
   const getPermintaanID = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       setFormData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -286,13 +304,35 @@ const TableKelolaSembako = () => {
   }, []);
 
   useEffect(() => {
+    // console.log(kelolaSembako);
+    // console.log("tes img " + formData.img_url);
     if (kelolaSembako.length > 0 && !$.fn.DataTable.isDataTable("#table")) {
+      const exportFormatter = {
+        columns: ":not(:last-child)",
+      };
+      function createCellPos(n) {
+        var ordA = "A".charCodeAt(0);
+        var ordZ = "Z".charCodeAt(0);
+        var len = ordZ - ordA + 1;
+        var s = "";
+
+        while (n >= 0) {
+          s = String.fromCharCode((n % len) + ordA) + s;
+          n = Math.floor(n / len) - 1;
+        }
+
+        return s;
+      }
       $(document).ready(function () {
         $("#table").DataTable({
           pagingType: "full_numbers",
           pageLength: 20,
           processing: true,
           dom: "Bfrtip",
+          // dom: 'T<"clear">lfrtip',
+          // tableTools: {
+          //   sSwfPath: "media/swf/copy_csv_xls_pdf.swf",
+          // },
           responsive: true,
           lengthChange: false,
           autoWidth: false,
@@ -301,42 +341,100 @@ const TableKelolaSembako = () => {
               extend: "pageLength",
               className: "btn btn-dark bg-dark",
             },
+
             {
-              extend: "copy",
+              extend: "copyHtml5",
               className: "btn btn-dark bg-dark",
-              exportOptions: {
-                columns: ":not(:last-child)",
+              exportOptions: exportFormatter,
+            },
+            {
+              extend: "csvHtml5",
+              className: "btn btn-dark bg-dark",
+              exportOptions: exportFormatter,
+            },
+            {
+              extend: "excelHtml5",
+              className: "btn btn-dark bg-dark",
+              exportOptions: exportFormatter,
+              // customize: function (xlsx) {
+              //   var sheet = xlsx.xl.worksheets["sheet1.xml"];
+              //   var lastCol = sheet.getElementsByTagName("col").length - 1;
+              //   var colRange = createCellPos(lastCol) + "1";
+              //   var afSerializer = new XMLSerializer();
+              //   var xmlString = afSerializer.serializeToString(sheet);
+              //   var parser = new DOMParser();
+              //   var xmlDoc = parser.parseFromString(xmlString, "text/xml");
+              //   var xlsxFilter = xmlDoc.createElementNS("http://schemas.openxmlformats.org/spreadsheetml/2006/main", "autoFilter");
+              //   var filterAttr = xmlDoc.createAttribute("ref");
+              //   filterAttr.value = "A1:" + colRange;
+              //   xlsxFilter.setAttributeNode(filterAttr);
+              //   sheet.getElementsByTagName("worksheet")[0].appendChild(xlsxFilter);
+              // },
+              format: {
+                body: function (data, row, column, node) {
+                  // return data.is("img") ? data.attr("src") : data;
+                  return column === 1 ? data : data;
+                },
               },
             },
             {
-              extend: "csv",
+              extend: "pdfHtml5",
               className: "btn btn-dark bg-dark",
-              exportOptions: {
-                columns: ":not(:last-child)",
+              exportOptions: exportFormatter,
+              customize: function (doc) {
+                // Coba tambahkan gambar jika ada
+                if (formData.img_url) {
+                  //IKI RAISOOOO
+                  try {
+                    doc.content.splice(0, 0, {
+                      image: formData.img_url,
+                      width: 500,
+                      alignment: "center",
+                      margin: [0, 0, 0, 12],
+                    });
+                  } catch (error) {
+                    console.error("Error adding image to PDF: ", error); // Tangkap kesalahan
+                  }
+                }
+
+                // Atur gaya header tabel
+                if (doc.styles.tableHeader) {
+                  doc.styles.tableHeader.fontSize = 12;
+                } else {
+                  console.warn("tableHeader style is not defined");
+                }
+
+                // Atur warna baris tabel, dengan pengecekan apakah objeknya ada
+                if (doc.styles.tableBodyEven) {
+                  doc.styles.tableBodyEven.fillColor = "#f3f3f3";
+                } else {
+                  console.warn("tableBodyEven style is not defined");
+                }
+
+                if (doc.styles.tableBodyOdd) {
+                  doc.styles.tableBodyOdd.fillColor = "#ffffff";
+                } else {
+                  console.warn("tableBodyOdd style is not defined");
+                }
               },
+              orientation: "portrait",
+              pageSize: "A4",
             },
-            {
-              extend: "excel",
-              className: "btn btn-dark bg-dark",
-              exportOptions: {
-                columns: ":not(:last-child)",
-              },
-            },
-            {
-              extend: "pdf",
-              className: "btn btn-dark bg-dark",
-              exportOptions: {
-                columns: ":not(:last-child)",
-              },
-            },
+
             {
               extend: "print",
               className: "btn btn-dark bg-dark",
               customize: function (win) {
-                $(win.document.body).css("font-size", "10pt");
-                $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
+                $(win.document.body).css("font-size", "10pt").find("table").addClass("compact").css("font-size", "inherit");
+                $(win.document.body).find("img").css({
+                  display: "block",
+                  width: "auto",
+                  height: "auto",
+                  maxHeight: "50px", //sesuaikan sadja
+                });
               },
               exportOptions: {
+                stripHtml: false,
                 columns: ":not(:last-child)",
               },
             },

@@ -5,7 +5,7 @@ import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import "datatables.net-buttons/js/dataTables.buttons.js";
 import "datatables.net-buttons/js/buttons.colVis.js";
-import "datatables.net-buttons/js/buttons.flash.js";
+// import "datatables.net-buttons/js/buttons.flash.js";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "datatables.net-buttons/js/buttons.print.js";
 import $ from "jquery";
@@ -19,8 +19,7 @@ const names = [
     jenis: "gBlok",
     tanggal_upload: "10-01-2023 13:14",
     foto_artikel: "Beras ABC.jpg",
-    paragraf:
-      "Sebagian besar masyarakat pasti sudah tak sabar untuk menikmati libur panjang alias long weekend mulai dari Kamis (1 Juni 2023) sampai Minggu (4 Juni 2023) bersama keluarga hingga sahabat.",
+    paragraf: "Sebagian besar masyarakat pasti sudah tak sabar untuk menikmati libur panjang alias long weekend mulai dari Kamis (1 Juni 2023) sampai Minggu (4 Juni 2023) bersama keluarga hingga sahabat.",
   },
 ];
 
@@ -156,12 +155,7 @@ class TableArtikel extends Component {
     const { editingItemIndex, editingItem, data_Artikel } = this.state;
 
     // Validate required fields
-    if (
-      !editingItem.judul ||
-      !editingItem.jenis ||
-      !editingItem.paragraf ||
-      !editingItem.foto_artikel
-    ) {
+    if (!editingItem.judul || !editingItem.jenis || !editingItem.paragraf || !editingItem.foto_artikel) {
       alert("Please fill in all fields.");
       return;
     }
@@ -228,12 +222,7 @@ class TableArtikel extends Component {
               // },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               var index = iDisplayIndexFull + 1;
               $("td:first", nRow).html(index);
               return nRow;
@@ -268,28 +257,13 @@ class TableArtikel extends Component {
             <td className="mt-1 mx-2">{item.tanggal_upload}</td>
             <td className="d-flex justify-content-center">
               {/* <button className="btn btn-info btn-sm mt-1 mx-2" onClick={() => this.ubahData(paket.id_paket)}> */}
-              <button
-                className="btn btn-warning btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_edit"
-                onClick={() => this.editItem(index)}
-              >
+              <button className="btn btn-warning btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_edit" onClick={() => this.editItem(index)}>
                 Edit
               </button>
-              <button
-                className="btn btn-primary btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_LihatArtikel"
-                onClick={() => this.editItem(index)}
-              >
+              <button className="btn btn-primary btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_LihatArtikel" onClick={() => this.editItem(index)}>
                 Lihat
               </button>
-              <button
-                className="btn btn-danger btn-sm mt-1 mx-2"
-                data-toggle="modal"
-                data-target="#modal_tiwayat_transaksi"
-                onClick={() => this.deleteItem(index)}
-              >
+              <button className="btn btn-danger btn-sm mt-1 mx-2" data-toggle="modal" data-target="#modal_tiwayat_transaksi" onClick={() => this.deleteItem(index)}>
                 Hapus
               </button>
               {/* <button className="btn btn-danger btn-sm mt-1">Hapus</button> FOR MAKE CRUD */}
@@ -308,27 +282,18 @@ class TableArtikel extends Component {
       <>
         <div class="container-fluid">
           <div className="float-sm-right mb-3">
-            <button
-              className="btn-primary btn"
-              data-toggle="modal"
-              data-target="#modal_tambah_Artikel"
-            >
+            <button className="btn-primary btn" data-toggle="modal" data-target="#modal_tambah_Artikel">
               + Tambah Artikel
             </button>
           </div>
           <div class="table-responsive p-0 pb-2">
-            <table
-              id="tableartikel"
-              className="table align-items-center justify-content-center mb-0 table-striped"
-            >
+            <table id="tableartikel" className="table align-items-center justify-content-center mb-0 table-striped">
               <thead>
                 <tr>
                   <th className="text-uppercase  text-sm ">#</th>
                   <th className="text-uppercase  text-sm ">Judul</th>
                   <th className="text-uppercase  text-sm ">Tanggal Upload</th>
-                  <th className="text-uppercase  text-sm text-center">
-                    Action
-                  </th>
+                  <th className="text-uppercase  text-sm text-center">Action</th>
                 </tr>
               </thead>
 
@@ -353,12 +318,7 @@ class TableArtikel extends Component {
                 <h5 className="modal-title" id="staticBackdropLabel">
                   Tambah Artikel
                 </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -370,20 +330,8 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8 pb-4">
                       <div className="">
-                        <div className="">
-                          {selectedImage && (
-                            <img
-                              src={selectedImage}
-                              alt="Preview"
-                              style={{ width: "50%" }}
-                            />
-                          )}
-                        </div>
-                        <input
-                          type="file"
-                          accept=".png"
-                          onChange={this.handleImageUploadADD}
-                        />
+                        <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div>
+                        <input type="file" accept=".png" onChange={this.handleImageUploadADD} />
                       </div>
                     </div>
                   </div>
@@ -395,14 +343,7 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8">
                       <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control text-sm font-weight-bold"
-                          value={judul}
-                          onChange={(e) =>
-                            this.setState({ judul: e.target.value })
-                          }
-                        />
+                        <input type="text" className="form-control text-sm font-weight-bold" value={judul} onChange={(e) => this.setState({ judul: e.target.value })} />
                       </div>
                     </div>
                   </div>
@@ -414,14 +355,7 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8">
                       <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control text-sm font-weight-bold"
-                          value={jenis}
-                          onChange={(e) =>
-                            this.setState({ jenis: e.target.value })
-                          }
-                        />
+                        <input type="text" className="form-control text-sm font-weight-bold" value={jenis} onChange={(e) => this.setState({ jenis: e.target.value })} />
                       </div>
                     </div>
                   </div>
@@ -433,35 +367,17 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8">
                       <div className="form-group">
-                        <textarea
-                          type="text"
-                          className="form-control text-sm font-weight-bold"
-                          rows="5"
-                          value={paragraf}
-                          onChange={(e) =>
-                            this.setState({ paragraf: e.target.value })
-                          }
-                        />
+                        <textarea type="text" className="form-control text-sm font-weight-bold" rows="5" value={paragraf} onChange={(e) => this.setState({ paragraf: e.target.value })} />
                       </div>
                     </div>
                   </div>
                 </form>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                  onClick={this.closeModal}
-                >
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.closeModal}>
                   Batal
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-dismiss="modal"
-                  onClick={this.saveNewData}
-                >
+                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.saveNewData}>
                   Simpan & Publikasi
                 </button>
               </div>
@@ -486,12 +402,7 @@ class TableArtikel extends Component {
                 <h5 className="modal-title" id="staticBackdropLabel">
                   Tambah Sembako
                 </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -503,20 +414,8 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8 pb-4">
                       <div className="">
-                        <div className="">
-                          {selectedImage && (
-                            <img
-                              src={selectedImage}
-                              alt="Preview"
-                              style={{ width: "50%" }}
-                            />
-                          )}
-                        </div>
-                        <input
-                          type="file"
-                          accept=".png"
-                          onChange={this.handleImageUpload}
-                        />
+                        <div className="">{selectedImage && <img src={selectedImage} alt="Preview" style={{ width: "50%" }} />}</div>
+                        <input type="file" accept=".png" onChange={this.handleImageUpload} />
                       </div>
                     </div>
                   </div>
@@ -596,20 +495,10 @@ class TableArtikel extends Component {
                 </form>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                  onClick={this.closeModal}
-                >
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.closeModal}>
                   Batal
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-dismiss="modal"
-                  onClick={this.saveChanges}
-                >
+                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.saveChanges}>
                   Simpan
                 </button>
               </div>
@@ -634,13 +523,7 @@ class TableArtikel extends Component {
                 <h5 className="modal-title" id="staticBackdropLabel">
                   Lihat Banner
                 </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  onClick={this.closeModal}
-                >
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.closeModal}>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -651,17 +534,7 @@ class TableArtikel extends Component {
                       <div className="form-group"></div>
                     </div>
                     <div className="col-md-8 pb-4">
-                      <div className="">
-                        {editingItem.foto_artikel ? (
-                          <img
-                            src={`data:image/png;base64,${editingItem.foto_artikel}`}
-                            alt="Preview"
-                            style={{ width: "50%" }}
-                          />
-                        ) : (
-                          <p>Image Missing</p>
-                        )}
-                      </div>
+                      <div className="">{editingItem.foto_artikel ? <img src={`data:image/png;base64,${editingItem.foto_artikel}`} alt="Preview" style={{ width: "50%" }} /> : <p>Image Missing</p>}</div>
                     </div>
                   </div>
                   <div className="row px-5 text-md">
@@ -672,12 +545,7 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8">
                       <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control text-sm font-weight-bold"
-                          value={this.state.editingItem.judul}
-                          readOnly
-                        />
+                        <input type="text" className="form-control text-sm font-weight-bold" value={this.state.editingItem.judul} readOnly />
                       </div>
                     </div>
                   </div>
@@ -689,12 +557,7 @@ class TableArtikel extends Component {
                     </div>
                     <div className="col-md-8">
                       <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control text-sm font-weight-bold"
-                          value={this.state.editingItem.jenis}
-                          readOnly
-                        />
+                        <input type="text" className="form-control text-sm font-weight-bold" value={this.state.editingItem.jenis} readOnly />
                       </div>
                     </div>
                   </div>
@@ -712,25 +575,14 @@ class TableArtikel extends Component {
                           value={this.state.editingItem.paragraf}
                           readOnly
                         > */}
-                        <textarea
-                          type="text"
-                          className="form-control text-sm font-weight-bold"
-                          rows="5"
-                          value={this.state.editingItem.paragraf}
-                          readOnly
-                        ></textarea>
+                        <textarea type="text" className="form-control text-sm font-weight-bold" rows="5" value={this.state.editingItem.paragraf} readOnly></textarea>
                       </div>
                     </div>
                   </div>
                 </form>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                  onClick={this.closeModal}
-                >
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.closeModal}>
                   Tutup
                 </button>
               </div>

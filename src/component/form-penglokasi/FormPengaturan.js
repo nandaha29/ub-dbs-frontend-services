@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "jszip/dist/jszip.min.js";
+
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+// import "datatables.net-buttons/js/buttons.flash.min.js";s
+import "datatables.net-buttons/js/buttons.html5.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
+
 import "toastr/build/toastr.css";
 import toastr from "toastr";
 import axios from "axios";
@@ -26,10 +34,7 @@ const FormPengaturan = () => {
   const getLokasiPenukaran = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
       console.log(response.data);
       const { nama, alamat, url_map, jadwal, no_handphone } = response.data;
       setLokasiData({
@@ -50,17 +55,11 @@ const FormPengaturan = () => {
   };
 
   const handleSimpan = async () => {
-    const isConfirmed = window.confirm(
-      "Apakah anda yakin ingin merubah data ini?"
-    );
+    const isConfirmed = window.confirm("Apakah anda yakin ingin merubah data ini?");
     if (isConfirmed) {
       const headers = { Authorization: `Bearer ${token}` };
       try {
-        const response = await axios.put(
-          "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
-          lokasiData,
-          { headers }
-        );
+        const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", lokasiData, { headers });
         console.log("Data berhasil disimpan:", response.data);
         toastr.success("Data berhasil disimpan!", "Sukses");
         setTimeout(() => {
@@ -114,10 +113,7 @@ const FormPengaturan = () => {
               {
                 extend: "print",
                 customize: function (win) {
-                  $(win.document.body)
-                    .find("table")
-                    .addClass("compact")
-                    .css("font-size", "inherit");
+                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                   // =======
                   //                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                   // >>>>>>> master
@@ -126,12 +122,7 @@ const FormPengaturan = () => {
               },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               // =======
               //             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               // >>>>>>> master
@@ -167,56 +158,23 @@ const FormPengaturan = () => {
         <div className="card-body">
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Nama Lokasi</label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputEmail1"
-              placeholder="RW 5"
-              value={lokasiData.nama}
-              onChange={(e) => handleInputChange("nama", e.target.value)}
-            />
+            <input type="text" className="form-control" id="exampleInputEmail1" placeholder="RW 5" value={lokasiData.nama} onChange={(e) => handleInputChange("nama", e.target.value)} />
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Link Google Maps</label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="isi Link Google Maps"
-              value={lokasiData.url_map}
-              onChange={(e) => handleInputChange("url_map", e.target.value)}
-            />
+            <input type="text" className="form-control" id="exampleInputPassword1" placeholder="isi Link Google Maps" value={lokasiData.url_map} onChange={(e) => handleInputChange("url_map", e.target.value)} />
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Alamat</label>
-            <textarea
-              class="form-control"
-              rows="3"
-              placeholder="Enter ..."
-              value={lokasiData.alamat}
-              onChange={(e) => handleInputChange("alamat", e.target.value)}
-            ></textarea>
+            <textarea class="form-control" rows="3" placeholder="Enter ..." value={lokasiData.alamat} onChange={(e) => handleInputChange("alamat", e.target.value)}></textarea>
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">No. WhatsApp Admin</label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="No. WhatsApp Admin"
-              value={lokasiData.no_handphone}
-              onChange={(e) =>
-                handleInputChange("no_handphone", e.target.value)
-              }
-            />
+            <input type="text" className="form-control" id="exampleInputPassword1" placeholder="No. WhatsApp Admin" value={lokasiData.no_handphone} onChange={(e) => handleInputChange("no_handphone", e.target.value)} />
           </div>
         </div>
         <div className="form-group">
-          <button
-            type="button"
-            className="btn btn-primary float-right"
-            onClick={handleSimpan}
-          >
+          <button type="button" className="btn btn-primary float-right" onClick={handleSimpan}>
             Simpan
           </button>
         </div>

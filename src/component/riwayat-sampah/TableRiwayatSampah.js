@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import $ from "jquery";
+import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "jszip/dist/jszip.min.js";
+
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+// import "datatables.net-buttons/js/buttons.flash.min.js";s
+import "datatables.net-buttons/js/buttons.html5.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
 
 import axios from "axios";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -25,17 +33,6 @@ const TableRiwayatSampah = () => {
   const [formData, setFormData] = useState({});
   const modalRef = useRef(null);
 
-  // const getRiwayatSampah = async () => {
-  //   const headers = { Authorization: `Bearer ${token}` };
-  //   try {
-  //     const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?status=berhasil&size=50&isPagination=true", { headers });
-  //     setRiwayatSampah(response.data);
-  //     // console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
   const getRiwayatSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
@@ -43,7 +40,7 @@ const TableRiwayatSampah = () => {
 
       if (Array.isArray(response.data.data)) {
         setRiwayatSampah(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       } else {
         console.error("Data is not an array:", response.data.data);
       }
@@ -67,7 +64,7 @@ const TableRiwayatSampah = () => {
         { headers }
       );
       setFormData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -177,6 +174,7 @@ const TableRiwayatSampah = () => {
                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
                 exportOptions: {
+                  stripHtml: false,
                   columns: ":not(:last-child)",
                 },
               },

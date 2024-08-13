@@ -10,7 +10,7 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import "jszip/dist/jszip.min.js";
 
 import "datatables.net-buttons/js/dataTables.buttons.min.js";
-import "datatables.net-buttons/js/buttons.flash.min.js";
+// import "datatables.net-buttons/js/buttons.flash.min.js";s
 import "datatables.net-buttons/js/buttons.html5.min.js";
 import "datatables.net-buttons/js/buttons.print.min.js";
 import "datatables.net-buttons/js/buttons.colVis.min.js";
@@ -331,6 +331,7 @@ const TableKelolaSampah = () => {
                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
                 exportOptions: {
+                  stripHtml: false,
                   columns: ":not(:last-child)",
                 },
               },

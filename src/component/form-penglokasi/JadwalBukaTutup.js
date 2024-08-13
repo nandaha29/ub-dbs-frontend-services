@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "jszip/dist/jszip.min.js";
+
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+// import "datatables.net-buttons/js/buttons.flash.min.js";s
+import "datatables.net-buttons/js/buttons.html5.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
+
 import "toastr/build/toastr.css";
 import toastr from "toastr";
 import axios from "axios";
@@ -26,10 +34,7 @@ const JadwalBukaTutup = () => {
     const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      const response = await axios.get(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6",
-        { headers }
-      );
+      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
 
       const { nama, alamat, url_map, no_handphone } = response.data;
       setLokasiData({ nama, alamat, url_map: url_map, no_handphone });
@@ -45,18 +50,9 @@ const JadwalBukaTutup = () => {
   const setnewDataJadwal = async (formattedData) => {
     const headers = { Authorization: `Bearer ${token}` };
     const mergedData = { ...lokasiData, jadwal: formattedData };
-    console.log(
-      lokasiData.nama,
-      lokasiData.alamat,
-      lokasiData.url_map,
-      formattedData
-    );
+    console.log(lokasiData.nama, lokasiData.alamat, lokasiData.url_map, formattedData);
     try {
-      const response = await axios.put(
-        "https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6?jadwal",
-        mergedData,
-        { headers }
-      );
+      const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6?jadwal", mergedData, { headers });
       console.log("Data jadwal berhasil diset:", response.data);
       toastr.success("Data jadwal berhasil disimpan!", "Sukses");
       setTimeout(() => {
@@ -88,9 +84,7 @@ const JadwalBukaTutup = () => {
   // console.log("PPP", parsedData);
 
   const handleSave = () => {
-    const isConfirmed = window.confirm(
-      "Apakah anda yakin ingin merubah data ini?"
-    );
+    const isConfirmed = window.confirm("Apakah anda yakin ingin merubah data ini?");
     if (isConfirmed) {
       const newData = parsedData.map((item, index) => {
         const inputElement = document.getElementById(`jamBuka-${index}`);
@@ -100,9 +94,7 @@ const JadwalBukaTutup = () => {
         return { ...item, jamBuka };
       });
 
-      const formattedData = newData
-        .map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`)
-        .join(""); // Menggunakan newline sebagai pemisah
+      const formattedData = newData.map(({ hari, jamBuka }) => `<p>${hari} ${jamBuka}</p>`).join(""); // Menggunakan newline sebagai pemisah
 
       console.log(formattedData);
       setnewDataJadwal(formattedData);
@@ -153,10 +145,7 @@ const JadwalBukaTutup = () => {
               {
                 extend: "print",
                 customize: function (win) {
-                  $(win.document.body)
-                    .find("table")
-                    .addClass("compact")
-                    .css("font-size", "inherit");
+                  $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                   // =======
                   //                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                   // >>>>>>> master
@@ -165,12 +154,7 @@ const JadwalBukaTutup = () => {
               },
             ],
 
-            fnRowCallback: function (
-              nRow,
-              aData,
-              iDisplayIndex,
-              iDisplayIndexFull
-            ) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               // =======
               //             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
               // >>>>>>> master

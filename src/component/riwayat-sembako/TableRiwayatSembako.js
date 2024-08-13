@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import $ from "jquery";
+import "jquery/dist/jquery.min.js";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
+import "jszip/dist/jszip.min.js";
+
+import "datatables.net-buttons/js/dataTables.buttons.min.js";
+// import "datatables.net-buttons/js/buttons.flash.min.js";s
+import "datatables.net-buttons/js/buttons.html5.min.js";
+import "datatables.net-buttons/js/buttons.print.min.js";
+import "datatables.net-buttons/js/buttons.colVis.min.js";
 
 import axios from "axios";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -169,6 +177,7 @@ const TableRiwayatSembako = () => {
                   $(win.document.body).find("table").addClass("compact").css("font-size", "inherit");
                 },
                 exportOptions: {
+                  stripHtml: false,
                   columns: ":not(:last-child)",
                 },
               },
