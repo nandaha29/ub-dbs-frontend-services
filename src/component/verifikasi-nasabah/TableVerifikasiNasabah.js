@@ -25,7 +25,7 @@ const TableVerifikasiNasabah = () => {
   const getDataPerluVerifikasiNasabah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
       setDataNasabah(response.data);
       console.log(response.data);
     } catch (error) {
@@ -41,7 +41,7 @@ const TableVerifikasiNasabah = () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
         await axios.put(
-          `https://devel4-filkom.ub.ac.id/bank-sampah/user/${[index.user_id]}`,
+          `https://cat-tif.ub.ac.id/bank-sampah/user/${[index.user_id]}`,
           {
             status: 1,
             nama: index.nama,
@@ -53,7 +53,7 @@ const TableVerifikasiNasabah = () => {
         );
 
         // Setelah permintaan berhasil, perbarui data dengan meminta data baru dari URL yang telah diperbarui
-        // const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+        // const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
         // setDataNasabah(response.data);
 
         toastr.success("Data telah berhasil diverifikasi", "Verifikasi Nasabah");

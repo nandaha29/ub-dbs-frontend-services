@@ -34,7 +34,7 @@ const JadwalBukaTutup = () => {
     const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
 
       const { nama, alamat, url_map, no_handphone } = response.data;
       setLokasiData({ nama, alamat, url_map: url_map, no_handphone });
@@ -52,7 +52,7 @@ const JadwalBukaTutup = () => {
     const mergedData = { ...lokasiData, jadwal: formattedData };
     console.log(lokasiData.nama, lokasiData.alamat, lokasiData.url_map, formattedData);
     try {
-      const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6?jadwal", mergedData, { headers });
+      const response = await axios.put("https://cat-tif.ub.ac.id/bank-sampah/lokasi-penukaran/6?jadwal", mergedData, { headers });
       console.log("Data jadwal berhasil diset:", response.data);
       toastr.success("Data jadwal berhasil disimpan!", "Sukses");
       setTimeout(() => {

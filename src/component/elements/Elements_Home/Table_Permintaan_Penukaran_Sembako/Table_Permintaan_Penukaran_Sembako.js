@@ -43,7 +43,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
   const getPermintaanPenukaranSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/slip/penukaran?size=10&status=terkirim&isPagination=true", { headers });
       setPermintaanPenukaranSembako(response.data.data);
       // console.log(response.data.data);
     } catch (error) {
@@ -55,7 +55,7 @@ const Table_Permintaan_Penukaran_Sembako = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get(
-        `https://devel4-filkom.ub.ac.id/slip/penukaran/${ids}`,
+        `https://cat-tif.ub.ac.id/slip/penukaran/${ids}`,
         {
           id: ids,
           nama: formData.nama,

@@ -48,7 +48,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/slip/menabung?size=10&status=terkirim", { headers });
       setPermintaanPenukaranSampah(response.data.data);
       // console.log(response.data.data);
     } catch (error) {
@@ -59,7 +59,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const getIsiSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/sampah", { headers });
       setLohSampah(response.data);
       // console.log(response.data);
     } catch (error) {
@@ -70,7 +70,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
   const getPermintaanID = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`, { headers });
+      const response = await axios.get(`https://cat-tif.ub.ac.id/slip/menabung/${ids}`, { headers });
       setFormData(response.data);
       // console.log(response.data);
       const updatedListSampah = response.data.list_sampah.map((item) => ({
@@ -117,7 +117,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.put(
-        `https://devel4-filkom.ub.ac.id/slip/menabung?status=${stat}`,
+        `https://cat-tif.ub.ac.id/slip/menabung?status=${stat}`,
         {
           no_tabungan: ids,
           id_petugas: "PETUGASxVQsD34MhNI-gjKnMaiYp",
@@ -172,7 +172,7 @@ const Table_Permintaan_Penukaran_Sampah = () => {
 
       // console.log(requestData);
 
-      const response = await axios.put("https://devel4-filkom.ub.ac.id/slip/menabung?status=1", requestData, { headers });
+      const response = await axios.put("https://cat-tif.ub.ac.id/slip/menabung?status=1", requestData, { headers });
 
       console.log(response.data);
 

@@ -47,7 +47,7 @@ export default function ButtonEdit(item) {
   const handleDetailClick = async (id) => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}`, { headers });
+      const response = await axios.get(`https://cat-tif.ub.ac.id/bank-sampah/user/${id}`, { headers });
       setFormData(response.data);
       Object.keys(response.data).forEach((key) => {
         form.setValue(key, response.data[key]);
@@ -81,7 +81,7 @@ export default function ButtonEdit(item) {
         "Content-Type": "application/json",
       };
 
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${item.id}`, updatedFormData, { headers });
+      const response = await axios.put(`https://cat-tif.ub.ac.id/bank-sampah/user/${item.id}`, updatedFormData, { headers });
       // console.log("Update successful:", response.data);
       toastr.success("Update success", "Success");
       handleDetailClick(item.id);
@@ -109,7 +109,7 @@ export default function ButtonEdit(item) {
   const hapus = async (ids) => {
     // const headers = { Authorization: `Bearer ${token}` };
     // try {
-    //   const response = await axios.delete(`https://devel4-filkom.ub.ac.id/bank-sampah/sampah/${ids}`, { headers });
+    //   const response = await axios.delete(`https://cat-tif.ub.ac.id/bank-sampah/sampah/${ids}`, { headers });
     //   console.log(response.data);
     //   if (response.status === 200) {
     //     alert("Berhasil menghapus barang");

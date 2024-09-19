@@ -13,7 +13,7 @@ const SemuaOrderTabel = () => {
   const getPermintaanPenukaranSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?size=10&status=terkirim&isPagination=true", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/slip/menabung?size=10&status=terkirim&isPagination=true", { headers });
       setPermintaanPenukaranSampah(response.data.data.length);
       console.log(response.data.data.length);
     } catch (error) {

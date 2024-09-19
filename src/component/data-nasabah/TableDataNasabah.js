@@ -59,9 +59,9 @@ const TableDataNasabah = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       // Ambil data nasabah dengan status 1
-      const responseStatus1 = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
+      const responseStatus1 = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/user?status=1&isPagination=false", { headers });
       // Ambil data nasabah dengan status 0
-      const responseStatus0 = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
+      const responseStatus0 = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/user?status=0&isPagination=false", { headers });
 
       // Gabungkan data dari kedua response menjadi satu array
       const combinedData = [...responseStatus1.data, ...responseStatus0.data];
@@ -82,7 +82,7 @@ const TableDataNasabah = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
+        `https://cat-tif.ub.ac.id/bank-sampah/user/${ids}/history`,
         {
           user_id: ids,
           nama: formData.nama,
@@ -138,7 +138,7 @@ const TableDataNasabah = () => {
       for (var pair of formDataWithFile.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${formData.user_id}`, formDataWithFile, { headers });
+      const response = await axios.put(`https://cat-tif.ub.ac.id/bank-sampah/user/${formData.user_id}`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil mengubah isi ");
       } else {

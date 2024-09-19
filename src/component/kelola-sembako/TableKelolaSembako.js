@@ -88,7 +88,7 @@ const TableKelolaSembako = () => {
   const getKelolaSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran", { headers });
       setKelolaSembako(response.data);
       // console.log(response.data);
     } catch (error) {
@@ -121,7 +121,7 @@ const TableKelolaSembako = () => {
   const getPermintaanID = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
+      const response = await axios.get(`https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       setFormData(response.data);
       // console.log(response.data);
     } catch (error) {
@@ -145,7 +145,7 @@ const TableKelolaSembako = () => {
       if (formData.thumbnail) {
         formDataWithFile.append("thumbnail", formData.thumbnail);
       }
-      const response = await axios.post(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran`, formDataWithFile, { headers });
+      const response = await axios.post(`https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil menambah barang penukaran");
       } else {
@@ -164,8 +164,8 @@ const TableKelolaSembako = () => {
     try {
       let response;
       response = await (stat === "AKTIF"
-        ? axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=false`, {}, { headers })
-        : axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`, {}, { headers }));
+        ? axios.put(`https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=false`, {}, { headers })
+        : axios.put(`https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran/${ids}/status?status=true`, {}, { headers }));
       console.log(response);
       if (response.status === 200) {
         alert("Berhasil mengubah status barang penukaran");
@@ -181,7 +181,7 @@ const TableKelolaSembako = () => {
   const hapus = async (ids) => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.delete(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
+      const response = await axios.delete(`https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran/${ids}`, { headers });
       console.log(response.data);
       if (response.status === 200) {
         alert("Berhasil menghapus barang penukaran");
@@ -220,7 +220,7 @@ const TableKelolaSembako = () => {
       if (formData.thumbnail) {
         formDataWithFile.append("thumbnail", formData.thumbnail);
       }
-      const response = await axios.put(`https://devel4-filkom.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`, formDataWithFile, { headers });
+      const response = await axios.put(`https://cat-tif.ub.ac.id/bank-sampah/barang-penukaran/${formData.id}`, formDataWithFile, { headers });
       if (response.status === 200) {
         alert("Berhasil mengubah isi barang penukaran");
       } else {

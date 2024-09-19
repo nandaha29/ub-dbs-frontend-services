@@ -16,13 +16,13 @@ export default function ButtonRiwayat(item) {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const responseSampah = await axios.get(
-        `https://devel4-filkom.ub.ac.id/bank-sampah/user/${ids}/history`,
+        `https://cat-tif.ub.ac.id/bank-sampah/user/${ids}/history`,
         { headers }
       );
       setSampah(responseSampah.data.order_selesai);
       modalRef.current.open = true;
 
-      // const responseSembako = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${user_id}/history`);
+      // const responseSembako = await axios.get(`https://cat-tif.ub.ac.id/bank-sampah/user/${user_id}/history`);
       // setSembako(responseSembako.data);
     } catch (error) {
       console.error("Error fetching data:", error);

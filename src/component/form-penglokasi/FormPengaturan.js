@@ -34,7 +34,7 @@ const FormPengaturan = () => {
   const getLokasiPenukaran = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
       console.log(response.data);
       const { nama, alamat, url_map, jadwal, no_handphone } = response.data;
       setLokasiData({
@@ -59,7 +59,7 @@ const FormPengaturan = () => {
     if (isConfirmed) {
       const headers = { Authorization: `Bearer ${token}` };
       try {
-        const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", lokasiData, { headers });
+        const response = await axios.put("https://cat-tif.ub.ac.id/bank-sampah/lokasi-penukaran/6", lokasiData, { headers });
         console.log("Data berhasil disimpan:", response.data);
         toastr.success("Data berhasil disimpan!", "Sukses");
         setTimeout(() => {

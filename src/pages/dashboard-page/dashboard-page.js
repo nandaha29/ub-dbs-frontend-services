@@ -27,7 +27,7 @@ const DashboardPage = () => {
   const getDataJam = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/lokasi-penukaran/6", { headers });
       // console.log(response.data);
       const data = response.data;
       console.log("earl", response.data.jam_buka_sekarang);
@@ -49,7 +49,7 @@ const DashboardPage = () => {
   const getNasabahAktif = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=1", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/user?status=1", { headers });
       // console.log("PPP :", response.data);
       setNasabahCount(response.data.data.length);
       // console.log("nasabah aktif : ", response.data.data.length);
@@ -61,7 +61,7 @@ const DashboardPage = () => {
   const getTotalSampahBulanIni = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/sampah/history-transaction", { headers });
       const totalBeratSum = response.data.reduce((sum, item) => sum + item.totalBerat, 0);
       // console.log(totalBeratSum);
       setTotalSampahCount(totalBeratSum);
@@ -73,7 +73,7 @@ const DashboardPage = () => {
   const getNasabahPerluVerifikasi = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/bank-sampah/user?status=0&size=50", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/bank-sampah/user?status=0&size=50", { headers });
       setNasabahPerluVerifikasiCount(response.data.data.length);
       // console.log(response.data.data.length);
     } catch (error) {
@@ -84,7 +84,7 @@ const DashboardPage = () => {
   const getTransaksiSembako = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/penukaran", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/slip/penukaran", { headers });
       setTransaksiSembakoCount(response.data.data.length);
       // console.log(response.data.data.length);
     } catch (error) {
@@ -153,7 +153,7 @@ const DashboardPage = () => {
     // console.log(closeHour);
     // console.log(isOpen);
     try {
-      const response = await axios.put("https://devel4-filkom.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6", newData, { headers });
+      const response = await axios.put("https://cat-tif.ub.ac.id/bank-sampah/lokasi-penukaran/status?id=6", newData, { headers });
       // console.log(response.data);
     } catch (error) {
       console.error("Error posting status data:", error);

@@ -13,7 +13,7 @@ export default function ButtonLihat(item) {
   const handleDetailClick = async (id) => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get(`https://devel4-filkom.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
+      const response = await axios.get(`https://cat-tif.ub.ac.id/bank-sampah/user/${id}/history`, { headers });
       setFormData(response.data.user);
       // console.log(response.data.user);
       modalRef.current.open = true;

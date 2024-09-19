@@ -36,7 +36,7 @@ const TableRiwayatSampah = () => {
   const getRiwayatSampah = async () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
-      const response = await axios.get("https://devel4-filkom.ub.ac.id/slip/menabung?status=berhasil&size=50&isPagination=true", { headers });
+      const response = await axios.get("https://cat-tif.ub.ac.id/slip/menabung?status=berhasil&size=50&isPagination=true", { headers });
 
       if (Array.isArray(response.data.data)) {
         setRiwayatSampah(response.data.data);
@@ -53,7 +53,7 @@ const TableRiwayatSampah = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.get(
-        `https://devel4-filkom.ub.ac.id/slip/menabung/${ids}`,
+        `https://cat-tif.ub.ac.id/slip/menabung/${ids}`,
         {
           id: ids,
           nama: formData.nama,
